@@ -376,121 +376,125 @@
 
     </div>
 
-    <!-- Tab 3: Inspection Form View -->
+    <!-- Tab 3: Printable Blank Inspection Form View (Paper เปล่าสำหรับเขียนหน้างาน) -->
     <div id="view-form" class="hidden space-y-6">
       <div class="flex flex-wrap justify-between items-center gap-3 no-print">
         <div>
-          <h2 class="text-base sm:text-lg font-bold text-slate-800">แบบฟอร์มตรวจสอบและบำรุงรักษาหน้างาน</h2>
-          <p class="text-xs text-slate-500">กรอกข้อมูลและสั่งพิมพ์ขนาดกระดาษ A4 เพื่อใช้ในการปฏิบัติงานหน้างาน</p>
+          <h2 class="text-base sm:text-lg font-bold text-slate-800">แบบฟอร์มตรวจสอบและบำรุงรักษาหน้างาน (แบบฟอร์มเปล่า)</h2>
+          <p class="text-xs text-slate-500">พิมพ์เอกสารขนาด A4 เปล่า เพื่อให้ช่างเทคนิคหน้างานนำไปเขียนบันทึกด้วยตนเอง</p>
         </div>
         <button onclick="window.print()" class="flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-bold px-4 py-2 rounded-2xl text-xs sm:text-sm shadow-sm transition">
-          🖨️ สั่งพิมพ์แบบฟอร์ม (A4)
+          🖨️ สั่งพิมพ์แบบฟอร์มเปล่า (A4)
         </button>
       </div>
 
-      <!-- Printable A4 Paper Container -->
+      <!-- Printable A4 Blank Paper Container -->
       <div id="printable-form" class="bg-white p-6 sm:p-10 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs">
         
         <!-- Header -->
-        <div class="border-b-2 border-brand-500 pb-3 mb-4 flex justify-between items-start">
+        <div class="border-b-2 border-brand-500 pb-3 mb-5 flex justify-between items-start">
           <div>
             <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">ใบตรวจสอบและประเมินผลการบำรุงรักษาอุปกรณ์สถานีไฟฟ้า</h1>
             <p class="text-[11px] text-slate-500">Substation Maintenance & RAM Inspection Checklist Form</p>
           </div>
           <div class="text-right">
-            <span class="inline-block px-2 py-0.5 bg-brand-100 text-brand-700 font-semibold text-[10px] rounded">ขนาดมาตรฐาน A4</span>
-            <p class="text-[10px] text-slate-400 mt-1">วันที่พิมพ์: <span id="print-date"></span></p>
+            <span class="inline-block px-2.5 py-1 bg-slate-100 text-slate-700 font-bold text-[10px] rounded border border-slate-300">เอกสารสำหรับเขียนหน้างาน</span>
+            <p class="text-[10px] text-slate-400 mt-1">เลขที่เอกสาร: PM-SUB-______</p>
           </div>
         </div>
 
-        <!-- General Info Form -->
-        <div class="grid grid-cols-2 gap-3 mb-4 text-xs">
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">รหัสอุปกรณ์ (Equipment Tag):</label>
-            <select id="form-device-select" class="w-full border border-slate-300 rounded-xl p-2 bg-slate-50 text-xs focus:bg-white focus:outline-none">
-              <!-- Rendered via JS -->
-            </select>
+        <!-- General Info Blank Lines -->
+        <div class="grid grid-cols-2 gap-y-3.5 gap-x-6 mb-6 text-xs text-slate-700">
+          <div class="flex items-baseline">
+            <span class="font-bold whitespace-nowrap">รหัสอุปกรณ์ (Tag):</span>
+            <span class="ml-2 flex-1 border-b border-dotted border-slate-400"></span>
           </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">วันที่ปฏิบัติงาน (Inspection Date):</label>
-            <input type="date" id="form-date" class="w-full border border-slate-300 rounded-xl p-2 bg-slate-50 text-xs focus:bg-white focus:outline-none">
+          <div class="flex items-baseline">
+            <span class="font-bold whitespace-nowrap">วันที่ปฏิบัติงาน:</span>
+            <span class="ml-2 flex-1 border-b border-dotted border-slate-400"></span>
           </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">ชื่อช่างเทคนิคผู้ปฏิบัติงาน:</label>
-            <input type="text" placeholder="ระบุชื่อ-นามสกุล ช่างผู้รับผิดชอบ" class="w-full border border-slate-300 rounded-xl p-2 bg-slate-50 text-xs focus:bg-white focus:outline-none">
+          <div class="flex items-baseline">
+            <span class="font-bold whitespace-nowrap">ชื่อช่างเทคนิคผู้ตรวจ:</span>
+            <span class="ml-2 flex-1 border-b border-dotted border-slate-400"></span>
           </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">ประเภทการบำรุงรักษา:</label>
-            <select class="w-full border border-slate-300 rounded-xl p-2 bg-slate-50 text-xs focus:bg-white focus:outline-none">
-              <option>การบำรุงรักษาเชิงป้องกัน (Preventive Maintenance)</option>
-              <option>การบำรุงรักษาตามสภาพ (Condition-based Maintenance)</option>
-              <option>การบำรุงรักษาแก้ไข (Corrective Maintenance)</option>
-            </select>
+          <div class="flex items-baseline">
+            <span class="font-bold whitespace-nowrap">ตำแหน่ง / สังกัด:</span>
+            <span class="ml-2 flex-1 border-b border-dotted border-slate-400"></span>
+          </div>
+          <div class="col-span-2 flex items-center gap-4 pt-1">
+            <span class="font-bold whitespace-nowrap">ประเภทการบำรุงรักษา:</span>
+            <label class="flex items-center gap-1.5 cursor-pointer"><span class="w-3.5 h-3.5 border border-slate-400 rounded-sm inline-block"></span> เชิงป้องกัน (PM)</label>
+            <label class="flex items-center gap-1.5 cursor-pointer"><span class="w-3.5 h-3.5 border border-slate-400 rounded-sm inline-block"></span> ตามสภาพ (CBM)</label>
+            <label class="flex items-center gap-1.5 cursor-pointer"><span class="w-3.5 h-3.5 border border-slate-400 rounded-sm inline-block"></span> แก้ไขเร่งด่วน (CM)</label>
           </div>
         </div>
 
-        <!-- Checklists Table -->
-        <div class="mb-4">
-          <h3 class="text-xs font-bold text-slate-800 uppercase mb-1.5">รายการตรวจสอบสภาพความพร้อมใช้งาน</h3>
-          <table class="w-full border border-slate-200 text-xs">
+        <!-- Checklists Blank Table -->
+        <div class="mb-5">
+          <h3 class="text-xs font-bold text-slate-800 uppercase mb-2">รายการตรวจสอบสภาพความพร้อมใช้งาน (Inspection Checklist)</h3>
+          <table class="w-full border border-slate-300 text-xs">
             <thead class="bg-slate-100 text-slate-700 font-bold">
               <tr>
-                <th class="border border-slate-200 p-2 text-left">รายการตรวจสอบ (Inspection Item)</th>
-                <th class="border border-slate-200 p-2 w-14 text-center">ปกติ</th>
-                <th class="border border-slate-200 p-2 w-14 text-center">ผิดปกติ</th>
-                <th class="border border-slate-200 p-2 w-48 text-left">หมายเหตุ / ค่าที่วัดได้</th>
+                <th class="border border-slate-300 p-2 text-left">รายการตรวจสอบ (Inspection Item)</th>
+                <th class="border border-slate-300 p-2 w-16 text-center">ปกติ</th>
+                <th class="border border-slate-300 p-2 w-16 text-center">ผิดปกติ</th>
+                <th class="border border-slate-300 p-2 w-52 text-left">หมายเหตุ / ค่าที่วัดได้จริง</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-200">
-              <tr>
-                <td class="p-2 border-r border-slate-200 font-medium">1. สภาพภายนอก รอยรั่วซึม และระดับน้ำมัน / ก๊าซ SF6</td>
-                <td class="p-2 border-r border-slate-200 text-center"><input type="radio" name="c1" checked></td>
-                <td class="p-2 border-r border-slate-200 text-center"><input type="radio" name="c1"></td>
-                <td class="p-2"><input type="text" placeholder="เช่น 0.55 MPa ปกติ" class="w-full border-b border-dotted border-slate-300 focus:outline-none text-xs"></td>
+            <tbody class="divide-y divide-slate-300">
+              <tr class="h-10">
+                <td class="p-2 border-r border-slate-300 font-medium">1. สภาพภายนอก รอยรั่วซึม และระดับน้ำมัน / ก๊าซ SF6</td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-slate-300"></td>
               </tr>
-              <tr>
-                <td class="p-2 border-r border-slate-200 font-medium">2. อุณหภูมิผิวสัมผัสและขั้วต่อ Bushing (Thermoscan)</td>
-                <td class="p-2 border-r border-slate-200 text-center"><input type="radio" name="c2" checked></td>
-                <td class="p-2 border-r border-slate-200 text-center"><input type="radio" name="c2"></td>
-                <td class="p-2"><input type="text" placeholder="อุณหภูมิปกติ" class="w-full border-b border-dotted border-slate-300 focus:outline-none text-xs"></td>
+              <tr class="h-10">
+                <td class="p-2 border-r border-slate-300 font-medium">2. อุณหภูมิผิวสัมผัสและขั้วต่อ Bushing (Thermoscan)</td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-slate-300"></td>
               </tr>
-              <tr>
-                <td class="p-2 border-r border-slate-200 font-medium">3. ค่าความเป็นฉนวน (Insulation Resistance / DGA)</td>
-                <td class="p-2 border-r border-slate-200 text-center"><input type="radio" name="c3" checked></td>
-                <td class="p-2 border-r border-slate-200 text-center"><input type="radio" name="c3"></td>
-                <td class="p-2"><input type="text" placeholder="ผลทดสอบปกติ" class="w-full border-b border-dotted border-slate-300 focus:outline-none text-xs"></td>
+              <tr class="h-10">
+                <td class="p-2 border-r border-slate-300 font-medium">3. ค่าความเป็นฉนวน (Insulation Resistance / DGA)</td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-slate-300"></td>
               </tr>
-              <tr>
-                <td class="p-2 border-r border-slate-200 font-medium">4. กลไกขับเคลื่อนและหน้าสัมผัส (Contact Resistance)</td>
-                <td class="p-2 border-r border-slate-200 text-center"><input type="radio" name="c4" checked></td>
-                <td class="p-2 border-r border-slate-200 text-center"><input type="radio" name="c4"></td>
-                <td class="p-2"><input type="text" placeholder="ค่าความต้านทานปกติ" class="w-full border-b border-dotted border-slate-300 focus:outline-none text-xs"></td>
+              <tr class="h-10">
+                <td class="p-2 border-r border-slate-300 font-medium">4. กลไกขับเคลื่อนและหน้าสัมผัส (Contact Resistance)</td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-slate-300"></td>
               </tr>
-              <tr>
-                <td class="p-2 border-r border-slate-200 font-medium">5. ระบบสัญญาณเตือนและรีเลย์ป้องกัน (Protection Relays)</td>
-                <td class="p-2 border-r border-slate-200 text-center"><input type="radio" name="c5" checked></td>
-                <td class="p-2 border-r border-slate-200 text-center"><input type="radio" name="c5"></td>
-                <td class="p-2"><input type="text" placeholder="ทดสอบสัญญาณ Trip ปกติ" class="w-full border-b border-dotted border-slate-300 focus:outline-none text-xs"></td>
+              <tr class="h-10">
+                <td class="p-2 border-r border-slate-300 font-medium">5. ระบบสัญญาณเตือนและรีเลย์ป้องกัน (Protection Relays)</td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-slate-300"></td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- Corrective Action Note -->
+        <!-- Blank Corrective Action Lines -->
         <div class="mb-6">
-          <label class="block text-xs font-semibold text-slate-700 mb-1">ข้อเสนอแนะและมาตรการแก้ไข (Action Taken / Recommendations):</label>
-          <textarea rows="2" class="w-full border border-slate-300 rounded-xl p-2 text-xs bg-slate-50 focus:bg-white focus:outline-none" placeholder="บันทึกข้อสังเกตหรือมาตรการแก้ไขเพิ่มเติมสำหรับการบำรุงรักษาครั้งถัดไป..."></textarea>
+          <label class="block text-xs font-bold text-slate-700 mb-2">ข้อเสนอแนะและมาตรการแก้ไขเพิ่มเติม (Action Taken / Recommendations):</label>
+          <div class="space-y-3.5 pt-1">
+            <div class="border-b border-dotted border-slate-400 h-4"></div>
+            <div class="border-b border-dotted border-slate-400 h-4"></div>
+            <div class="border-b border-dotted border-slate-400 h-4"></div>
+          </div>
         </div>
 
-        <!-- Signature Section -->
-        <div class="grid grid-cols-2 gap-6 text-center text-xs mt-6 pt-4 border-t border-slate-200">
+        <!-- Signature Blank Section -->
+        <div class="grid grid-cols-2 gap-8 text-center text-xs mt-10 pt-4 border-t border-slate-300">
           <div>
-            <p class="mb-6">ลงชื่อ ..............................................................</p>
+            <p class="mb-8">ลงชื่อ ..............................................................</p>
             <p class="font-semibold">( .............................................................. )</p>
-            <p class="text-slate-500 text-[10px] mt-0.5">ช่างเทคนิคผู้ปฏิบัติงาน</p>
+            <p class="text-slate-500 text-[10px] mt-0.5">ช่างเทคนิคผู้ปฏิบัติงานหน้างาน</p>
           </div>
           <div>
-            <p class="mb-6">ลงชื่อ ..............................................................</p>
+            <p class="mb-8">ลงชื่อ ..............................................................</p>
             <p class="font-semibold">( .............................................................. )</p>
             <p class="text-slate-500 text-[10px] mt-0.5">วิศวกรผู้ควบคุมและรับรองผล</p>
           </div>
@@ -974,7 +978,6 @@
       const tMonthly = document.getElementById('tab-monthly');
       const tForm = document.getElementById('tab-form');
 
-      // Hide all
       vRealtime.classList.add('hidden');
       vMonthly.classList.add('hidden');
       vForm.classList.add('hidden');
@@ -996,27 +999,9 @@
       }
     }
 
-    function initForm() {
-      const select = document.getElementById('form-device-select');
-      select.innerHTML = '';
-      realtimeData.forEach(d => {
-        const opt = document.createElement('option');
-        opt.value = d.tag;
-        opt.innerText = `${d.tag} - ${d.name}`;
-        select.appendChild(opt);
-      });
-
-      const today = new Date().toISOString().split('T')[0];
-      document.getElementById('form-date').value = today;
-      document.getElementById('print-date').innerText = new Date().toLocaleDateString('th-TH', {
-        year: 'numeric', month: 'long', day: 'numeric'
-      });
-    }
-
     window.onload = () => {
       renderTable();
       runSimulation();
-      initForm();
       startLiveStream();
     };
   </script>
