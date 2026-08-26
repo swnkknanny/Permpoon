@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RAM Analysis & Monthly Inspection Dashboard</title>
+  <title>RAM Executive Dashboard & Real-time Maintenance Portal</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Chart.js CDN -->
@@ -84,20 +84,30 @@
           ⚡
         </div>
         <div>
-          <h1 class="text-base sm:text-lg font-bold text-slate-800 leading-tight">RAM Monthly Analysis & Inspection Portal</h1>
-          <p class="text-xs text-brand-600 font-medium">ระบบวิเคราะห์ความน่าเชื่อถือและการบำรุงรักษาสถานีไฟฟ้ารายเดือน</p>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-bold text-slate-800 leading-tight">RAM Executive Simulation System</h1>
+            <span class="px-2 py-0.5 bg-brand-100 text-brand-700 text-[10px] font-bold rounded-full uppercase tracking-wider">Executive Mode</span>
+          </div>
+          <p class="text-xs text-brand-600 font-medium">ระบบจำลองค่าเป้าหมายและวิเคราะห์ความน่าเชื่อถือสถานีไฟฟ้า</p>
         </div>
       </div>
       
-      <!-- Nav Tabs -->
-      <nav class="flex space-x-1 bg-brand-100/80 p-1 rounded-xl text-xs sm:text-sm font-medium">
-        <button onclick="switchTab('dashboard')" id="tab-dashboard" class="px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold">
-          📊 แดชบอร์ด & วิเคราะห์รายเดือน
+      <!-- Nav Tabs & Live Toggle -->
+      <div class="flex items-center gap-2">
+        <button onclick="toggleLiveMode()" id="live-btn" class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-xl border border-emerald-300 hover:bg-emerald-200 transition shadow-xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <span id="live-status-text">🔴 LIVE: เปิดขยับอัตโนมัติ</span>
         </button>
-        <button onclick="switchTab('form')" id="tab-form" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-semibold">
-          📝 แบบฟอร์มบำรุงรักษาหน้างาน (A4)
-        </button>
-      </nav>
+
+        <nav class="flex space-x-1 bg-brand-100/80 p-1 rounded-xl text-xs sm:text-sm font-medium">
+          <button onclick="switchTab('dashboard')" id="tab-dashboard" class="px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold">
+            📊 แดชบอร์ด & วิเคราะห์รายเดือน
+          </button>
+          <button onclick="switchTab('form')" id="tab-form" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-semibold">
+            📝 แบบฟอร์มบำรุงรักษาหน้างาน (A4)
+          </button>
+        </nav>
+      </div>
     </div>
   </header>
 
@@ -106,6 +116,56 @@
     
     <!-- Tab 1: Dashboard & Monthly Simulation -->
     <div id="view-dashboard" class="space-y-6">
+
+      <!-- Executive Goal Simulator Box -->
+      <div class="bg-gradient-to-br from-white via-brand-50/30 to-brand-100/40 p-5 sm:p-6 rounded-3xl border-2 border-brand-200 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div>
+            <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">🎯 Executive Strategy Simulator</span>
+            <h2 class="text-base sm:text-lg font-bold text-slate-800">เครื่องมือจำลองเป้าหมาย Availability สำหรับผู้บริหาร</h2>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs text-slate-500 font-medium mr-1">เป้าหมายสำเร็จรูป:</span>
+            <button onclick="applyPreset(96.0)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">96% ขั้นต่ำ</button>
+            <button onclick="applyPreset(98.0)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">98% ดี</button>
+            <button onclick="applyPreset(99.0)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">99% มาตรฐาน Substation</button>
+            <button onclick="applyPreset(99.5)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">99.5% World-Class</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-white p-4 rounded-2xl border border-brand-100 shadow-2xs">
+          <div class="md:col-span-4">
+            <label class="block text-xs font-bold text-slate-600 mb-1">ต้องการ Availability เป้าหมาย:</label>
+            <div class="flex items-center gap-2">
+              <input type="range" id="sim-slider" min="90" max="99.9" step="0.1" value="99.0" class="w-full accent-brand-500 cursor-pointer" oninput="onSliderChange(this.value)">
+              <div class="flex items-center font-extrabold text-brand-600 text-xl bg-brand-50 px-3 py-1 rounded-xl border border-brand-200">
+                <span id="slider-val">99.0</span>%
+              </div>
+            </div>
+          </div>
+
+          <div class="md:col-span-4">
+            <label class="block text-xs font-bold text-slate-600 mb-1">สมมติเวลาบำรุงรักษาเฉลี่ยของช่าง (MTTR):</label>
+            <div class="flex items-center gap-2">
+              <select id="sim-mttr-select" class="w-full border border-brand-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700 bg-brand-50/40 focus:outline-none focus:border-brand-500" onchange="runSimulation()">
+                <option value="3.0">⚡ 3.0 ชม. (ทีมช่างระดับ World-Class / Spare พร้อม)</option>
+                <option value="4.0" selected>🚀 4.0 ชม. (ทีมช่างมาตรฐานสถานีไฟฟ้า)</option>
+                <option value="5.0">⏱️ 5.0 ชม. (ทีมช่างระดับทั่วไป)</option>
+                <option value="6.0">🔧 6.0 ชม. (กรณีงานซ่อมบำรุงเชิงแก้ไขปกติ)</option>
+                <option value="8.0">⏳ 8.0 ชม. (กรณีต้องรอเบิกอะไหล่)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="md:col-span-4 bg-gradient-to-r from-brand-500 to-brand-600 p-3 rounded-xl text-white shadow-sm flex flex-col justify-between">
+            <span class="text-[11px] font-semibold text-brand-100 uppercase">ผลลัพธ์คำนวณเป้าหมาย MTBF ให้เครื่องจักร</span>
+            <div class="flex items-baseline justify-between mt-1">
+              <span id="sim-result-mtbf" class="text-2xl font-black tracking-tight">396.0 ชม.</span>
+              <span id="sim-result-fails" class="text-xs text-brand-100 bg-black/15 px-2 py-0.5 rounded-md font-medium">เสียได้ไม่เกิน ~21 ครั้ง/ปี</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Month Selector Bar -->
       <div class="bg-white p-4 sm:p-5 rounded-3xl border-2 border-brand-200 shadow-sm">
@@ -439,12 +499,11 @@
       // 15 Transformers
       for (let i = 1; i <= 15; i++) {
         const tag = `TX-${String(i).padStart(2, '0')}`;
-        // Introduce variations per month
         let failures = 0;
         let downtime = 0;
 
         if (m === 0 && (i === 4 || i === 9)) { failures = 1; downtime = 18; }
-        else if (m === 3 && (i === 2 || i === 11 || i === 14)) { failures = 2; downtime = 36; } // Summer load peak
+        else if (m === 3 && (i === 2 || i === 11 || i === 14)) { failures = 2; downtime = 36; }
         else if (m === 6 && (i === 7)) { failures = 1; downtime = 12; }
         else if (m === 9 && (i === 4 || i === 12)) { failures = 1; downtime = 20; }
         else if (m % 2 === 1 && (i === 5)) { failures = 1; downtime = 8; }
@@ -490,6 +549,8 @@
 
     let statusChartInstance = null;
     let failuresChartInstance = null;
+    let liveInterval = null;
+    let isLiveActive = true;
 
     const solutions = {
       TX: {
@@ -502,11 +563,45 @@
       }
     };
 
+    // Executive Strategy Simulator
+    function onSliderChange(val) {
+      document.getElementById('slider-val').innerText = parseFloat(val).toFixed(1);
+      runSimulation();
+    }
+
+    function applyPreset(targetAvail, targetMttr = null) {
+      document.getElementById('sim-slider').value = targetAvail;
+      document.getElementById('slider-val').innerText = targetAvail.toFixed(1);
+      if (targetMttr) {
+        document.getElementById('sim-mttr-select').value = targetMttr.toFixed(1);
+      }
+      runSimulation();
+    }
+
+    function runSimulation() {
+      let avail = parseFloat(document.getElementById('sim-slider').value);
+      if (avail >= 100) avail = 99.99;
+      const mttr = parseFloat(document.getElementById('sim-mttr-select').value);
+
+      const targetMtbf = (avail * mttr) / (100 - avail);
+      const annualDowntime = 8760 * ((100 - avail) / 100);
+      const maxFailures = mttr > 0 ? Math.floor(annualDowntime / mttr) : 0;
+
+      document.getElementById('sim-result-mtbf').innerText = `${targetMtbf.toFixed(1)} ชม.`;
+      document.getElementById('sim-result-fails').innerText = `เสียได้ไม่เกิน ~${maxFailures} ครั้ง/ปี`;
+
+      document.getElementById('card-avail').value = avail.toFixed(2);
+      document.getElementById('card-mtbf').value = targetMtbf.toFixed(1);
+      document.getElementById('card-mttr').value = mttr.toFixed(1);
+
+      checkAvailStatus(avail);
+    }
+
+    // Month Selector
     function selectMonth(idx) {
       selectedMonthIndex = idx;
       devices = monthlyDatasets[selectedMonthIndex];
 
-      // Update UI button active states
       for (let i = 0; i < 12; i++) {
         const btn = document.getElementById(`m-btn-${i}`);
         if (i === idx) {
@@ -564,12 +659,10 @@
       document.getElementById('card-mttr').value = avgMttr.toFixed(1);
       checkAvailStatus(avgAvail);
 
-      // Update Bar Charts
       renderCharts(passCount, failCount, txFails, gisFails, txDown, gisDown);
     }
 
     function renderCharts(passCount, failCount, txFails, gisFails, txDown, gisDown) {
-      // Chart 1: Status Pass vs Fail
       const ctx1 = document.getElementById('statusChart').getContext('2d');
       if (statusChartInstance) statusChartInstance.destroy();
 
@@ -587,6 +680,7 @@
           }]
         },
         options: {
+          animation: { duration: 600 },
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
@@ -602,7 +696,6 @@
         }
       });
 
-      // Chart 2: Failures & Downtime comparison
       const ctx2 = document.getElementById('failuresChart').getContext('2d');
       if (failuresChartInstance) failuresChartInstance.destroy();
 
@@ -630,6 +723,7 @@
           ]
         },
         options: {
+          animation: { duration: 600 },
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
@@ -648,7 +742,38 @@
       });
     }
 
-    // Direct Input Handling on Top Cards
+    // Live Real-Time Auto-Stream
+    function toggleLiveMode() {
+      isLiveActive = !isLiveActive;
+      const btn = document.getElementById('live-btn');
+      const text = document.getElementById('live-status-text');
+
+      if (isLiveActive) {
+        btn.className = "flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-xl border border-emerald-300 hover:bg-emerald-200 transition shadow-xs";
+        text.innerText = "🔴 LIVE: เปิดขยับอัตโนมัติ";
+        startLiveStream();
+      } else {
+        btn.className = "flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-600 text-xs font-bold rounded-xl border border-slate-300 hover:bg-slate-200 transition shadow-xs";
+        text.innerText = "⏸️ PAUSE: หยุดขยับ";
+        clearInterval(liveInterval);
+      }
+    }
+
+    function startLiveStream() {
+      clearInterval(liveInterval);
+      liveInterval = setInterval(() => {
+        if (!isLiveActive) return;
+
+        // Randomly adjust 1 equipment's operating hours and failure slightly
+        const randomIdx = Math.floor(Math.random() * devices.length);
+        devices[randomIdx].operatingHrs = Math.min(744, Math.max(700, devices[randomIdx].operatingHrs + (Math.random() > 0.5 ? 1 : -1)));
+        
+        renderTable();
+        updateMonthStats();
+      }, 2000);
+    }
+
+    // Direct Card Input
     function onAvailCardDirectInput() {
       let avail = parseFloat(document.getElementById('card-avail').value);
       if (isNaN(avail)) return;
@@ -829,8 +954,10 @@
     }
 
     window.onload = () => {
-      selectMonth(0); // Default to January
+      selectMonth(0);
+      runSimulation();
       initForm();
+      startLiveStream();
     };
   </script>
 </body>
