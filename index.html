@@ -140,9 +140,9 @@
           <div class="md:col-span-4">
             <label class="block text-xs font-bold text-slate-600 mb-1">ต้องการ Availability เป้าหมาย:</label>
             <div class="flex items-center gap-2">
-              <input type="range" id="sim-slider" min="90" max="99.9" step="0.1" value="99.0" class="w-full accent-brand-500 cursor-pointer" oninput="onSliderChange(this.value)">
+              <input type="range" id="sim-slider" min="90" max="99.9" step="0.1" value="96.0" class="w-full accent-brand-500 cursor-pointer" oninput="onSliderChange(this.value)">
               <div class="flex items-center font-extrabold text-brand-600 text-xl bg-brand-50 px-3 py-1 rounded-xl border border-brand-200">
-                <span id="slider-val">99.0</span>%
+                <span id="slider-val">96.0</span>%
               </div>
             </div>
           </div>
@@ -152,9 +152,9 @@
             <div class="flex items-center gap-2">
               <select id="sim-mttr-select" class="w-full border border-brand-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700 bg-brand-50/40 focus:outline-none focus:border-brand-500" onchange="runSimulation()">
                 <option value="3.0">⚡ 3.0 ชม. (ทีมช่างระดับ World-Class / Spare พร้อม)</option>
-                <option value="4.0" selected>🚀 4.0 ชม. (ทีมช่างมาตรฐานสถานีไฟฟ้า)</option>
+                <option value="4.0">🚀 4.0 ชม. (ทีมช่างมาตรฐานสถานีไฟฟ้า)</option>
                 <option value="5.0">⏱️ 5.0 ชม. (ทีมช่างระดับทั่วไป)</option>
-                <option value="6.0">🔧 6.0 ชม. (กรณีงานบำรุงรักษาแก้ไขปกติ)</option>
+                <option value="6.0" selected>🔧 6.0 ชม. (กรณีงานบำรุงรักษาแก้ไขปกติ)</option>
                 <option value="8.0">⏳ 8.0 ชม. (กรณีต้องรอเบิกอะไหล่)</option>
               </select>
             </div>
@@ -163,8 +163,8 @@
           <div class="md:col-span-4 bg-gradient-to-r from-brand-500 to-brand-600 p-3 rounded-xl text-white shadow-sm flex flex-col justify-between">
             <span class="text-[11px] font-semibold text-brand-100 uppercase">ผลลัพธ์คำนวณเป้าหมาย MTBF ให้เครื่องจักร</span>
             <div class="flex items-baseline justify-between mt-1">
-              <span id="sim-result-mtbf" class="text-2xl font-black tracking-tight">396.0 ชม.</span>
-              <span id="sim-result-fails" class="text-xs text-brand-100 bg-black/15 px-2 py-0.5 rounded-md font-medium">เสียได้ไม่เกิน ~21 ครั้ง/ปี</span>
+              <span id="sim-result-mtbf" class="text-2xl font-black tracking-tight">144.0 ชม.</span>
+              <span id="sim-result-fails" class="text-xs text-brand-100 bg-black/15 px-2 py-0.5 rounded-md font-medium">เสียได้ไม่เกิน ~58 ครั้ง/ปี</span>
             </div>
           </div>
         </div>
@@ -184,7 +184,7 @@
             </div>
             
             <div class="my-2 flex items-center">
-              <input type="number" id="card-avail" value="99.00" step="0.01" min="1" max="99.99" 
+              <input type="number" id="card-avail" value="97.28" step="0.01" min="1" max="99.99" 
                 class="w-full text-3xl sm:text-4xl font-black text-brand-600 border-b-2 border-dashed border-brand-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
                 oninput="onAvailCardDirectInput()">
               <span class="text-2xl sm:text-3xl font-black text-brand-600 ml-1">%</span>
@@ -206,7 +206,7 @@
             </div>
 
             <div class="my-2 flex items-center">
-              <input type="number" id="card-mtbf" value="396.0" step="1" min="0" 
+              <input type="number" id="card-mtbf" value="1285.7" step="1" min="0" 
                 class="w-full text-3xl sm:text-4xl font-black text-slate-800 border-b-2 border-dashed border-slate-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
                 oninput="onMtbfMttrCardInput()">
               <span class="text-base sm:text-lg font-bold text-slate-500 ml-1 shrink-0">ชม.</span>
@@ -227,7 +227,7 @@
             </div>
 
             <div class="my-2 flex items-center">
-              <input type="number" id="card-mttr" value="4.0" step="0.1" min="0.1" 
+              <input type="number" id="card-mttr" value="23.3" step="0.1" min="0.1" 
                 class="w-full text-3xl sm:text-4xl font-black text-slate-800 border-b-2 border-dashed border-slate-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
                 oninput="onMtbfMttrCardInput()">
               <span class="text-base sm:text-lg font-bold text-slate-500 ml-1 shrink-0">ชม.</span>
@@ -246,7 +246,7 @@
         <div class="p-4 sm:p-5 border-b border-brand-100 flex flex-wrap justify-between items-center gap-3 bg-brand-50/50">
           <div>
             <h2 class="text-sm sm:text-base font-extrabold text-slate-800">รายการอุปกรณ์สถานีไฟฟ้าแบบ Real-time (หม้อแปลง 15 ตัว | GIS 10 ตัว)</h2>
-            <p class="text-xs text-slate-500">ข้อมูลคำนวณแบบ Real-time ขยับจำลองผลการทำงานอัตโนมัติ</p>
+            <p class="text-xs text-slate-500">ข้อมูลคำนวณแบบ Real-time จำลองพบอุปกรณ์ที่มีความผิดปกติและต่ำกว่าเกณฑ์ 96%</p>
           </div>
           
           <div class="flex flex-wrap items-center gap-2">
@@ -322,7 +322,7 @@
           <span class="text-xs font-bold text-slate-400 uppercase">Availability ประจำเดือน</span>
           <div class="mt-2 flex items-baseline justify-between">
             <span id="monthly-avail-val" class="text-3xl font-black text-brand-600">--%</span>
-            <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-lg font-bold">≥96% เป้าหมาย</span>
+            <span id="monthly-avail-tag" class="text-xs px-2 py-0.5 rounded-lg font-bold"></span>
           </div>
         </div>
         <div class="bg-white p-5 rounded-3xl border border-brand-200 shadow-sm">
@@ -528,43 +528,62 @@
       'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
     ];
 
-    // Realtime live dataset (25 assets)
+    // Realtime live dataset (25 assets) with intentional realistic faults
     const realtimeData = [];
     for (let i = 1; i <= 15; i++) {
       const tag = `TX-${String(i).padStart(2, '0')}`;
+      let failures = 0, downtime = 0;
+      
+      // Inject anomalies into transformers (TX-04, TX-09, TX-13 fail < 96%)
+      if (i === 4) { failures = 3; downtime = 42; }       // Avail: 94.48% (Failed)
+      else if (i === 9) { failures = 2; downtime = 35; }  // Avail: 95.36% (Failed)
+      else if (i === 13) { failures = 2; downtime = 32; } // Avail: 95.74% (Failed)
+      else if (i === 7) { failures = 1; downtime = 18; }  // Avail: 97.56% (Normal)
+      else if (i === 11) { failures = 1; downtime = 10; } // Avail: 98.63% (Normal)
+
       realtimeData.push({
         tag: tag,
         name: `หม้อแปลงไฟฟ้ากำลัง ${tag}`,
         type: 'TX',
         operatingHrs: 720,
-        failures: (i === 4 || i === 9) ? 1 : 0,
-        downTime: (i === 4) ? 14 : (i === 9 ? 10 : 0)
+        failures: failures,
+        downTime: downtime
       });
     }
     for (let i = 1; i <= 10; i++) {
       const tag = `GIS-${String(i).padStart(2, '0')}`;
+      let failures = 0, downtime = 0;
+
+      // Inject anomalies into GIS (GIS-03, GIS-07 fail < 96%)
+      if (i === 3) { failures = 2; downtime = 38; }       // Avail: 94.98% (Failed)
+      else if (i === 7) { failures = 3; downtime = 45; }  // Avail: 94.11% (Failed)
+      else if (i === 2) { failures = 1; downtime = 15; }  // Avail: 97.95% (Normal)
+
       realtimeData.push({
         tag: tag,
         name: `สวิตซ์เกียร์ฉนวนก๊าซ ${tag}`,
         type: 'GIS',
         operatingHrs: 720,
-        failures: (i === 3) ? 1 : 0,
-        downTime: (i === 3) ? 6 : 0
+        failures: failures,
+        downTime: downtime
       });
     }
 
-    // Monthly historical datasets (12 months)
+    // Monthly historical datasets (12 months) with realistic variations
     const monthlyDatasets = [];
     for (let m = 0; m < 12; m++) {
       const devList = [];
       for (let i = 1; i <= 15; i++) {
         const tag = `TX-${String(i).padStart(2, '0')}`;
         let failures = 0, downtime = 0;
-        if (m === 0 && (i === 4 || i === 9)) { failures = 1; downtime = 18; }
-        else if (m === 3 && (i === 2 || i === 11 || i === 14)) { failures = 2; downtime = 36; }
-        else if (m === 6 && (i === 7)) { failures = 1; downtime = 12; }
-        else if (m === 9 && (i === 4 || i === 12)) { failures = 1; downtime = 20; }
-        else if (m % 2 === 1 && (i === 5)) { failures = 1; downtime = 8; }
+        
+        // Simulating seasonal faults
+        if (m === 0 && (i === 4 || i === 9)) { failures = 2; downtime = 35; }
+        else if (m === 3 && (i === 2 || i === 4 || i === 11 || i === 14)) { failures = 3; downtime = 45; } // Summer peak load
+        else if (m === 6 && (i === 7 || i === 13)) { failures = 2; downtime = 34; }
+        else if (m === 8 && (i === 1 || i === 9)) { failures = 3; downtime = 42; }
+        else if (m === 10 && (i === 3)) { failures = 1; downtime = 18; }
+        else if (m % 2 === 1 && (i === 5)) { failures = 1; downtime = 12; }
 
         devList.push({
           tag: tag,
@@ -578,10 +597,11 @@
       for (let i = 1; i <= 10; i++) {
         const tag = `GIS-${String(i).padStart(2, '0')}`;
         let failures = 0, downtime = 0;
-        if (m === 0 && (i === 3)) { failures = 1; downtime = 8; }
-        else if (m === 4 && (i === 6 || i === 8)) { failures = 1; downtime = 14; }
-        else if (m === 8 && (i === 2)) { failures = 2; downtime = 28; }
-        else if (m === 11 && (i === 10)) { failures = 1; downtime = 6; }
+
+        if (m === 0 && (i === 3 || i === 7)) { failures = 2; downtime = 38; }
+        else if (m === 4 && (i === 6 || i === 8)) { failures = 3; downtime = 46; }
+        else if (m === 7 && (i === 2 || i === 5)) { failures = 2; downtime = 36; }
+        else if (m === 11 && (i === 10)) { failures = 1; downtime = 14; }
 
         devList.push({
           tag: tag,
@@ -706,6 +726,15 @@
       document.getElementById('monthly-mtbf-val').innerText = `${avgMtbf.toFixed(1)} ชม.`;
       document.getElementById('monthly-mttr-val').innerText = `${avgMttr.toFixed(1)} ชม.`;
 
+      const tag = document.getElementById('monthly-avail-tag');
+      if (avgAvail >= AVAIL_THRESHOLD) {
+        tag.className = "text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-lg font-bold";
+        tag.innerText = "● ผ่านเกณฑ์ภาพรวม";
+      } else {
+        tag.className = "text-xs bg-rose-100 text-rose-700 px-2 py-0.5 rounded-lg font-bold";
+        tag.innerText = "▲ ต่ำกว่าเกณฑ์ภาพรวม";
+      }
+
       renderCharts(passCount, failCount, txFails, gisFails, txDown, gisDown);
     }
 
@@ -774,7 +803,7 @@
             }
           },
           scales: {
-            y: { beginAtZero: true, ticks: { stepSize: 5 } }
+            y: { beginAtZero: true, ticks: { stepSize: 10 } }
           }
         }
       });
@@ -803,7 +832,7 @@
         if (!isLiveActive) return;
 
         const randomIdx = Math.floor(Math.random() * realtimeData.length);
-        realtimeData[randomIdx].operatingHrs = Math.min(744, Math.max(700, realtimeData[randomIdx].operatingHrs + (Math.random() > 0.5 ? 1 : -1)));
+        realtimeData[randomIdx].operatingHrs = Math.min(744, Math.max(680, realtimeData[randomIdx].operatingHrs + (Math.random() > 0.5 ? 1 : -1)));
         
         renderTable();
         syncTableToCards();
@@ -817,7 +846,7 @@
       if (avail >= 100) avail = 99.99;
       if (avail <= 0) avail = 1.0;
 
-      const mttr = parseFloat(document.getElementById('card-mttr').value) || 4.0;
+      const mttr = parseFloat(document.getElementById('card-mttr').value) || 6.0;
       const calculatedMtbf = (avail * mttr) / (100 - avail);
 
       document.getElementById('card-mtbf').value = calculatedMtbf.toFixed(1);
@@ -894,16 +923,16 @@
             <input type="number" value="${d.operatingHrs}" min="1" class="w-16 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white" onchange="updateValue('${d.tag}', 'operatingHrs', this.value)">
           </td>
           <td class="p-3">
-            <input type="number" value="${d.failures}" min="0" class="w-12 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white" onchange="updateValue('${d.tag}', 'failures', this.value)">
+            <input type="number" value="${d.failures}" min="0" class="w-12 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white font-bold ${d.failures > 0 ? 'text-rose-600' : 'text-slate-700'}" onchange="updateValue('${d.tag}', 'failures', this.value)">
           </td>
           <td class="p-3">
-            <input type="number" value="${d.downTime}" min="0" class="w-14 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white" onchange="updateValue('${d.tag}', 'downTime', this.value)">
+            <input type="number" value="${d.downTime}" min="0" class="w-14 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white font-bold ${d.downTime > 0 ? 'text-rose-600' : 'text-slate-700'}" onchange="updateValue('${d.tag}', 'downTime', this.value)">
           </td>
           <td class="p-3 font-medium text-slate-700">${mtbf.toFixed(1)}</td>
           <td class="p-3 font-medium text-slate-700">${mttr.toFixed(1)}</td>
           <td class="p-3 font-bold ${!isPass ? 'text-rose-600' : 'text-emerald-600'}">${avail.toFixed(2)}%</td>
           <td class="p-3">
-            <span class="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${isPass ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
+            <span class="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${isPass ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700 font-bold'}">
               ${isPass ? '● ปกติ' : '▲ ต่ำกว่า 96%'}
             </span>
           </td>
