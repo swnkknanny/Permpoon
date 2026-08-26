@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RAM Executive Dashboard & Real-time Maintenance Portal</title>
+  <title>RAM Executive Real-time & Monthly Analytics Dashboard</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Chart.js CDN -->
@@ -86,25 +86,28 @@
         <div>
           <div class="flex items-center gap-2">
             <h1 class="text-base sm:text-lg font-bold text-slate-800 leading-tight">RAM Executive Simulation System</h1>
-            <span class="px-2 py-0.5 bg-brand-100 text-brand-700 text-[10px] font-bold rounded-full uppercase tracking-wider">Executive Mode</span>
+            <span class="px-2 py-0.5 bg-brand-100 text-brand-700 text-[10px] font-bold rounded-full uppercase tracking-wider">Live & Analytics</span>
           </div>
-          <p class="text-xs text-brand-600 font-medium">ระบบจำลองค่าเป้าหมายและวิเคราะห์ความน่าเชื่อถือสถานีไฟฟ้า</p>
+          <p class="text-xs text-brand-600 font-medium">ระบบวิเคราะห์ความน่าเชื่อถือสถานีไฟฟ้าแบบเรียลไทม์และสถิติรายเดือน</p>
         </div>
       </div>
       
-      <!-- Nav Tabs & Live Toggle -->
-      <div class="flex items-center gap-2">
+      <!-- Nav Tabs & Live Toggle Button -->
+      <div class="flex flex-wrap items-center gap-2">
         <button onclick="toggleLiveMode()" id="live-btn" class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-xl border border-emerald-300 hover:bg-emerald-200 transition shadow-xs">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-          <span id="live-status-text">🔴 LIVE: เปิดขยับอัตโนมัติ</span>
+          <span id="live-status-text">🔴 LIVE: กำลังอัปเดต</span>
         </button>
 
         <nav class="flex space-x-1 bg-brand-100/80 p-1 rounded-xl text-xs sm:text-sm font-medium">
-          <button onclick="switchTab('dashboard')" id="tab-dashboard" class="px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold">
-            📊 แดชบอร์ด & วิเคราะห์รายเดือน
+          <button onclick="switchTab('realtime')" id="tab-realtime" class="px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold">
+            ⚡ เรียลไทม์
           </button>
-          <button onclick="switchTab('form')" id="tab-form" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-semibold">
-            📝 แบบฟอร์มบำรุงรักษาหน้างาน (A4)
+          <button onclick="switchTab('monthly')" id="tab-monthly" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold">
+            📅 สถิติรายเดือน
+          </button>
+          <button onclick="switchTab('form')" id="tab-form" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold">
+            📝 แบบฟอร์มบำรุงรักษา (A4)
           </button>
         </nav>
       </div>
@@ -114,8 +117,8 @@
   <!-- Main Content Container -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
     
-    <!-- Tab 1: Dashboard & Monthly Simulation -->
-    <div id="view-dashboard" class="space-y-6">
+    <!-- Tab 1: Real-time Live View (หน้าแรก) -->
+    <div id="view-realtime" class="space-y-6">
 
       <!-- Executive Goal Simulator Box -->
       <div class="bg-gradient-to-br from-white via-brand-50/30 to-brand-100/40 p-5 sm:p-6 rounded-3xl border-2 border-brand-200 shadow-sm">
@@ -151,7 +154,7 @@
                 <option value="3.0">⚡ 3.0 ชม. (ทีมช่างระดับ World-Class / Spare พร้อม)</option>
                 <option value="4.0" selected>🚀 4.0 ชม. (ทีมช่างมาตรฐานสถานีไฟฟ้า)</option>
                 <option value="5.0">⏱️ 5.0 ชม. (ทีมช่างระดับทั่วไป)</option>
-                <option value="6.0">🔧 6.0 ชม. (กรณีงานซ่อมบำรุงเชิงแก้ไขปกติ)</option>
+                <option value="6.0">🔧 6.0 ชม. (กรณีงานบำรุงรักษาแก้ไขปกติ)</option>
                 <option value="8.0">⏳ 8.0 ชม. (กรณีต้องรอเบิกอะไหล่)</option>
               </select>
             </div>
@@ -166,38 +169,8 @@
           </div>
         </div>
       </div>
-
-      <!-- Month Selector Bar -->
-      <div class="bg-white p-4 sm:p-5 rounded-3xl border-2 border-brand-200 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
-          <div>
-            <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">📅 Monthly Filter & Performance Simulator</span>
-            <h2 class="text-base sm:text-lg font-extrabold text-slate-800">เลือกดูสถิติและผลการคำนวณประจำเดือน</h2>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-slate-400">กำลังแสดงผล:</span>
-            <span id="current-month-badge" class="px-3 py-1 bg-brand-500 text-white font-bold text-xs rounded-xl shadow-xs">มกราคม</span>
-          </div>
-        </div>
-
-        <!-- 12 Month Buttons -->
-        <div class="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-1.5 pt-1">
-          <button onclick="selectMonth(0)" id="m-btn-0" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ม.ค.</button>
-          <button onclick="selectMonth(1)" id="m-btn-1" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.พ.</button>
-          <button onclick="selectMonth(2)" id="m-btn-2" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">มี.ค.</button>
-          <button onclick="selectMonth(3)" id="m-btn-3" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">เม.ย.</button>
-          <button onclick="selectMonth(4)" id="m-btn-4" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">พ.ค.</button>
-          <button onclick="selectMonth(5)" id="m-btn-5" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">มิ.ย.</button>
-          <button onclick="selectMonth(6)" id="m-btn-6" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.ค.</button>
-          <button onclick="selectMonth(7)" id="m-btn-7" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ส.ค.</button>
-          <button onclick="selectMonth(8)" id="m-btn-8" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.ย.</button>
-          <button onclick="selectMonth(9)" id="m-btn-9" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ต.ค.</button>
-          <button onclick="selectMonth(10)" id="m-btn-10" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">พ.ย.</button>
-          <button onclick="selectMonth(11)" id="m-btn-11" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ธ.ค.</button>
-        </div>
-      </div>
       
-      <!-- Top 3 Interactive Calculated Cards -->
+      <!-- Top 3 Direct-Editable Cards (Real-time) -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         
         <!-- 1. Availability Card -->
@@ -268,45 +241,12 @@
 
       </div>
 
-      <!-- Interactive Monthly Bar Charts -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        <!-- Chart 1: อุปกรณ์ผ่านเกณฑ์ vs ไม่ผ่านเกณฑ์ -->
-        <div class="lg:col-span-6 bg-white p-5 rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
-          <div class="flex items-center justify-between mb-4">
-            <div>
-              <h3 class="text-sm font-extrabold text-slate-800">📊 สถานะความพร้อมอุปกรณ์ 25 รายการ</h3>
-              <p class="text-xs text-slate-400">จำนวนเครื่องที่ผ่านเกณฑ์ (≥96%) vs ต่ำกว่าเกณฑ์</p>
-            </div>
-            <span id="chart-month-tag-1" class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-xl">ประจำเดือน ม.ค.</span>
-          </div>
-          <div class="h-64 w-full relative">
-            <canvas id="statusChart"></canvas>
-          </div>
-        </div>
-
-        <!-- Chart 2: จำนวนครั้งที่ชำรุดและความเสียหายแยกประเภท -->
-        <div class="lg:col-span-6 bg-white p-5 rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
-          <div class="flex items-center justify-between mb-4">
-            <div>
-              <h3 class="text-sm font-extrabold text-slate-800">📈 ความขัดข้องและเวลาบำรุงรักษา (หม้อแปลง vs GIS)</h3>
-              <p class="text-xs text-slate-400">เปรียบเทียบสถิติความเสียหายและชั่วโมง Down Time</p>
-            </div>
-            <span id="chart-month-tag-2" class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-xl">ประจำเดือน ม.ค.</span>
-          </div>
-          <div class="h-64 w-full relative">
-            <canvas id="failuresChart"></canvas>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Equipment Table Section (25 Assets) -->
+      <!-- Equipment Table Section (25 Assets) Real-time -->
       <div class="bg-white rounded-3xl border border-brand-200 shadow-sm overflow-hidden">
         <div class="p-4 sm:p-5 border-b border-brand-100 flex flex-wrap justify-between items-center gap-3 bg-brand-50/50">
           <div>
-            <h2 class="text-sm sm:text-base font-extrabold text-slate-800">รายการอุปกรณ์สถานีไฟฟ้า (หม้อแปลง 15 ตัว | GIS 10 ตัว)</h2>
-            <p class="text-xs text-slate-500">ข้อมูลคำนวณแบบ Real-time ประจำเดือนที่เลือก สามารถพิมพ์แก้ไขค่าเพื่อทดสอบได้</p>
+            <h2 class="text-sm sm:text-base font-extrabold text-slate-800">รายการอุปกรณ์สถานีไฟฟ้าแบบ Real-time (หม้อแปลง 15 ตัว | GIS 10 ตัว)</h2>
+            <p class="text-xs text-slate-500">ข้อมูลคำนวณแบบ Real-time ขยับจำลองผลการทำงานอัตโนมัติ</p>
           </div>
           
           <div class="flex flex-wrap items-center gap-2">
@@ -343,7 +283,100 @@
       </div>
     </div>
 
-    <!-- Tab 2: Inspection Form View -->
+    <!-- Tab 2: Monthly Analytics View (หน้าสถิติประจำเดือน) -->
+    <div id="view-monthly" class="hidden space-y-6">
+      
+      <!-- Month Selector Bar -->
+      <div class="bg-white p-4 sm:p-5 rounded-3xl border-2 border-brand-200 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+          <div>
+            <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">📅 Monthly Performance Filter</span>
+            <h2 class="text-base sm:text-lg font-extrabold text-slate-800">เลือกดูสถิติและผลการดำเนินงานประจำเดือน</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-400">กำลังแสดงผล:</span>
+            <span id="current-month-badge" class="px-3 py-1 bg-brand-500 text-white font-bold text-xs rounded-xl shadow-xs">มกราคม</span>
+          </div>
+        </div>
+
+        <!-- 12 Month Buttons -->
+        <div class="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-1.5 pt-1">
+          <button onclick="selectMonth(0)" id="m-btn-0" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ม.ค.</button>
+          <button onclick="selectMonth(1)" id="m-btn-1" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.พ.</button>
+          <button onclick="selectMonth(2)" id="m-btn-2" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">มี.ค.</button>
+          <button onclick="selectMonth(3)" id="m-btn-3" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">เม.ย.</button>
+          <button onclick="selectMonth(4)" id="m-btn-4" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">พ.ค.</button>
+          <button onclick="selectMonth(5)" id="m-btn-5" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">มิ.ย.</button>
+          <button onclick="selectMonth(6)" id="m-btn-6" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.ค.</button>
+          <button onclick="selectMonth(7)" id="m-btn-7" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ส.ค.</button>
+          <button onclick="selectMonth(8)" id="m-btn-8" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.ย.</button>
+          <button onclick="selectMonth(9)" id="m-btn-9" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ต.ค.</button>
+          <button onclick="selectMonth(10)" id="m-btn-10" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">พ.ย.</button>
+          <button onclick="selectMonth(11)" id="m-btn-11" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ธ.ค.</button>
+        </div>
+      </div>
+
+      <!-- Monthly Summary KPI Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white p-5 rounded-3xl border border-brand-200 shadow-sm">
+          <span class="text-xs font-bold text-slate-400 uppercase">Availability ประจำเดือน</span>
+          <div class="mt-2 flex items-baseline justify-between">
+            <span id="monthly-avail-val" class="text-3xl font-black text-brand-600">--%</span>
+            <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-lg font-bold">≥96% เป้าหมาย</span>
+          </div>
+        </div>
+        <div class="bg-white p-5 rounded-3xl border border-brand-200 shadow-sm">
+          <span class="text-xs font-bold text-slate-400 uppercase">MTBF เฉลี่ย</span>
+          <div class="mt-2 flex items-baseline justify-between">
+            <span id="monthly-mtbf-val" class="text-3xl font-black text-slate-800">--</span>
+            <span class="text-xs text-slate-400 font-medium">ชั่วโมงทำงานต่อเนื่อง</span>
+          </div>
+        </div>
+        <div class="bg-white p-5 rounded-3xl border border-brand-200 shadow-sm">
+          <span class="text-xs font-bold text-slate-400 uppercase">MTTR เฉลี่ย</span>
+          <div class="mt-2 flex items-baseline justify-between">
+            <span id="monthly-mttr-val" class="text-3xl font-black text-slate-800">--</span>
+            <span class="text-xs text-slate-400 font-medium">ชั่วโมงบำรุงรักษา</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Monthly Bar Charts -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Chart 1: อุปกรณ์ผ่านเกณฑ์ vs ไม่ผ่านเกณฑ์ -->
+        <div class="lg:col-span-6 bg-white p-5 rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-sm font-extrabold text-slate-800">📊 สถานะความพร้อมอุปกรณ์ 25 รายการ</h3>
+              <p class="text-xs text-slate-400">จำนวนเครื่องที่ผ่านเกณฑ์ (≥96%) vs ต่ำกว่าเกณฑ์</p>
+            </div>
+            <span id="chart-month-tag-1" class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-xl">ประจำเดือน ม.ค.</span>
+          </div>
+          <div class="h-64 w-full relative">
+            <canvas id="statusChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 2: จำนวนครั้งที่ชำรุดและความเสียหายแยกประเภท -->
+        <div class="lg:col-span-6 bg-white p-5 rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-sm font-extrabold text-slate-800">📈 ความขัดข้องและเวลาบำรุงรักษา (หม้อแปลง vs GIS)</h3>
+              <p class="text-xs text-slate-400">เปรียบเทียบสถิติความเสียหายและชั่วโมง Down Time</p>
+            </div>
+            <span id="chart-month-tag-2" class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-xl">ประจำเดือน ม.ค.</span>
+          </div>
+          <div class="h-64 w-full relative">
+            <canvas id="failuresChart"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Tab 3: Inspection Form View -->
     <div id="view-form" class="hidden space-y-6">
       <div class="flex flex-wrap justify-between items-center gap-3 no-print">
         <div>
@@ -491,17 +524,38 @@
       'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
     ];
 
-    // Generate monthly simulated datasets for 12 months (each with 15 TX + 10 GIS)
+    // Realtime live dataset (25 assets)
+    const realtimeData = [];
+    for (let i = 1; i <= 15; i++) {
+      const tag = `TX-${String(i).padStart(2, '0')}`;
+      realtimeData.push({
+        tag: tag,
+        name: `หม้อแปลงไฟฟ้ากำลัง ${tag}`,
+        type: 'TX',
+        operatingHrs: 720,
+        failures: (i === 4 || i === 9) ? 1 : 0,
+        downTime: (i === 4) ? 14 : (i === 9 ? 10 : 0)
+      });
+    }
+    for (let i = 1; i <= 10; i++) {
+      const tag = `GIS-${String(i).padStart(2, '0')}`;
+      realtimeData.push({
+        tag: tag,
+        name: `สวิตซ์เกียร์ฉนวนก๊าซ ${tag}`,
+        type: 'GIS',
+        operatingHrs: 720,
+        failures: (i === 3) ? 1 : 0,
+        downTime: (i === 3) ? 6 : 0
+      });
+    }
+
+    // Monthly historical datasets (12 months)
     const monthlyDatasets = [];
     for (let m = 0; m < 12; m++) {
       const devList = [];
-      
-      // 15 Transformers
       for (let i = 1; i <= 15; i++) {
         const tag = `TX-${String(i).padStart(2, '0')}`;
-        let failures = 0;
-        let downtime = 0;
-
+        let failures = 0, downtime = 0;
         if (m === 0 && (i === 4 || i === 9)) { failures = 1; downtime = 18; }
         else if (m === 3 && (i === 2 || i === 11 || i === 14)) { failures = 2; downtime = 36; }
         else if (m === 6 && (i === 7)) { failures = 1; downtime = 12; }
@@ -517,13 +571,9 @@
           downTime: downtime
         });
       }
-
-      // 10 GIS
       for (let i = 1; i <= 10; i++) {
         const tag = `GIS-${String(i).padStart(2, '0')}`;
-        let failures = 0;
-        let downtime = 0;
-
+        let failures = 0, downtime = 0;
         if (m === 0 && (i === 3)) { failures = 1; downtime = 8; }
         else if (m === 4 && (i === 6 || i === 8)) { failures = 1; downtime = 14; }
         else if (m === 8 && (i === 2)) { failures = 2; downtime = 28; }
@@ -538,12 +588,10 @@
           downTime: downtime
         });
       }
-
       monthlyDatasets.push(devList);
     }
 
     let selectedMonthIndex = 0;
-    let devices = monthlyDatasets[selectedMonthIndex];
     let currentFilter = 'ALL';
     const AVAIL_THRESHOLD = 96.0;
 
@@ -597,10 +645,10 @@
       checkAvailStatus(avail);
     }
 
-    // Month Selector
+    // Month Selector in Tab 2
     function selectMonth(idx) {
       selectedMonthIndex = idx;
-      devices = monthlyDatasets[selectedMonthIndex];
+      const data = monthlyDatasets[selectedMonthIndex];
 
       for (let i = 0; i < 12; i++) {
         const btn = document.getElementById(`m-btn-${i}`);
@@ -616,17 +664,16 @@
       document.getElementById('chart-month-tag-1').innerText = `ประจำเดือน ${monthName}`;
       document.getElementById('chart-month-tag-2').innerText = `ประจำเดือน ${monthName}`;
 
-      renderTable();
-      updateMonthStats();
+      updateMonthStats(data);
     }
 
-    function updateMonthStats() {
+    function updateMonthStats(data) {
       let totalOp = 0, totalFail = 0, totalDown = 0;
       let passCount = 0, failCount = 0;
       let txFails = 0, gisFails = 0;
       let txDown = 0, gisDown = 0;
 
-      devices.forEach(d => {
+      data.forEach(d => {
         totalOp += d.operatingHrs;
         totalFail += d.failures;
         totalDown += d.downTime;
@@ -643,21 +690,17 @@
           ? (d.operatingHrs / (d.operatingHrs + d.downTime)) * 100 
           : 100;
 
-        if (avail >= AVAIL_THRESHOLD) {
-          passCount++;
-        } else {
-          failCount++;
-        }
+        if (avail >= AVAIL_THRESHOLD) passCount++;
+        else failCount++;
       });
 
       const avgMtbf = totalFail > 0 ? (totalOp / totalFail) : totalOp;
       const avgMttr = totalFail > 0 ? (totalDown / totalFail) : 0;
       const avgAvail = (totalOp + totalDown) > 0 ? (totalOp / (totalOp + totalDown)) * 100 : 100;
 
-      document.getElementById('card-avail').value = avgAvail.toFixed(2);
-      document.getElementById('card-mtbf').value = avgMtbf.toFixed(1);
-      document.getElementById('card-mttr').value = avgMttr.toFixed(1);
-      checkAvailStatus(avgAvail);
+      document.getElementById('monthly-avail-val').innerText = `${avgAvail.toFixed(2)}%`;
+      document.getElementById('monthly-mtbf-val').innerText = `${avgMtbf.toFixed(1)} ชม.`;
+      document.getElementById('monthly-mttr-val').innerText = `${avgMttr.toFixed(1)} ชม.`;
 
       renderCharts(passCount, failCount, txFails, gisFails, txDown, gisDown);
     }
@@ -683,15 +726,9 @@
           animation: { duration: 600 },
           responsive: true,
           maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false }
-          },
+          plugins: { legend: { display: false } },
           scales: {
-            y: {
-              beginAtZero: true,
-              max: 25,
-              ticks: { stepSize: 5 }
-            }
+            y: { beginAtZero: true, max: 25, ticks: { stepSize: 5 } }
           }
         }
       });
@@ -733,10 +770,7 @@
             }
           },
           scales: {
-            y: {
-              beginAtZero: true,
-              ticks: { stepSize: 5 }
-            }
+            y: { beginAtZero: true, ticks: { stepSize: 5 } }
           }
         }
       });
@@ -750,11 +784,11 @@
 
       if (isLiveActive) {
         btn.className = "flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-xl border border-emerald-300 hover:bg-emerald-200 transition shadow-xs";
-        text.innerText = "🔴 LIVE: เปิดขยับอัตโนมัติ";
+        text.innerText = "🔴 LIVE: กำลังอัปเดต";
         startLiveStream();
       } else {
         btn.className = "flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-600 text-xs font-bold rounded-xl border border-slate-300 hover:bg-slate-200 transition shadow-xs";
-        text.innerText = "⏸️ PAUSE: หยุดขยับ";
+        text.innerText = "⏸️ PAUSE: หยุดชั่วคราว";
         clearInterval(liveInterval);
       }
     }
@@ -764,12 +798,11 @@
       liveInterval = setInterval(() => {
         if (!isLiveActive) return;
 
-        // Randomly adjust 1 equipment's operating hours and failure slightly
-        const randomIdx = Math.floor(Math.random() * devices.length);
-        devices[randomIdx].operatingHrs = Math.min(744, Math.max(700, devices[randomIdx].operatingHrs + (Math.random() > 0.5 ? 1 : -1)));
+        const randomIdx = Math.floor(Math.random() * realtimeData.length);
+        realtimeData[randomIdx].operatingHrs = Math.min(744, Math.max(700, realtimeData[randomIdx].operatingHrs + (Math.random() > 0.5 ? 1 : -1)));
         
         renderTable();
-        updateMonthStats();
+        syncTableToCards();
       }, 2000);
     }
 
@@ -812,14 +845,28 @@
     }
 
     function syncTableToCards() {
-      updateMonthStats();
+      let totalOp = 0, totalFail = 0, totalDown = 0;
+      realtimeData.forEach(d => {
+        totalOp += d.operatingHrs;
+        totalFail += d.failures;
+        totalDown += d.downTime;
+      });
+
+      const avgMtbf = totalFail > 0 ? (totalOp / totalFail) : totalOp;
+      const avgMttr = totalFail > 0 ? (totalDown / totalFail) : 0;
+      const avgAvail = (totalOp + totalDown) > 0 ? (totalOp / (totalOp + totalDown)) * 100 : 100;
+
+      document.getElementById('card-avail').value = avgAvail.toFixed(2);
+      document.getElementById('card-mtbf').value = avgMtbf.toFixed(1);
+      document.getElementById('card-mttr').value = avgMttr.toFixed(1);
+      checkAvailStatus(avgAvail);
     }
 
     function renderTable() {
       const tbody = document.getElementById('equipment-tbody');
       tbody.innerHTML = '';
 
-      const filtered = devices.filter(d => currentFilter === 'ALL' || d.type === currentFilter);
+      const filtered = realtimeData.filter(d => currentFilter === 'ALL' || d.type === currentFilter);
 
       filtered.forEach((d) => {
         const mtbf = d.failures > 0 ? (d.operatingHrs / d.failures) : d.operatingHrs;
@@ -867,11 +914,11 @@
     }
 
     function updateValue(tag, key, val) {
-      const dev = devices.find(d => d.tag === tag);
+      const dev = realtimeData.find(d => d.tag === tag);
       if (dev) {
         dev[key] = parseFloat(val) || 0;
         renderTable();
-        updateMonthStats();
+        syncTableToCards();
       }
     }
 
@@ -889,7 +936,7 @@
     }
 
     function showAdvice(tag) {
-      const dev = devices.find(d => d.tag === tag);
+      const dev = realtimeData.find(d => d.tag === tag);
       if (!dev) return;
 
       const avail = (dev.operatingHrs + dev.downTime) > 0 
@@ -917,29 +964,42 @@
       document.getElementById('modal-action').classList.add('hidden');
     }
 
+    // Tab Switching Functionality
     function switchTab(tab) {
-      const vDash = document.getElementById('view-dashboard');
+      const vRealtime = document.getElementById('view-realtime');
+      const vMonthly = document.getElementById('view-monthly');
       const vForm = document.getElementById('view-form');
-      const tDash = document.getElementById('tab-dashboard');
+
+      const tRealtime = document.getElementById('tab-realtime');
+      const tMonthly = document.getElementById('tab-monthly');
       const tForm = document.getElementById('tab-form');
 
-      if (tab === 'dashboard') {
-        vDash.classList.remove('hidden');
-        vForm.classList.add('hidden');
-        tDash.className = "px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold";
-        tForm.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-semibold";
-      } else {
-        vDash.classList.add('hidden');
+      // Hide all
+      vRealtime.classList.add('hidden');
+      vMonthly.classList.add('hidden');
+      vForm.classList.add('hidden');
+
+      tRealtime.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold";
+      tMonthly.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold";
+      tForm.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold";
+
+      if (tab === 'realtime') {
+        vRealtime.classList.remove('hidden');
+        tRealtime.className = "px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold";
+      } else if (tab === 'monthly') {
+        vMonthly.classList.remove('hidden');
+        tMonthly.className = "px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold";
+        selectMonth(selectedMonthIndex);
+      } else if (tab === 'form') {
         vForm.classList.remove('hidden');
         tForm.className = "px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold";
-        tDash.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-semibold";
       }
     }
 
     function initForm() {
       const select = document.getElementById('form-device-select');
       select.innerHTML = '';
-      devices.forEach(d => {
+      realtimeData.forEach(d => {
         const opt = document.createElement('option');
         opt.value = d.tag;
         opt.innerText = `${d.tag} - ${d.name}`;
@@ -954,7 +1014,7 @@
     }
 
     window.onload = () => {
-      selectMonth(0);
+      renderTable();
       runSimulation();
       initForm();
       startLiveStream();
