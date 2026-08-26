@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAM Analysis & Maintenance Inspection System</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Prompt -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Prompt', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#fff5f7',
+              100: '#ffeef2',
+              200: '#fedce5',
+              300: '#fdbecd',
+              400: '#f88da7',
+              500: '#f05b82',
+              600: '#de3866',
+              700: '#ba234e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printable-form, #printable-form * {
+        visibility: visible;
+      }
+      #printable-form {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 8mm 10mm;
+        box-shadow: none;
+        border: none;
+      }
+      .no-print {
+        display: none !important;
+      }
+      @page {
+        size: A4 portrait;
+        margin: 8mm;
+      }
+    }
+  </style>
+</head>
+<body class="bg-brand-50 text-slate-700 min-h-screen flex flex-col font-sans">
+
+  <!-- Header -->
+  <header class="bg-white/85 backdrop-blur-md border-b border-brand-200 sticky top-0 z-30 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 text-white flex items-center justify-center font-bold text-lg shadow-md shadow-brand-200">
+          ⚡
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold text-slate-800 leading-tight">RAM Analysis & Maintenance System</h1>
+          <p class="text-xs text-brand-600 font-medium">ระบบวิเคราะห์ความน่าเชื่อถือและความพร้อมใช้งานสถานีไฟฟ้า</p>
+        </div>
+      </div>
+      
+      <!-- Nav Tabs -->
+      <nav class="flex space-x-1 bg-brand-100 p-1 rounded-xl text-xs sm:text-sm font-medium">
+        <button onclick="switchTab('dashboard')" id="tab-dashboard" class="px-3 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm">
+          📊 แดชบอร์ด RAM
+        </button>
+        <button onclick="switchTab('form')" id="tab-form" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600">
+          📝 แบบฟอร์มบำรุงรักษา (A4)
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+    
+    <!-- Tab 1: Dashboard View -->
+    <div id="view-dashboard" class="space-y-6">
+      
+      <!-- Top Overview Metrics -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-2xl border border-brand-200 shadow-sm">
+          <p class="text-xs font-semibold text-slate-400 uppercase">อุปกรณ์ทั้งหมด</p>
+          <div class="mt-2 flex items-baseline justify-between">
+            <span class="text-2xl font-bold text-slate-800">25 รายการ</span>
+            <span class="text-[11px] bg-brand-100 text-brand-700 px-2 py-0.5 rounded-md font-medium">หม้อแปลง 15 | GIS 10</span>
+          </div>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-brand-200 shadow-sm">
+          <p class="text-xs font-semibold text-slate-400 uppercase">ค่าเฉลี่ย Availability</p>
+          <div class="mt-2 flex items-baseline justify-between">
+            <span id="overall-avail" class="text-2xl font-bold text-brand-600">--%</span>
+            <span class="text-xs text-slate-400">เป้าหมาย ≥ 98.5%</span>
+          </div>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-brand-200 shadow-sm">
+          <p class="text-xs font-semibold text-slate-400 uppercase">ค่าเฉลี่ย MTBF</p>
+          <div class="mt-2 flex items-baseline justify-between">
+            <span id="overall-mtbf" class="text-2xl font-bold text-slate-800">-- ชม.</span>
+            <span class="text-xs text-slate-400">เป้าหมาย ≥ 500 ชม.</span>
+          </div>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-brand-200 shadow-sm">
+          <p class="text-xs font-semibold text-slate-400 uppercase">ค่าเฉลี่ย MTTR</p>
+          <div class="mt-2 flex items-baseline justify-between">
+            <span id="overall-mttr" class="text-2xl font-bold text-slate-800">-- ชม.</span>
+            <span class="text-xs text-slate-400">เป้าหมาย ≤ 8 ชม.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Equipment Table & Controls -->
+      <div class="bg-white rounded-2xl border border-brand-200 shadow-sm overflow-hidden">
+        <div class="p-4 border-b border-brand-100 flex flex-wrap justify-between items-center gap-3 bg-brand-50/50">
+          <div>
+            <h2 class="text-sm sm:text-base font-bold text-slate-800">รายการอุปกรณ์และค่าดัชนีชี้วัด (Reliability Indices)</h2>
+            <p class="text-xs text-slate-500">พิมพ์เปลี่ยนตัวเลขในตารางเพื่อคำนวณและประเมินผลได้ทันทีแบบ Real-time</p>
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <button onclick="filterType('ALL')" id="filter-ALL" class="px-3 py-1 text-xs font-semibold rounded-lg bg-brand-500 text-white transition shadow-sm">ทั้งหมด (25)</button>
+            <button onclick="filterType('TX')" id="filter-TX" class="px-3 py-1 text-xs font-semibold rounded-lg bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition">หม้อแปลงไฟฟ้า (15)</button>
+            <button onclick="filterType('GIS')" id="filter-GIS" class="px-3 py-1 text-xs font-semibold rounded-lg bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition">สวิตซ์เกียร์ GIS (10)</button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-brand-100/70 text-slate-600 text-xs uppercase font-semibold">
+              <tr>
+                <th class="p-3 pl-4">รหัสอุปกรณ์</th>
+                <th class="p-3">ประเภท</th>
+                <th class="p-3">เวลาทำงาน (ชม.)</th>
+                <th class="p-3">ความขัดข้อง (ครั้ง)</th>
+                <th class="p-3">เวลาบำรุงรักษา (ชม.)</th>
+                <th class="p-3">MTBF</th>
+                <th class="p-3">MTTR</th>
+                <th class="p-3">Availability</th>
+                <th class="p-3">สถานะ</th>
+                <th class="p-3 pr-4 text-center">มาตรการแก้ไข</th>
+              </tr>
+            </thead>
+            <tbody id="equipment-tbody" class="divide-y divide-brand-100 font-normal">
+              <!-- Rendered via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Inspection Form View -->
+    <div id="view-form" class="hidden space-y-6">
+      <div class="flex flex-wrap justify-between items-center gap-3 no-print">
+        <div>
+          <h2 class="text-base sm:text-lg font-bold text-slate-800">แบบฟอร์มตรวจสอบและบำรุงรักษาหน้างาน</h2>
+          <p class="text-xs text-slate-500">กรอกข้อมูลและสั่งพิมพ์ขนาดกระดาษ A4 เพื่อใช้ในการปฏิบัติงานหน้างาน</p>
+        </div>
+        <button onclick="window.print()" class="flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-medium px-4 py-2 rounded-xl text-xs sm:text-sm shadow-sm transition">
+          🖨️ สั่งพิมพ์แบบฟอร์ม (A4)
+        </button>
+      </div>
+
+      <!-- Printable A4 Paper Container -->
+      <div id="printable-form" class="bg-white p-6 sm:p-10 rounded-2xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs">
+        
+        <!-- Header -->
+        <div class="border-b-2 border-brand-500 pb-3 mb-4 flex justify-between items-start">
+          <div>
+            <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">ใบตรวจสอบและประเมินผลการบำรุงรักษาอุปกรณ์สถานีไฟฟ้า</h1>
+            <p class="text-[11px] text-slate-500">Substation Maintenance & RAM Inspection Checklist Form</p>
+          </div>
+          <div class="text-right">
+            <span class="inline-block px-2 py-0.5 bg-brand-100 text-brand-700 font-semibold text-[10px] rounded">ขนาดมาตรฐาน A4</span>
+            <p class="text-[10px] text-slate-400 mt-1">วันที่พิมพ์: <span id="print-date"></span></p>
+          </div>
+        </div>
+
+        <!-- General Info Form -->
+        <div class="grid grid-cols-2 gap-3 mb-4 text-xs">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">รหัสอุปกรณ์ (Equipment Tag):</label>
+            <select id="form-device-select" class="w-full border border-slate-300 rounded-lg p-1.5 bg-slate-50 text-xs">
+              <!-- Rendered via JS -->
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">วันที่ปฏิบัติงาน (Inspection Date):</label>
+            <input type="date" id="form-date" class="w-full border border-slate-300 rounded-lg p-1.5 bg-slate-50 text-xs">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">ชื่อช่างเทคนิคผู้ปฏิบัติงาน:</label>
+            <input type="text" placeholder="ระบุชื่อ-นามสกุล ช่างผู้รับผิดชอบ" class="w-full border border-slate-300 rounded-lg p-1.5 bg-slate-50 text-xs">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">ประเภทการบำรุงรักษา:</label>
+            <select class="w-full border border-slate-300 rounded-lg p-1.5 bg-slate-50 text-xs">
+              <option>การบำรุงรักษาเชิงป้องกัน (Preventive Maintenance)</option>
+              <option>การบำรุงรักษาตามสภาพ (Condition-based Maintenance)</option>
+              <option>การบำรุงรักษาแก้ไข (Corrective Maintenance)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Checklists Table -->
+        <div class="mb-4">
+          <h3 class="text-xs font-bold text-slate-800 uppercase mb-1.5">รายการตรวจสอบสภาพความพร้อมใช้งาน</h3>
+          <table class="w-full border border-slate-200 text-xs">
+            <thead class="bg-slate-100 text-slate-700">
+              <tr>
+                <th class="border border-slate-200 p-1.5 text-left">รายการตรวจสอบ (Inspection Item)</th>
+                <th class="border border-slate-200 p-1.5 w-14 text-center">ปกติ</th>
+                <th class="border border-slate-200 p-1.5 w-14 text-center">ผิดปกติ</th>
+                <th class="border border-slate-200 p-1.5 w-44 text-left">หมายเหตุ / ค่าที่วัดได้</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200">
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">1. สภาพภายนอก รอยรั่วซึม และระดับน้ำมัน / ก๊าซ SF6</td>
+                <td class="p-1.5 border-r border-slate-200 text-center"><input type="radio" name="c1" checked></td>
+                <td class="p-1.5 border-r border-slate-200 text-center"><input type="radio" name="c1"></td>
+                <td class="p-1.5"><input type="text" placeholder="เช่น 0.55 MPa ปกติ" class="w-full border-b border-dotted border-slate-300 focus:outline-none text-xs"></td>
+              </tr>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">2. อุณหภูมิผิวสัมผัสและขั้วต่อ Bushing (Thermoscan)</td>
+                <td class="p-1.5 border-r border-slate-200 text-center"><input type="radio" name="c2" checked></td>
+                <td class="p-1.5 border-r border-slate-200 text-center"><input type="radio" name="c2"></td>
+                <td class="p-1.5"><input type="text" placeholder="อุณหภูมิปกติ" class="w-full border-b border-dotted border-slate-300 focus:outline-none text-xs"></td>
+              </tr>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">3. ค่าความเป็นฉนวน (Insulation Resistance / DGA)</td>
+                <td class="p-1.5 border-r border-slate-200 text-center"><input type="radio" name="c3" checked></td>
+                <td class="p-1.5 border-r border-slate-200 text-center"><input type="radio" name="c3"></td>
+                <td class="p-1.5"><input type="text" placeholder="ผลทดสอบปกติ" class="w-full border-b border-dotted border-slate-300 focus:outline-none text-xs"></td>
+              </tr>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">4. กลไกขับเคลื่อนและหน้าสัมผัส (Contact Resistance)</td>
+                <td class="p-1.5 border-r border-slate-200 text-center"><input type="radio" name="c4" checked></td>
+                <td class="p-1.5 border-r border-slate-200 text-center"><input type="radio" name="c4"></td>
+                <td class="p-1.5"><input type="text" placeholder="ค่าความต้านทานปกติ" class="w-full border-b border-dotted border-slate-300 focus:outline-none text-xs"></td>
+              </tr>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">5. ระบบสัญญาณเตือนและรีเลย์ป้องกัน (Protection Relays)</td>
+                <td class="p-1.5 border-r border-slate-200 text-center"><input type="radio" name="c5" checked></td>
+                <td class="p-1.5 border-r border-slate-200 text-center"><input type="radio" name="c5"></td>
+                <td class="p-1.5"><input type="text" placeholder="ทดสอบสัญญาณ Trip ปกติ" class="w-full border-b border-dotted border-slate-300 focus:outline-none text-xs"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Corrective Action Note -->
+        <div class="mb-6">
+          <label class="block text-xs font-semibold text-slate-700 mb-1">ข้อเสนอแนะและมาตรการแก้ไข (Action Taken / Recommendations):</label>
+          <textarea rows="2" class="w-full border border-slate-300 rounded-lg p-1.5 text-xs bg-slate-50" placeholder="บันทึกข้อสังเกตหรือมาตรการแก้ไขเพิ่มเติมสำหรับการบำรุงรักษาครั้งถัดไป..."></textarea>
+        </div>
+
+        <!-- Signature Section -->
+        <div class="grid grid-cols-2 gap-6 text-center text-xs mt-6 pt-3 border-t border-slate-200">
+          <div>
+            <p class="mb-6">ลงชื่อ ..............................................................</p>
+            <p class="font-semibold">( .............................................................. )</p>
+            <p class="text-slate-500 text-[10px] mt-0.5">ช่างเทคนิคผู้ปฏิบัติงาน</p>
+          </div>
+          <div>
+            <p class="mb-6">ลงชื่อ ..............................................................</p>
+            <p class="font-semibold">( .............................................................. )</p>
+            <p class="text-slate-500 text-[10px] mt-0.5">วิศวกรผู้ควบคุมและรับรองผล</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Action Modal for Correction Guidelines -->
+  <div id="modal-action" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-5 shadow-xl border border-brand-200">
+      <div class="flex items-center justify-between pb-2.5 border-b border-brand-100">
+        <h3 id="modal-title" class="font-bold text-slate-800 text-sm">แนวทางแก้ไข</h3>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-base">&times;</button>
+      </div>
+      <div id="modal-body" class="py-3 text-xs text-slate-600 space-y-2.5 leading-relaxed">
+      </div>
+      <div class="pt-2.5 border-t border-brand-100 flex justify-end">
+        <button onclick="closeModal()" class="px-3.5 py-1.5 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-semibold">
+          รับทราบ / ปิดหน้าต่าง
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initial Dataset
+    const defaultData = [];
+    
+    // Generate 15 Transformers (TX-01 to TX-15)
+    for (let i = 1; i <= 15; i++) {
+      const tag = `TX-${String(i).padStart(2, '0')}`;
+      const failures = (i === 4 || i === 9) ? 2 : (i === 12 ? 1 : 0);
+      const downtime = (i === 4) ? 14 : (i === 9 ? 10 : (i === 12 ? 6 : 0));
+      defaultData.push({
+        tag: tag,
+        name: `หม้อแปลงไฟฟ้ากำลัง ${tag}`,
+        type: 'TX',
+        operatingHrs: 720,
+        failures: failures,
+        downTime: downtime
+      });
+    }
+
+    // Generate 10 GIS (GIS-01 to GIS-10)
+    for (let i = 1; i <= 10; i++) {
+      const tag = `GIS-${String(i).padStart(2, '0')}`;
+      const failures = (i === 3) ? 1 : (i === 7 ? 2 : 0);
+      const downtime = (i === 3) ? 5 : (i === 7 ? 12 : 0);
+      defaultData.push({
+        tag: tag,
+        name: `สวิตซ์เกียร์ฉนวนก๊าซ ${tag}`,
+        type: 'GIS',
+        operatingHrs: 720,
+        failures: failures,
+        downTime: downtime
+      });
+    }
+
+    let devices = [...defaultData];
+    let currentFilter = 'ALL';
+
+    const solutions = {
+      TX: {
+        lowAvail: "🔴 <b>ตรวจพบค่าความพร้อมใช้งาน (Availability) ต่ำกว่า 98.5%:</b><br>• ดำเนินการทดสอบ DGA (Dissolved Gas Analysis) ทันทีเพื่อตรวจจับก๊าซไฮโดรคาร์บอนในน้ำมัน<br>• ตรวจสอบจุดต่อสายและ Bushing ด้วยกล้องถ่ายภาพความร้อน (Infrared Thermoscan)<br>• วิเคราะห์ความเป็นฉนวนของฉนวนกระดาษ (Furan Analysis)",
+        highMttr: "🟠 <b>ตรวจพบเวลาบำรุงรักษา (MTTR) สูงเกิน 8 ชม.:</b><br>• จัดเตรียมชุดประเก็น (Gasket Kit) และอะไหล่ฉุกเฉินประจำสถานี<br>• ปรับปรุงขั้นตอนการปฏิบัติงานบำรุงรักษาเชิงแก้ไขให้กระชับและรวดเร็ว",
+        normal: "🟢 <b>สถานะการทำงานปกติ:</b><br>• อุปกรณ์อยู่ในเกณฑ์มาตรฐานความน่าเชื่อถือสูง ให้ปฏิบัติตามแผนการบำรุงรักษาเชิงป้องกันตามรอบปกติ"
+      },
+      GIS: {
+        lowAvail: "🔴 <b>ตรวจพบค่าความพร้อมใช้งาน (Availability) ต่ำกว่า 98.5%:</b><br>• ตรวจวัดระดับแรงดันก๊าซและทดสอบการรั่วไหลของ SF6 ด้วย Sniffer Detector<br>• ตรวจสอบการคายประจุบางส่วน (Partial Discharge Test) ภายในช่องก๊าซ<br>• ทดสอบความต้านทานหน้าสัมผัสหลัก (Contact Resistance Test)",
+        highMttr: "🟠 <b>ตรวจพบเวลาบำรุงรักษา (MTTR) สูงเกิน 8 ชม.:</b><br>• ตรวจสอบความพร้อมของชุดอัดก๊าซ SF6 Gas Cart<br>• จัดเตรียมชุดคอยล์ตัดตอน (Trip/Close Coil) สำรอง",
+        normal: "🟢 <b>สถานะการทำงานปกติ:</b><br>• อุปกรณ์อยู่ในเกณฑ์มาตรฐานความน่าเชื่อถือสูง ให้ปฏิบัติตามแผนการบำรุงรักษาเชิงป้องกันตามรอบปกติ"
+      }
+    };
+
+    function renderTable() {
+      const tbody = document.getElementById('equipment-tbody');
+      tbody.innerHTML = '';
+
+      let totalOp = 0, totalFail = 0, totalDown = 0;
+      const filtered = devices.filter(d => currentFilter === 'ALL' || d.type === currentFilter);
+
+      filtered.forEach((d) => {
+        const mtbf = d.failures > 0 ? (d.operatingHrs / d.failures) : d.operatingHrs;
+        const mttr = d.failures > 0 ? (d.downTime / d.failures) : 0;
+        const avail = (d.operatingHrs + d.downTime) > 0 
+          ? (d.operatingHrs / (d.operatingHrs + d.downTime)) * 100 
+          : 100;
+
+        totalOp += d.operatingHrs;
+        totalFail += d.failures;
+        totalDown += d.downTime;
+
+        const isAvailPass = avail >= 98.5;
+        const isMttrPass = mttr <= 8;
+        const isPass = isAvailPass && isMttrPass;
+
+        const row = document.createElement('tr');
+        row.className = `hover:bg-brand-50/50 transition ${!isPass ? 'bg-rose-50/30' : ''}`;
+        row.innerHTML = `
+          <td class="p-3 pl-4 font-bold text-slate-800">${d.tag}</td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded text-[10px] font-semibold ${d.type === 'TX' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">
+              ${d.type === 'TX' ? 'Transformer' : 'GIS'}
+            </span>
+          </td>
+          <td class="p-3">
+            <input type="number" value="${d.operatingHrs}" min="1" class="w-16 border border-brand-200 rounded px-1.5 py-0.5 text-center bg-white" onchange="updateValue('${d.tag}', 'operatingHrs', this.value)">
+          </td>
+          <td class="p-3">
+            <input type="number" value="${d.failures}" min="0" class="w-12 border border-brand-200 rounded px-1.5 py-0.5 text-center bg-white" onchange="updateValue('${d.tag}', 'failures', this.value)">
+          </td>
+          <td class="p-3">
+            <input type="number" value="${d.downTime}" min="0" class="w-14 border border-brand-200 rounded px-1.5 py-0.5 text-center bg-white" onchange="updateValue('${d.tag}', 'downTime', this.value)">
+          </td>
+          <td class="p-3 font-medium text-slate-700">${mtbf.toFixed(1)} <span class="text-[10px] text-slate-400">ชม.</span></td>
+          <td class="p-3 font-medium ${!isMttrPass ? 'text-rose-600 font-bold' : 'text-slate-700'}">${mttr.toFixed(1)} <span class="text-[10px] text-slate-400">ชม.</span></td>
+          <td class="p-3 font-bold ${!isAvailPass ? 'text-rose-600' : 'text-emerald-600'}">${avail.toFixed(2)}%</td>
+          <td class="p-3">
+            <span class="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${isPass ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
+              ${isPass ? '● ปกติ' : '▲ ผิดเกณฑ์'}
+            </span>
+          </td>
+          <td class="p-3 pr-4 text-center">
+            <button onclick="showAdvice('${d.tag}')" class="text-[11px] bg-white border border-brand-300 hover:bg-brand-50 text-brand-700 px-2.5 py-1 rounded-lg transition font-medium shadow-2xs">
+              คำแนะนำ
+            </button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      const globalMtbf = totalFail > 0 ? (totalOp / totalFail) : totalOp;
+      const globalMttr = totalFail > 0 ? (totalDown / totalFail) : 0;
+      const globalAvail = (totalOp + totalDown) > 0 ? (totalOp / (totalOp + totalDown)) * 100 : 100;
+
+      document.getElementById('overall-avail').innerText = globalAvail.toFixed(2) + '%';
+      document.getElementById('overall-mtbf').innerText = globalMtbf.toFixed(1) + ' ชม.';
+      document.getElementById('overall-mttr').innerText = globalMttr.toFixed(1) + ' ชม.';
+    }
+
+    function updateValue(tag, key, val) {
+      const dev = devices.find(d => d.tag === tag);
+      if (dev) {
+        dev[key] = parseFloat(val) || 0;
+        renderTable();
+      }
+    }
+
+    function filterType(type) {
+      currentFilter = type;
+      ['ALL', 'TX', 'GIS'].forEach(t => {
+        const btn = document.getElementById(`filter-${t}`);
+        if (t === type) {
+          btn.className = "px-3 py-1 text-xs font-semibold rounded-lg bg-brand-500 text-white transition shadow-sm";
+        } else {
+          btn.className = "px-3 py-1 text-xs font-semibold rounded-lg bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition";
+        }
+      });
+      renderTable();
+    }
+
+    function showAdvice(tag) {
+      const dev = devices.find(d => d.tag === tag);
+      if (!dev) return;
+
+      const mttr = dev.failures > 0 ? (dev.downTime / dev.failures) : 0;
+      const avail = (dev.operatingHrs + dev.downTime) > 0 
+        ? (dev.operatingHrs / (dev.operatingHrs + dev.downTime)) * 100 
+        : 100;
+
+      const modal = document.getElementById('modal-action');
+      const title = document.getElementById('modal-title');
+      const body = document.getElementById('modal-body');
+
+      title.innerText = `มาตรการบำรุงรักษา: ${dev.tag} (${dev.type === 'TX' ? 'หม้อแปลงไฟฟ้า' : 'สวิตซ์เกียร์ GIS'})`;
+
+      let msg = "";
+      if (avail < 98.5) {
+        msg += `<div class="p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-800">${solutions[dev.type].lowAvail}</div>`;
+      }
+      if (mttr > 8) {
+        msg += `<div class="p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 mt-2">${solutions[dev.type].highMttr}</div>`;
+      }
+      if (avail >= 98.5 && mttr <= 8) {
+        msg = `<div class="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800">${solutions[dev.type].normal}</div>`;
+      }
+
+      body.innerHTML = msg;
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('modal-action').classList.add('hidden');
+    }
+
+    function switchTab(tab) {
+      const vDash = document.getElementById('view-dashboard');
+      const vForm = document.getElementById('view-form');
+      const tDash = document.getElementById('tab-dashboard');
+      const tForm = document.getElementById('tab-form');
+
+      if (tab === 'dashboard') {
+        vDash.classList.remove('hidden');
+        vForm.classList.add('hidden');
+        tDash.className = "px-3 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm";
+        tForm.className = "px-3 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600";
+      } else {
+        vDash.classList.add('hidden');
+        vForm.classList.remove('hidden');
+        tForm.className = "px-3 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm";
+        tDash.className = "px-3 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600";
+      }
+    }
+
+    function initForm() {
+      const select = document.getElementById('form-device-select');
+      select.innerHTML = '';
+      devices.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d.tag;
+        opt.innerText = `${d.tag} - ${d.name}`;
+        select.appendChild(opt);
+      });
+
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('form-date').value = today;
+      document.getElementById('print-date').innerText = new Date().toLocaleDateString('th-TH', {
+        year: 'numeric', month: 'long', day: 'numeric'
+      });
+    }
+
+    window.onload = () => {
+      renderTable();
+      initForm();
+    };
+  </script>
+</body>
+</html>
