@@ -96,43 +96,115 @@
     <!-- Tab 1: Dashboard View -->
     <div id="view-dashboard" class="space-y-6">
       
-      <!-- Top Overview Metrics -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white p-4 rounded-2xl border border-brand-200 shadow-sm">
-          <p class="text-xs font-semibold text-slate-400 uppercase">อุปกรณ์ทั้งหมด</p>
-          <div class="mt-2 flex items-baseline justify-between">
-            <span class="text-2xl font-bold text-slate-800">25 รายการ</span>
-            <span class="text-[11px] bg-brand-100 text-brand-700 px-2 py-0.5 rounded-md font-medium">หม้อแปลง 15 | GIS 10</span>
+      <!-- Control Bar for Card Mode & Targets -->
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-brand-200 shadow-sm">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-semibold text-slate-700">⚙️ โหมดการคำนวณการ์ดด้านบน:</span>
+          <div class="inline-flex bg-brand-100 p-0.5 rounded-lg text-xs font-medium">
+            <button onclick="setCalcMode('auto')" id="mode-auto" class="px-2.5 py-1 rounded-md bg-white text-brand-700 shadow-2xs transition font-semibold">
+              🔗 คำนวณอัตโนมัติจากตาราง
+            </button>
+            <button onclick="setCalcMode('manual')" id="mode-manual" class="px-2.5 py-1 rounded-md text-slate-600 hover:text-brand-700 transition">
+              ✏️ พิมพ์ค่าจำลองโดยตรงบนการ์ด
+            </button>
           </div>
         </div>
-        <div class="bg-white p-4 rounded-2xl border border-brand-200 shadow-sm">
-          <p class="text-xs font-semibold text-slate-400 uppercase">ค่าเฉลี่ย Availability</p>
-          <div class="mt-2 flex items-baseline justify-between">
-            <span id="overall-avail" class="text-2xl font-bold text-brand-600">--%</span>
-            <span class="text-xs text-slate-400">เป้าหมาย ≥ 98.5%</span>
+        <p class="text-[11px] text-slate-400">💡 สามารถแก้ไขค่าเป้าหมาย (Target) และตัวเลขบนการ์ดได้ทันที</p>
+      </div>
+
+      <!-- Top Editable Metric Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        
+        <!-- Availability Card -->
+        <div class="bg-white p-5 rounded-2xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition">
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">ค่าเฉลี่ย AVAILABILITY</span>
+            <span id="avail-status-tag" class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-700">● ผ่านเกณฑ์</span>
+          </div>
+          
+          <div class="my-3 flex items-baseline justify-between">
+            <div id="avail-display-wrap" class="flex items-baseline gap-1">
+              <span id="overall-avail" class="text-3xl sm:text-4xl font-extrabold text-brand-600 tracking-tight">--%</span>
+            </div>
+            <div id="avail-input-wrap" class="hidden flex items-center gap-1">
+              <input type="number" id="manual-avail-input" step="0.01" min="0" max="100" class="w-28 text-2xl sm:text-3xl font-extrabold text-brand-600 border-b-2 border-brand-400 focus:outline-none bg-brand-50/50 px-1 rounded" oninput="onManualMetricChange()">
+              <span class="text-xl font-bold text-brand-600">%</span>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-brand-100 flex items-center justify-between text-xs text-slate-500">
+            <span>เป้าหมายเกณฑ์:</span>
+            <div class="flex items-center gap-1 font-medium">
+              <span>≥</span>
+              <input type="number" id="target-avail" value="98.5" step="0.1" class="w-14 text-center border border-brand-200 rounded px-1 py-0.5 font-bold text-slate-700 bg-brand-50/30 focus:outline-none focus:border-brand-500" oninput="updateAllCalculations()">
+              <span>%</span>
+            </div>
           </div>
         </div>
-        <div class="bg-white p-4 rounded-2xl border border-brand-200 shadow-sm">
-          <p class="text-xs font-semibold text-slate-400 uppercase">ค่าเฉลี่ย MTBF</p>
-          <div class="mt-2 flex items-baseline justify-between">
-            <span id="overall-mtbf" class="text-2xl font-bold text-slate-800">-- ชม.</span>
-            <span class="text-xs text-slate-400">เป้าหมาย ≥ 500 ชม.</span>
+
+        <!-- MTBF Card -->
+        <div class="bg-white p-5 rounded-2xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition">
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">ค่าเฉลี่ย MTBF</span>
+            <span id="mtbf-status-tag" class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-700">● ผ่านเกณฑ์</span>
+          </div>
+
+          <div class="my-3 flex items-baseline justify-between">
+            <div id="mtbf-display-wrap" class="flex items-baseline gap-1">
+              <span id="overall-mtbf" class="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight">--</span>
+              <span class="text-sm font-bold text-slate-500">ชม.</span>
+            </div>
+            <div id="mtbf-input-wrap" class="hidden flex items-center gap-1">
+              <input type="number" id="manual-mtbf-input" step="0.1" min="0" class="w-28 text-2xl sm:text-3xl font-extrabold text-slate-800 border-b-2 border-slate-400 focus:outline-none bg-slate-50 px-1 rounded" oninput="onManualMetricChange()">
+              <span class="text-sm font-bold text-slate-500">ชม.</span>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-brand-100 flex items-center justify-between text-xs text-slate-500">
+            <span>เป้าหมายเกณฑ์:</span>
+            <div class="flex items-center gap-1 font-medium">
+              <span>≥</span>
+              <input type="number" id="target-mtbf" value="500" step="10" class="w-16 text-center border border-brand-200 rounded px-1 py-0.5 font-bold text-slate-700 bg-brand-50/30 focus:outline-none focus:border-brand-500" oninput="updateAllCalculations()">
+              <span>ชม.</span>
+            </div>
           </div>
         </div>
-        <div class="bg-white p-4 rounded-2xl border border-brand-200 shadow-sm">
-          <p class="text-xs font-semibold text-slate-400 uppercase">ค่าเฉลี่ย MTTR</p>
-          <div class="mt-2 flex items-baseline justify-between">
-            <span id="overall-mttr" class="text-2xl font-bold text-slate-800">-- ชม.</span>
-            <span class="text-xs text-slate-400">เป้าหมาย ≤ 8 ชม.</span>
+
+        <!-- MTTR Card -->
+        <div class="bg-white p-5 rounded-2xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition">
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">ค่าเฉลี่ย MTTR</span>
+            <span id="mttr-status-tag" class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-700">● ผ่านเกณฑ์</span>
+          </div>
+
+          <div class="my-3 flex items-baseline justify-between">
+            <div id="mttr-display-wrap" class="flex items-baseline gap-1">
+              <span id="overall-mttr" class="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight">--</span>
+              <span class="text-sm font-bold text-slate-500">ชม.</span>
+            </div>
+            <div id="mttr-input-wrap" class="hidden flex items-center gap-1">
+              <input type="number" id="manual-mttr-input" step="0.1" min="0" class="w-24 text-2xl sm:text-3xl font-extrabold text-slate-800 border-b-2 border-slate-400 focus:outline-none bg-slate-50 px-1 rounded" oninput="onManualMetricChange()">
+              <span class="text-sm font-bold text-slate-500">ชม.</span>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-brand-100 flex items-center justify-between text-xs text-slate-500">
+            <span>เป้าหมายเกณฑ์:</span>
+            <div class="flex items-center gap-1 font-medium">
+              <span>≤</span>
+              <input type="number" id="target-mttr" value="8" step="0.5" class="w-14 text-center border border-brand-200 rounded px-1 py-0.5 font-bold text-slate-700 bg-brand-50/30 focus:outline-none focus:border-brand-500" oninput="updateAllCalculations()">
+              <span>ชม.</span>
+            </div>
           </div>
         </div>
+
       </div>
 
       <!-- Equipment Table & Controls -->
       <div class="bg-white rounded-2xl border border-brand-200 shadow-sm overflow-hidden">
         <div class="p-4 border-b border-brand-100 flex flex-wrap justify-between items-center gap-3 bg-brand-50/50">
           <div>
-            <h2 class="text-sm sm:text-base font-bold text-slate-800">รายการอุปกรณ์และค่าดัชนีชี้วัด (Reliability Indices)</h2>
+            <h2 class="text-sm sm:text-base font-bold text-slate-800">รายการอุปกรณ์และค่าดัชนีชี้วัดรายตัว (25 รายการ)</h2>
             <p class="text-xs text-slate-500">พิมพ์เปลี่ยนตัวเลขในตารางเพื่อคำนวณและประเมินผลได้ทันทีแบบ Real-time</p>
           </div>
           
@@ -345,25 +417,132 @@
 
     let devices = [...defaultData];
     let currentFilter = 'ALL';
+    let calcMode = 'auto'; // 'auto' or 'manual'
+
+    let manualAvail = 99.82;
+    let manualMtbf = 3000.0;
+    let manualMttr = 5.5;
 
     const solutions = {
       TX: {
-        lowAvail: "🔴 <b>ตรวจพบค่าความพร้อมใช้งาน (Availability) ต่ำกว่า 98.5%:</b><br>• ดำเนินการทดสอบ DGA (Dissolved Gas Analysis) ทันทีเพื่อตรวจจับก๊าซไฮโดรคาร์บอนในน้ำมัน<br>• ตรวจสอบจุดต่อสายและ Bushing ด้วยกล้องถ่ายภาพความร้อน (Infrared Thermoscan)<br>• วิเคราะห์ความเป็นฉนวนของฉนวนกระดาษ (Furan Analysis)",
-        highMttr: "🟠 <b>ตรวจพบเวลาบำรุงรักษา (MTTR) สูงเกิน 8 ชม.:</b><br>• จัดเตรียมชุดประเก็น (Gasket Kit) และอะไหล่ฉุกเฉินประจำสถานี<br>• ปรับปรุงขั้นตอนการปฏิบัติงานบำรุงรักษาเชิงแก้ไขให้กระชับและรวดเร็ว",
+        lowAvail: "🔴 <b>ตรวจพบค่าความพร้อมใช้งาน (Availability) ต่ำกว่าเกณฑ์:</b><br>• ดำเนินการทดสอบ DGA (Dissolved Gas Analysis) ทันทีเพื่อตรวจจับก๊าซไฮโดรคาร์บอนในน้ำมัน<br>• ตรวจสอบจุดต่อสายและ Bushing ด้วยกล้องถ่ายภาพความร้อน (Infrared Thermoscan)<br>• วิเคราะห์ความเป็นฉนวนของฉนวนกระดาษ (Furan Analysis)",
+        highMttr: "🟠 <b>ตรวจพบเวลาบำรุงรักษา (MTTR) สูงเกินเกณฑ์:</b><br>• จัดเตรียมชุดประเก็น (Gasket Kit) และอะไหล่ฉุกเฉินประจำสถานี<br>• ปรับปรุงขั้นตอนการปฏิบัติงานบำรุงรักษาเชิงแก้ไขให้กระชับและรวดเร็ว",
         normal: "🟢 <b>สถานะการทำงานปกติ:</b><br>• อุปกรณ์อยู่ในเกณฑ์มาตรฐานความน่าเชื่อถือสูง ให้ปฏิบัติตามแผนการบำรุงรักษาเชิงป้องกันตามรอบปกติ"
       },
       GIS: {
-        lowAvail: "🔴 <b>ตรวจพบค่าความพร้อมใช้งาน (Availability) ต่ำกว่า 98.5%:</b><br>• ตรวจวัดระดับแรงดันก๊าซและทดสอบการรั่วไหลของ SF6 ด้วย Sniffer Detector<br>• ตรวจสอบการคายประจุบางส่วน (Partial Discharge Test) ภายในช่องก๊าซ<br>• ทดสอบความต้านทานหน้าสัมผัสหลัก (Contact Resistance Test)",
-        highMttr: "🟠 <b>ตรวจพบเวลาบำรุงรักษา (MTTR) สูงเกิน 8 ชม.:</b><br>• ตรวจสอบความพร้อมของชุดอัดก๊าซ SF6 Gas Cart<br>• จัดเตรียมชุดคอยล์ตัดตอน (Trip/Close Coil) สำรอง",
+        lowAvail: "🔴 <b>ตรวจพบค่าความพร้อมใช้งาน (Availability) ต่ำกว่าเกณฑ์:</b><br>• ตรวจวัดระดับแรงดันก๊าซและทดสอบการรั่วไหลของ SF6 ด้วย Sniffer Detector<br>• ตรวจสอบการคายประจุบางส่วน (Partial Discharge Test) ภายในช่องก๊าซ<br>• ทดสอบความต้านทานหน้าสัมผัสหลัก (Contact Resistance Test)",
+        highMttr: "🟠 <b>ตรวจพบเวลาบำรุงรักษา (MTTR) สูงเกินเกณฑ์:</b><br>• ตรวจสอบความพร้อมของชุดอัดก๊าซ SF6 Gas Cart<br>• จัดเตรียมชุดคอยล์ตัดตอน (Trip/Close Coil) สำรอง",
         normal: "🟢 <b>สถานะการทำงานปกติ:</b><br>• อุปกรณ์อยู่ในเกณฑ์มาตรฐานความน่าเชื่อถือสูง ให้ปฏิบัติตามแผนการบำรุงรักษาเชิงป้องกันตามรอบปกติ"
       }
     };
+
+    function setCalcMode(mode) {
+      calcMode = mode;
+      const autoBtn = document.getElementById('mode-auto');
+      const manualBtn = document.getElementById('mode-manual');
+
+      const availDisp = document.getElementById('avail-display-wrap');
+      const availInp = document.getElementById('avail-input-wrap');
+      const mtbfDisp = document.getElementById('mtbf-display-wrap');
+      const mtbfInp = document.getElementById('mtbf-input-wrap');
+      const mttrDisp = document.getElementById('mttr-display-wrap');
+      const mttrInp = document.getElementById('mttr-input-wrap');
+
+      if (mode === 'auto') {
+        autoBtn.className = "px-2.5 py-1 rounded-md bg-white text-brand-700 shadow-2xs transition font-semibold";
+        manualBtn.className = "px-2.5 py-1 rounded-md text-slate-600 hover:text-brand-700 transition";
+        availDisp.classList.remove('hidden');
+        availInp.classList.add('hidden');
+        mtbfDisp.classList.remove('hidden');
+        mtbfInp.classList.add('hidden');
+        mttrDisp.classList.remove('hidden');
+        mttrInp.classList.add('hidden');
+      } else {
+        manualBtn.className = "px-2.5 py-1 rounded-md bg-white text-brand-700 shadow-2xs transition font-semibold";
+        autoBtn.className = "px-2.5 py-1 rounded-md text-slate-600 hover:text-brand-700 transition";
+        availDisp.classList.add('hidden');
+        availInp.classList.remove('hidden');
+        mtbfDisp.classList.add('hidden');
+        mtbfInp.classList.remove('hidden');
+        mttrDisp.classList.add('hidden');
+        mttrInp.classList.remove('hidden');
+
+        document.getElementById('manual-avail-input').value = manualAvail.toFixed(2);
+        document.getElementById('manual-mtbf-input').value = manualMtbf.toFixed(1);
+        document.getElementById('manual-mttr-input').value = manualMttr.toFixed(1);
+      }
+      updateAllCalculations();
+    }
+
+    function onManualMetricChange() {
+      manualMtbf = parseFloat(document.getElementById('manual-mtbf-input').value) || 0;
+      manualMttr = parseFloat(document.getElementById('manual-mttr-input').value) || 0;
+      
+      // Auto compute availability if mtbf and mttr are given
+      if (manualMtbf + manualMttr > 0) {
+        manualAvail = (manualMtbf / (manualMtbf + manualMttr)) * 100;
+        document.getElementById('manual-avail-input').value = manualAvail.toFixed(2);
+      }
+      updateAllCalculations();
+    }
+
+    function updateAllCalculations() {
+      const targetAvail = parseFloat(document.getElementById('target-avail').value) || 98.5;
+      const targetMtbf = parseFloat(document.getElementById('target-mtbf').value) || 500;
+      const targetMttr = parseFloat(document.getElementById('target-mttr').value) || 8;
+
+      let currentAvail = 0;
+      let currentMtbf = 0;
+      let currentMttr = 0;
+
+      if (calcMode === 'auto') {
+        let totalOp = 0, totalFail = 0, totalDown = 0;
+        devices.forEach(d => {
+          totalOp += d.operatingHrs;
+          totalFail += d.failures;
+          totalDown += d.downTime;
+        });
+        currentMtbf = totalFail > 0 ? (totalOp / totalFail) : totalOp;
+        currentMttr = totalFail > 0 ? (totalDown / totalFail) : 0;
+        currentAvail = (totalOp + totalDown) > 0 ? (totalOp / (totalOp + totalDown)) * 100 : 100;
+
+        document.getElementById('overall-avail').innerText = currentAvail.toFixed(2) + '%';
+        document.getElementById('overall-mtbf').innerText = currentMtbf.toFixed(1);
+        document.getElementById('overall-mttr').innerText = currentMttr.toFixed(1);
+      } else {
+        currentAvail = parseFloat(document.getElementById('manual-avail-input').value) || 0;
+        currentMtbf = parseFloat(document.getElementById('manual-mtbf-input').value) || 0;
+        currentMttr = parseFloat(document.getElementById('manual-mttr-input').value) || 0;
+      }
+
+      // Check Status Tags for Cards
+      const isAvailPass = currentAvail >= targetAvail;
+      const isMtbfPass = currentMtbf >= targetMtbf;
+      const isMttrPass = currentMttr <= targetMttr;
+
+      const tagAvail = document.getElementById('avail-status-tag');
+      tagAvail.className = `text-[10px] px-2 py-0.5 rounded-full font-bold ${isAvailPass ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`;
+      tagAvail.innerText = isAvailPass ? '● ผ่านเกณฑ์' : '▲ ต่ำกว่าเกณฑ์';
+
+      const tagMtbf = document.getElementById('mtbf-status-tag');
+      tagMtbf.className = `text-[10px] px-2 py-0.5 rounded-full font-bold ${isMtbfPass ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`;
+      tagMtbf.innerText = isMtbfPass ? '● ผ่านเกณฑ์' : '▲ ต่ำกว่าเกณฑ์';
+
+      const tagMttr = document.getElementById('mttr-status-tag');
+      tagMttr.className = `text-[10px] px-2 py-0.5 rounded-full font-bold ${isMttrPass ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`;
+      tagMttr.innerText = isMttrPass ? '● ผ่านเกณฑ์' : '▲ สูงกว่าเกณฑ์';
+
+      renderTable();
+    }
 
     function renderTable() {
       const tbody = document.getElementById('equipment-tbody');
       tbody.innerHTML = '';
 
-      let totalOp = 0, totalFail = 0, totalDown = 0;
+      const targetAvail = parseFloat(document.getElementById('target-avail').value) || 98.5;
+      const targetMtbf = parseFloat(document.getElementById('target-mtbf').value) || 500;
+      const targetMttr = parseFloat(document.getElementById('target-mttr').value) || 8;
+
       const filtered = devices.filter(d => currentFilter === 'ALL' || d.type === currentFilter);
 
       filtered.forEach((d) => {
@@ -373,13 +552,10 @@
           ? (d.operatingHrs / (d.operatingHrs + d.downTime)) * 100 
           : 100;
 
-        totalOp += d.operatingHrs;
-        totalFail += d.failures;
-        totalDown += d.downTime;
-
-        const isAvailPass = avail >= 98.5;
-        const isMttrPass = mttr <= 8;
-        const isPass = isAvailPass && isMttrPass;
+        const isAvailPass = avail >= targetAvail;
+        const isMttrPass = mttr <= targetMttr;
+        const isMtbfPass = mtbf >= targetMtbf;
+        const isPass = isAvailPass && isMttrPass && isMtbfPass;
 
         const row = document.createElement('tr');
         row.className = `hover:bg-brand-50/50 transition ${!isPass ? 'bg-rose-50/30' : ''}`;
@@ -399,7 +575,7 @@
           <td class="p-3">
             <input type="number" value="${d.downTime}" min="0" class="w-14 border border-brand-200 rounded px-1.5 py-0.5 text-center bg-white" onchange="updateValue('${d.tag}', 'downTime', this.value)">
           </td>
-          <td class="p-3 font-medium text-slate-700">${mtbf.toFixed(1)} <span class="text-[10px] text-slate-400">ชม.</span></td>
+          <td class="p-3 font-medium ${!isMtbfPass ? 'text-rose-600 font-bold' : 'text-slate-700'}">${mtbf.toFixed(1)} <span class="text-[10px] text-slate-400">ชม.</span></td>
           <td class="p-3 font-medium ${!isMttrPass ? 'text-rose-600 font-bold' : 'text-slate-700'}">${mttr.toFixed(1)} <span class="text-[10px] text-slate-400">ชม.</span></td>
           <td class="p-3 font-bold ${!isAvailPass ? 'text-rose-600' : 'text-emerald-600'}">${avail.toFixed(2)}%</td>
           <td class="p-3">
@@ -415,21 +591,13 @@
         `;
         tbody.appendChild(row);
       });
-
-      const globalMtbf = totalFail > 0 ? (totalOp / totalFail) : totalOp;
-      const globalMttr = totalFail > 0 ? (totalDown / totalFail) : 0;
-      const globalAvail = (totalOp + totalDown) > 0 ? (totalOp / (totalOp + totalDown)) * 100 : 100;
-
-      document.getElementById('overall-avail').innerText = globalAvail.toFixed(2) + '%';
-      document.getElementById('overall-mtbf').innerText = globalMtbf.toFixed(1) + ' ชม.';
-      document.getElementById('overall-mttr').innerText = globalMttr.toFixed(1) + ' ชม.';
     }
 
     function updateValue(tag, key, val) {
       const dev = devices.find(d => d.tag === tag);
       if (dev) {
         dev[key] = parseFloat(val) || 0;
-        renderTable();
+        updateAllCalculations();
       }
     }
 
@@ -450,6 +618,9 @@
       const dev = devices.find(d => d.tag === tag);
       if (!dev) return;
 
+      const targetAvail = parseFloat(document.getElementById('target-avail').value) || 98.5;
+      const targetMttr = parseFloat(document.getElementById('target-mttr').value) || 8;
+
       const mttr = dev.failures > 0 ? (dev.downTime / dev.failures) : 0;
       const avail = (dev.operatingHrs + dev.downTime) > 0 
         ? (dev.operatingHrs / (dev.operatingHrs + dev.downTime)) * 100 
@@ -462,13 +633,13 @@
       title.innerText = `มาตรการบำรุงรักษา: ${dev.tag} (${dev.type === 'TX' ? 'หม้อแปลงไฟฟ้า' : 'สวิตซ์เกียร์ GIS'})`;
 
       let msg = "";
-      if (avail < 98.5) {
+      if (avail < targetAvail) {
         msg += `<div class="p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-800">${solutions[dev.type].lowAvail}</div>`;
       }
-      if (mttr > 8) {
+      if (mttr > targetMttr) {
         msg += `<div class="p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 mt-2">${solutions[dev.type].highMttr}</div>`;
       }
-      if (avail >= 98.5 && mttr <= 8) {
+      if (avail >= targetAvail && mttr <= targetMttr) {
         msg = `<div class="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800">${solutions[dev.type].normal}</div>`;
       }
 
@@ -517,7 +688,7 @@
     }
 
     window.onload = () => {
-      renderTable();
+      updateAllCalculations();
       initForm();
     };
   </script>
