@@ -1,1107 +1,1038 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RAM Executive Dashboard & Inspection System</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Google Fonts: Prompt -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Prompt', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              50: '#fff5f7',
-              100: '#ffeef2',
-              200: '#fedce5',
-              300: '#fdbecd',
-              400: '#f88da7',
-              500: '#f05b82',
-              600: '#de3866',
-              700: '#ba234e',
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAM Executive Real-time & Monthly Analytics Dashboard</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Google Fonts: Prompt -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Prompt', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#fff5f7',
+              100: '#ffeef2',
+              200: '#fedce5',
+              300: '#fdbecd',
+              400: '#f88da7',
+              500: '#f05b82',
+              600: '#de3866',
+              700: '#ba234e',
+            }
+          }
+        }
+      }
+    }
+  </script>
 
-  <style>
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { 
-      -webkit-appearance: none; 
-      margin: 0; 
-    }
-    input[type=number] {
-      -moz-appearance: textfield;
-    }
+  <style>
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
 
-    @media print {
-      body * {
-        visibility: hidden;
-      }
-      #printable-form, #printable-form * {
-        visibility: visible;
-      }
-      #printable-form {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        margin: 0;
-        padding: 5mm 8mm;
-        box-shadow: none;
-        border: none;
-      }
-      .no-print {
-        display: none !important;
-      }
-      @page {
-        size: A4 portrait;
-        margin: 6mm;
-      }
-    }
-  </style>
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printable-form, #printable-form * {
+        visibility: visible;
+      }
+      #printable-form {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 8mm 10mm;
+        box-shadow: none;
+        border: none;
+      }
+      .no-print {
+        display: none !important;
+      }
+      @page {
+        size: A4 portrait;
+        margin: 8mm;
+      }
+    }
+  </style>
 </head>
 <body class="bg-brand-50 text-slate-700 min-h-screen flex flex-col font-sans">
 
-  <!-- Header -->
-  <header class="bg-white/90 backdrop-blur-md border-b border-brand-200 sticky top-0 z-30 no-print shadow-xs">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-3">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-600 to-brand-400 text-white flex items-center justify-center font-extrabold text-xl shadow-md shadow-brand-200">
-          ⚡
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-base sm:text-lg font-bold text-slate-800 leading-tight">RAM Executive Simulation System</h1>
-            <span class="px-2 py-0.5 bg-brand-100 text-brand-700 text-[10px] font-bold rounded-full uppercase tracking-wider">Live & Substation GIS</span>
-          </div>
-          <p class="text-xs text-brand-600 font-medium">ระบบวิเคราะห์ความน่าเชื่อถือสถานีไฟฟ้าและบริหารจัดการข้อมูลอุปกรณ์</p>
-        </div>
-      </div>
-      
-      <!-- Nav Tabs & Live Toggle Button -->
-      <div class="flex flex-wrap items-center gap-2">
-        <button onclick="toggleLiveMode()" id="live-btn" class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-xl border border-emerald-300 hover:bg-emerald-200 transition shadow-xs">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-          <span id="live-status-text">🔴 LIVE: กำลังอัปเดต</span>
-        </button>
-
-        <nav class="flex space-x-1 bg-brand-100/80 p-1 rounded-xl text-xs sm:text-sm font-medium">
-          <button onclick="switchTab('realtime')" id="tab-realtime" class="px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold">
-            ⚡ เรียลไทม์
-          </button>
-          <button onclick="switchTab('monthly')" id="tab-monthly" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold">
-            📅 สถิติรายเดือน
-          </button>
-          <button onclick="switchTab('form')" id="tab-form" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold">
-            📝 ใบตรวจหน้างาน A4
-          </button>
-        </nav>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main Content Container -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
-    
-    <!-- Tab 1: Real-time Live View -->
-    <div id="view-realtime" class="space-y-6">
-
-      <!-- Geolocation & Asset Location Overview Banner -->
-      <div class="bg-white p-5 rounded-3xl border-2 border-brand-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div class="space-y-1">
-          <div class="flex items-center gap-2">
-            <span class="px-2.5 py-0.5 bg-brand-500 text-white text-[11px] font-bold rounded-lg">📍 Geolocation Node</span>
-            <h2 class="text-base sm:text-lg font-bold text-slate-800">สถานีไฟฟ้าย่อยนิคมอุตสาหกรรมบางปู (Bangpu Substation)</h2>
-          </div>
-          <p class="text-xs text-slate-500">
-            พิกัดอ้างอิง: <span class="font-bold text-slate-700 font-mono">13.5248° N, 100.6402° E</span> | โครงสร้างอุปกรณ์: <span class="font-semibold text-brand-600">หม้อแปลง 3 ตัว (150 MVA N-1)</span> และ <span class="font-semibold text-brand-600">สวิตช์เกียร์ GIS 1 ชุด (7 Bays)</span>
-          </p>
-        </div>
-        <div class="flex items-center gap-2 shrink-0">
-          <a href="https://maps.google.com/?q=13.5248,100.6402" target="_blank" class="px-3 py-1.5 bg-brand-50 hover:bg-brand-100 text-brand-700 text-xs font-bold rounded-xl border border-brand-300 transition flex items-center gap-1.5 shadow-2xs">
-            🗺️ เปิดดูพิกัดบน Map
-          </a>
-        </div>
-      </div>
-
-      <!-- Executive Goal Simulator Box -->
-      <div class="bg-gradient-to-br from-white via-brand-50/30 to-brand-100/40 p-5 sm:p-6 rounded-3xl border-2 border-brand-200 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div>
-            <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">🎯 Executive Strategy Simulator</span>
-            <h2 class="text-base sm:text-lg font-bold text-slate-800">เครื่องมือจำลองเป้าหมาย Availability สำหรับผู้บริหาร</h2>
-          </div>
-          <div class="flex items-center gap-1.5">
-            <span class="text-xs text-slate-500 font-medium mr-1">เป้าหมายสำเร็จรูป:</span>
-            <button onclick="applyPreset(96.0)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">96% ขั้นต่ำ</button>
-            <button onclick="applyPreset(98.0)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">98% ดี</button>
-            <button onclick="applyPreset(99.0)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">99% มาตรฐาน</button>
-            <button onclick="applyPreset(99.5)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">99.5% World-Class</button>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-white p-4 rounded-2xl border border-brand-100 shadow-2xs">
-          <div class="md:col-span-4">
-            <label class="block text-xs font-bold text-slate-600 mb-1">ต้องการ Availability เป้าหมาย:</label>
-            <div class="flex items-center gap-2">
-              <input type="range" id="sim-slider" min="90" max="99.9" step="0.1" value="96.0" class="w-full accent-brand-500 cursor-pointer" oninput="onSliderChange(this.value)">
-              <div class="flex items-center font-extrabold text-brand-600 text-xl bg-brand-50 px-3 py-1 rounded-xl border border-brand-200">
-                <span id="slider-val">96.0</span>%
-              </div>
-            </div>
-          </div>
-
-          <div class="md:col-span-4">
-            <label class="block text-xs font-bold text-slate-600 mb-1">สมมติเวลาบำรุงรักษาเฉลี่ยของช่าง (MTTR):</label>
-            <div class="flex items-center gap-2">
-              <select id="sim-mttr-select" class="w-full border border-brand-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700 bg-brand-50/40 focus:outline-none focus:border-brand-500" onchange="runSimulation()">
-                <option value="3.0">⚡ 3.0 ชม. (ทีมช่างระดับ World-Class / Spare พร้อม)</option>
-                <option value="4.0">🚀 4.0 ชม. (ทีมช่างมาตรฐานสถานีไฟฟ้า)</option>
-                <option value="5.0">⏱️ 5.0 ชม. (ทีมช่างระดับทั่วไป)</option>
-                <option value="6.0" selected>🔧 6.0 ชม. (กรณีงานบำรุงรักษาแก้ไขปกติ)</option>
-                <option value="8.0">⏳ 8.0 ชม. (กรณีต้องรอเบิกอะไหล่)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="md:col-span-4 bg-gradient-to-r from-brand-500 to-brand-600 p-3 rounded-xl text-white shadow-sm flex flex-col justify-between">
-            <span class="text-[11px] font-semibold text-brand-100 uppercase">ผลลัพธ์คำนวณเป้าหมาย MTBF ให้เครื่องจักร</span>
-            <div class="flex items-baseline justify-between mt-1">
-              <span id="sim-result-mtbf" class="text-2xl font-black tracking-tight">144.0 ชม.</span>
-              <span id="sim-result-fails" class="text-xs text-brand-100 bg-black/15 px-2 py-0.5 rounded-md font-medium">เสียได้ไม่เกิน ~58 ครั้ง/ปี</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Top 3 Direct-Editable Cards (Real-time) -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        
-        <!-- 1. Availability Card -->
-        <div class="bg-white p-5 rounded-3xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">AVAILABILITY (%)</span>
-              <span id="avail-status-tag" class="text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-700">
-                ● ผ่านเกณฑ์
-              </span>
-            </div>
-            
-            <div class="my-2 flex items-center">
-              <input type="number" id="card-avail" value="97.28" step="0.01" min="1" max="99.99" 
-                class="w-full text-3xl sm:text-4xl font-black text-brand-600 border-b-2 border-dashed border-brand-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
-                oninput="onAvailCardDirectInput()">
-              <span class="text-2xl sm:text-3xl font-black text-brand-600 ml-1">%</span>
-            </div>
-          </div>
-
-          <div class="pt-2.5 border-t border-brand-100 flex items-center justify-between text-xs">
-            <span class="text-slate-400">เกณฑ์ขั้นต่ำ:</span>
-            <span class="font-extrabold text-brand-700 bg-brand-50 px-2.5 py-0.5 rounded-md">เป้าหมาย ≥ 96.0%</span>
-          </div>
-        </div>
-
-        <!-- 2. MTBF Card -->
-        <div class="bg-white p-5 rounded-3xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">MTBF เฉลี่ย (ชม.)</span>
-              <span class="text-[10px] text-brand-600 font-bold bg-brand-50 px-2 py-0.5 rounded">พิมพ์แก้ไขได้</span>
-            </div>
-
-            <div class="my-2 flex items-center">
-              <input type="number" id="card-mtbf" value="1285.7" step="1" min="0" 
-                class="w-full text-3xl sm:text-4xl font-black text-slate-800 border-b-2 border-dashed border-slate-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
-                oninput="onMtbfMttrCardInput()">
-              <span class="text-base sm:text-lg font-bold text-slate-500 ml-1 shrink-0">ชม.</span>
-            </div>
-          </div>
-
-          <div class="pt-2.5 border-t border-brand-100 text-[11px] text-slate-400 font-medium">
-            ระยะเวลาที่เครื่องทำงานต่อเนื่อง
-          </div>
-        </div>
-
-        <!-- 3. MTTR Card -->
-        <div class="bg-white p-5 rounded-3xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">MTTR เฉลี่ย (ชม.)</span>
-              <span class="text-[10px] text-brand-600 font-bold bg-brand-50 px-2 py-0.5 rounded">พิมพ์แก้ไขได้</span>
-            </div>
-
-            <div class="my-2 flex items-center">
-              <input type="number" id="card-mttr" value="23.3" step="0.1" min="0.1" 
-                class="w-full text-3xl sm:text-4xl font-black text-slate-800 border-b-2 border-dashed border-slate-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
-                oninput="onMtbfMttrCardInput()">
-              <span class="text-base sm:text-lg font-bold text-slate-500 ml-1 shrink-0">ชม.</span>
-            </div>
-          </div>
-
-          <div class="pt-2.5 border-t border-brand-100 text-[11px] text-slate-400 font-medium">
-            เวลาเฉลี่ยในการบำรุงรักษา
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Equipment Table Section Real-time -->
-      <div class="bg-white rounded-3xl border border-brand-200 shadow-sm overflow-hidden">
-        <div class="p-4 sm:p-5 border-b border-brand-100 flex flex-wrap justify-between items-center gap-3 bg-brand-50/50">
-          <div>
-            <h2 class="text-sm sm:text-base font-extrabold text-slate-800">รายการอุปกรณ์สถานีไฟฟ้าแบบ Real-time (หม้อแปลง 15 ตัว | GIS 10 ตัว)</h2>
-            <p class="text-xs text-slate-500">ข้อมูลคำนวณแบบ Real-time จำลองพบอุปกรณ์ที่มีความผิดปกติและต่ำกว่าเกณฑ์ 96%</p>
-          </div>
-          
-          <div class="flex flex-wrap items-center gap-2">
-            <button onclick="syncTableToCards()" class="px-3.5 py-1.5 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-2xs">
-              🔄 ดึงค่าสรุปจากตารางขึ้นการ์ด
-            </button>
-            <button onclick="filterType('ALL')" id="filter-ALL" class="px-3 py-1 text-xs font-bold rounded-xl bg-brand-500 text-white transition shadow-2xs">ทั้งหมด (25)</button>
-            <button onclick="filterType('TX')" id="filter-TX" class="px-3 py-1 text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition">หม้อแปลง (15)</button>
-            <button onclick="filterType('GIS')" id="filter-GIS" class="px-3 py-1 text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition">GIS (10)</button>
-          </div>
-        </div>
-
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-brand-100/70 text-slate-600 text-xs uppercase font-semibold">
-              <tr>
-                <th class="p-3 pl-4">รหัสอุปกรณ์</th>
-                <th class="p-3">ประเภท</th>
-                <th class="p-3">เวลาทำงาน (ชม.)</th>
-                <th class="p-3">ความขัดข้อง (ครั้ง)</th>
-                <th class="p-3">เวลาบำรุงรักษา (ชม.)</th>
-                <th class="p-3">MTBF (ชม.)</th>
-                <th class="p-3">MTTR (ชม.)</th>
-                <th class="p-3">Availability</th>
-                <th class="p-3">สถานะ (≥96%)</th>
-                <th class="p-3 pr-4 text-center">มาตรการแก้ไข</th>
-              </tr>
-            </thead>
-            <tbody id="equipment-tbody" class="divide-y divide-brand-100 font-normal">
-              <!-- Rendered via JavaScript -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab 2: Monthly Analytics View -->
-    <div id="view-monthly" class="hidden space-y-6">
-      
-      <!-- Month Selector Bar -->
-      <div class="bg-white p-4 sm:p-5 rounded-3xl border-2 border-brand-200 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
-          <div>
-            <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">📅 Monthly Performance Filter</span>
-            <h2 class="text-base sm:text-lg font-extrabold text-slate-800">เลือกดูสถิติและผลการดำเนินงานประจำเดือน</h2>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-slate-400">กำลังแสดงผล:</span>
-            <span id="current-month-badge" class="px-3 py-1 bg-brand-500 text-white font-bold text-xs rounded-xl shadow-xs">มกราคม</span>
-          </div>
-        </div>
-
-        <!-- 12 Month Buttons -->
-        <div class="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-1.5 pt-1">
-          <button onclick="selectMonth(0)" id="m-btn-0" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ม.ค.</button>
-          <button onclick="selectMonth(1)" id="m-btn-1" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.พ.</button>
-          <button onclick="selectMonth(2)" id="m-btn-2" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">มี.ค.</button>
-          <button onclick="selectMonth(3)" id="m-btn-3" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">เม.ย.</button>
-          <button onclick="selectMonth(4)" id="m-btn-4" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">พ.ค.</button>
-          <button onclick="selectMonth(5)" id="m-btn-5" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">มิ.ย.</button>
-          <button onclick="selectMonth(6)" id="m-btn-6" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.ค.</button>
-          <button onclick="selectMonth(7)" id="m-btn-7" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ส.ค.</button>
-          <button onclick="selectMonth(8)" id="m-btn-8" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.ย.</button>
-          <button onclick="selectMonth(9)" id="m-btn-9" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ต.ค.</button>
-          <button onclick="selectMonth(10)" id="m-btn-10" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">พ.ย.</button>
-          <button onclick="selectMonth(11)" id="m-btn-11" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ธ.ค.</button>
-        </div>
-      </div>
-
-      <!-- Monthly Summary KPI Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-white p-5 rounded-3xl border border-brand-200 shadow-sm">
-          <span class="text-xs font-bold text-slate-400 uppercase">Availability ประจำเดือน</span>
-          <div class="mt-2 flex items-baseline justify-between">
-            <span id="monthly-avail-val" class="text-3xl font-black text-brand-600">--%</span>
-            <span id="monthly-avail-tag" class="text-xs px-2 py-0.5 rounded-lg font-bold"></span>
-          </div>
-        </div>
-        <div class="bg-white p-5 rounded-3xl border border-brand-200 shadow-sm">
-          <span class="text-xs font-bold text-slate-400 uppercase">MTBF เฉลี่ย</span>
-          <div class="mt-2 flex items-baseline justify-between">
-            <span id="monthly-mtbf-val" class="text-3xl font-black text-slate-800">--</span>
-            <span class="text-xs text-slate-400 font-medium">ชั่วโมงทำงานต่อเนื่อง</span>
-          </div>
-        </div>
-        <div class="bg-white p-5 rounded-3xl border border-brand-200 shadow-sm">
-          <span class="text-xs font-bold text-slate-400 uppercase">MTTR เฉลี่ย</span>
-          <div class="mt-2 flex items-baseline justify-between">
-            <span id="monthly-mttr-val" class="text-3xl font-black text-slate-800">--</span>
-            <span class="text-xs text-slate-400 font-medium">ชั่วโมงบำรุงรักษา</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Interactive Monthly Bar Charts -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        <!-- Chart 1: อุปกรณ์ผ่านเกณฑ์ vs ไม่ผ่านเกณฑ์ -->
-        <div class="lg:col-span-6 bg-white p-5 rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
-          <div class="flex items-center justify-between mb-4">
-            <div>
-              <h3 class="text-sm font-extrabold text-slate-800">📊 สถานะความพร้อมอุปกรณ์ 25 รายการ</h3>
-              <p class="text-xs text-slate-400">จำนวนเครื่องที่ผ่านเกณฑ์ (≥96%) vs ต่ำกว่าเกณฑ์</p>
-            </div>
-            <span id="chart-month-tag-1" class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-xl">ประจำเดือน ม.ค.</span>
-          </div>
-          <div class="h-64 w-full relative">
-            <canvas id="statusChart"></canvas>
-          </div>
-        </div>
-
-        <!-- Chart 2: จำนวนครั้งที่ชำรุดและความเสียหายแยกประเภท -->
-        <div class="lg:col-span-6 bg-white p-5 rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
-          <div class="flex items-center justify-between mb-4">
-            <div>
-              <h3 class="text-sm font-extrabold text-slate-800">📈 ความขัดข้องและเวลาบำรุงรักษา (หม้อแปลง vs GIS)</h3>
-              <p class="text-xs text-slate-400">เปรียบเทียบสถิติความเสียหายและชั่วโมง Down Time</p>
-            </div>
-            <span id="chart-month-tag-2" class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-xl">ประจำเดือน ม.ค.</span>
-          </div>
-          <div class="h-64 w-full relative">
-            <canvas id="failuresChart"></canvas>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- Tab 3: Printable Inspection Form A4 -->
-    <div id="view-form" class="hidden space-y-6">
-      <div class="flex flex-wrap justify-between items-center gap-3 no-print">
-        <div>
-          <h2 class="text-base sm:text-lg font-bold text-slate-800">แบบฟอร์มตรวจสอบหน้างาน: หม้อแปลงไฟฟ้า & GIS (A4)</h2>
-          <p class="text-xs text-slate-500">แบบฟอร์มจัดหน้ากระดาษ A4 ครบ 1 หน้า สำหรับพิมพ์ให้ทีมช่างนำไปบันทึกผลภาคสนาม</p>
-        </div>
-        <button onclick="window.print()" class="flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-bold px-4 py-2 rounded-2xl text-xs sm:text-sm shadow-sm transition">
-          🖨️ สั่งพิมพ์แบบฟอร์ม (A4)
-        </button>
-      </div>
-
-      <!-- Printable A4 Blank Paper Container -->
-      <div id="printable-form" class="bg-white p-5 sm:p-8 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-[11px] leading-tight">
-        
-        <!-- Header -->
-        <div class="border-b-2 border-brand-600 pb-2 mb-3 flex justify-between items-start">
-          <div>
-            <h1 class="text-sm sm:text-base font-bold text-slate-900 tracking-tight">ใบตรวจสอบความพร้อมใช้งานและบำรุงรักษาอุปกรณ์สถานีไฟฟ้า</h1>
-            <p class="text-[10px] text-slate-500">Substation Daily/Routine Visual Inspection Form (Transformer & GIS)</p>
-          </div>
-          <div class="text-right">
-            <span class="inline-block px-2 py-0.5 bg-slate-100 text-slate-700 font-bold text-[9px] rounded border border-slate-300">เอกสารประจำวัน/เดือน</span>
-            <p class="text-[9px] text-slate-400 mt-0.5">สถานีไฟฟ้าย่อยนิคมฯ บางปู (BPU)</p>
-          </div>
-        </div>
-
-        <!-- General Info Blank Lines -->
-        <div class="grid grid-cols-3 gap-y-2 gap-x-4 mb-3 text-[10px] text-slate-700">
-          <div class="flex items-baseline">
-            <span class="font-bold whitespace-nowrap">รหัสอุปกรณ์:</span>
-            <span class="ml-1 flex-1 border-b border-dotted border-slate-400"></span>
-          </div>
-          <div class="flex items-baseline">
-            <span class="font-bold whitespace-nowrap">วันที่/เวลา:</span>
-            <span class="ml-1 flex-1 border-b border-dotted border-slate-400"></span>
-          </div>
-          <div class="flex items-baseline">
-            <span class="font-bold whitespace-nowrap">สภาพอากาศ:</span>
-            <span class="ml-1 flex-1 border-b border-dotted border-slate-400"></span>
-          </div>
-          <div class="flex items-baseline">
-            <span class="font-bold whitespace-nowrap">ผู้ตรวจสอบ:</span>
-            <span class="ml-1 flex-1 border-b border-dotted border-slate-400"></span>
-          </div>
-          <div class="col-span-2 flex items-center gap-3">
-            <span class="font-bold whitespace-nowrap">ประเภทงาน:</span>
-            <label class="flex items-center gap-1 cursor-pointer"><span class="w-3 h-3 border border-slate-400 rounded-xs inline-block"></span> ตรวจประจำวัน</label>
-            <label class="flex items-center gap-1 cursor-pointer"><span class="w-3 h-3 border border-slate-400 rounded-xs inline-block"></span> บำรุงรักษาเชิงป้องกัน (PM)</label>
-            <label class="flex items-center gap-1 cursor-pointer"><span class="w-3 h-3 border border-slate-400 rounded-xs inline-block"></span> ตรวจพิเศษ</label>
-          </div>
-        </div>
-
-        <!-- Section 1: Power Transformer Checklist -->
-        <div class="mb-3">
-          <div class="bg-brand-100/70 px-2 py-0.5 font-bold text-slate-800 text-[10px] rounded-t border border-b-0 border-slate-300">
-            ⚡ 1. รายการตรวจสอบหม้อแปลงไฟฟ้ากำลัง (Power Transformer Checklist)
-          </div>
-          <table class="w-full border border-slate-300 text-[10px]">
-            <thead class="bg-slate-50 text-slate-700 font-semibold">
-              <tr>
-                <th class="border border-slate-300 p-1 text-left w-1/3">รายการตรวจ</th>
-                <th class="border border-slate-300 p-1 text-left">เกณฑ์มาตรฐาน</th>
-                <th class="border border-slate-300 p-1 w-14 text-center">ปกติ</th>
-                <th class="border border-slate-300 p-1 w-14 text-center">ผิดปกติ</th>
-                <th class="border border-slate-300 p-1 w-28 text-left">ค่าที่วัดได้/บันทึก</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-300">
-              <tr>
-                <td class="p-1 border-r border-slate-300 font-medium">ระดับน้ำมัน (Oil Level)</td>
-                <td class="p-1 border-r border-slate-300 text-slate-500">อยู่ในแถบ Normal ตาม Temp.</td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-slate-300"></td>
-              </tr>
-              <tr>
-                <td class="p-1 border-r border-slate-300 font-medium">อุณหภูมิน้ำมัน & ขดลวด</td>
-                <td class="p-1 border-r border-slate-300 text-slate-500">OTI / WTI ไม่เกินพิกัดแจ้งเตือน</td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-slate-300 text-[9px]">Oil:___°C / Wdg:___°C</td>
-              </tr>
-              <tr>
-                <td class="p-1 border-r border-slate-300 font-medium">สารดูดความชื้น (Silica Gel)</td>
-                <td class="p-1 border-r border-slate-300 text-slate-500">ไม่เปลี่ยนสีเกิน 2/3 ของกระบอก</td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-slate-300"></td>
-              </tr>
-              <tr>
-                <td class="p-1 border-r border-slate-300 font-medium">รอยรั่วซึม (Oil Leakage)</td>
-                <td class="p-1 border-r border-slate-300 text-slate-500">ไม่มีคราบซึมตามวาล์ว ครีบ หน้าแปลน</td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-slate-300"></td>
-              </tr>
-              <tr>
-                <td class="p-1 border-r border-slate-300 font-medium">บุชชิ่ง (Bushing & Horn)</td>
-                <td class="p-1 border-r border-slate-300 text-slate-500">สะอาด ไม่แตกร้าว ไม่มีรอยวาบไฟ</td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-slate-300"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Section 2: GIS Checklist -->
-        <div class="mb-3">
-          <div class="bg-brand-100/70 px-2 py-0.5 font-bold text-slate-800 text-[10px] rounded-t border border-b-0 border-slate-300">
-            🛡️ 2. รายการตรวจสอบสวิตช์เกียร์ฉนวนก๊าซ (GIS Checklist)
-          </div>
-          <table class="w-full border border-slate-300 text-[10px]">
-            <thead class="bg-slate-50 text-slate-700 font-semibold">
-              <tr>
-                <th class="border border-slate-300 p-1 text-left w-1/3">รายการตรวจ</th>
-                <th class="border border-slate-300 p-1 text-left">เกณฑ์มาตรฐาน</th>
-                <th class="border border-slate-300 p-1 w-14 text-center">ปกติ</th>
-                <th class="border border-slate-300 p-1 w-14 text-center">ผิดปกติ</th>
-                <th class="border border-slate-300 p-1 w-28 text-left">ค่าที่วัดได้/บันทึก</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-300">
-              <tr>
-                <td class="p-1 border-r border-slate-300 font-medium">แรงดันก๊าซ SF6 (SF6 Gas)</td>
-                <td class="p-1 border-r border-slate-300 text-slate-500">เกจอยู่ในแถบเขียวทุก Compartment</td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-slate-300 text-[9px]">_____ bar/MPa</td>
-              </tr>
-              <tr>
-                <td class="p-1 border-r border-slate-300 font-medium">ตำแหน่งสวิตช์ (Position)</td>
-                <td class="p-1 border-r border-slate-300 text-slate-500">สถานะ CB, DS, ES ตรงกับระบบสั่งการ</td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-slate-300"></td>
-              </tr>
-              <tr>
-                <td class="p-1 border-r border-slate-300 font-medium">กลไกขับเคลื่อน (Mechanism)</td>
-                <td class="p-1 border-r border-slate-300 text-slate-500">สปริงชาร์จเต็ม (Spring Charged)</td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-slate-300 text-[9px]">Counter: ______</td>
-              </tr>
-              <tr>
-                <td class="p-1 border-r border-slate-300 font-medium">ตู้ควบคุมเฉพาะจุด (LCC)</td>
-                <td class="p-1 border-r border-slate-300 text-slate-500">ไม่มี Alarm ค้าง, ฮีตเตอร์ทำงานปกติ</td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-slate-300"></td>
-              </tr>
-              <tr>
-                <td class="p-1 border-r border-slate-300 font-medium">เสียงและกลิ่น (Discharge)</td>
-                <td class="p-1 border-r border-slate-300 text-slate-500">ไม่มีเสียง Corona / Partial Discharge</td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-r border-slate-300 text-center"><span class="inline-block w-3 h-3 rounded-full border border-slate-400"></span></td>
-                <td class="p-1 border-slate-300"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Corrective Action & Evaluation -->
-        <div class="mb-3">
-          <label class="block text-[10px] font-bold text-slate-700 mb-1">ข้อบกพร่องที่พบและมาตรการแก้ไข (Defects & Maintenance Action Required):</label>
-          <div class="border border-slate-300 rounded p-1.5 h-14 bg-slate-50/50"></div>
-        </div>
-
-        <!-- Signatures -->
-        <div class="grid grid-cols-2 gap-4 text-center text-[10px] pt-2 border-t border-slate-300">
-          <div>
-            <p class="mb-5">ลงชื่อ .............................................................. ผู้ตรวจสอบ</p>
-            <p class="text-slate-500 text-[9px]">(ช่างเทคนิคผู้ปฏิบัติงานหน้างาน)</p>
-          </div>
-          <div>
-            <p class="mb-5">ลงชื่อ .............................................................. ผู้รับรอง</p>
-            <p class="text-slate-500 text-[9px]">(วิศวกรผู้ควบคุมและรับรองผล)</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  </main>
-
-  <!-- Action Modal for Correction Guidelines -->
-  <div id="modal-action" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-brand-200">
-      <div class="flex items-center justify-between pb-3 border-b border-brand-100">
-        <h3 id="modal-title" class="font-bold text-slate-800 text-sm">แนวทางแก้ไข</h3>
-        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-lg">&times;</button>
-      </div>
-      <div id="modal-body" class="py-3 text-xs text-slate-600 space-y-2.5 leading-relaxed">
-      </div>
-      <div class="pt-3 border-t border-brand-100 flex justify-end">
-        <button onclick="closeModal()" class="px-4 py-1.5 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-bold">
-          รับทราบ / ปิดหน้าต่าง
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const monthsNames = [
-      'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
-      'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
-    ];
-
-    // Realtime live dataset (25 assets) with intentional realistic faults
-    const realtimeData = [];
-    for (let i = 1; i <= 15; i++) {
-      const tag = `TX-${String(i).padStart(2, '0')}`;
-      let failures = 0, downtime = 0;
-      
-      // Inject anomalies into transformers (TX-04, TX-09, TX-13 fail < 96%)
-      if (i === 4) { failures = 3; downtime = 42; }
-      else if (i === 9) { failures = 2; downtime = 35; }
-      else if (i === 13) { failures = 2; downtime = 32; }
-      else if (i === 7) { failures = 1; downtime = 18; }
-      else if (i === 11) { failures = 1; downtime = 10; }
-
-      realtimeData.push({
-        tag: tag,
-        name: `หม้อแปลงไฟฟ้ากำลัง ${tag}`,
-        type: 'TX',
-        operatingHrs: 720,
-        failures: failures,
-        downTime: downtime
-      });
-    }
-    for (let i = 1; i <= 10; i++) {
-      const tag = `GIS-${String(i).padStart(2, '0')}`;
-      let failures = 0, downtime = 0;
-
-      // Inject anomalies into GIS (GIS-03, GIS-07 fail < 96%)
-      if (i === 3) { failures = 2; downtime = 38; }
-      else if (i === 7) { failures = 3; downtime = 45; }
-      else if (i === 2) { failures = 1; downtime = 15; }
-
-      realtimeData.push({
-        tag: tag,
-        name: `สวิตซ์เกียร์ฉนวนก๊าซ ${tag}`,
-        type: 'GIS',
-        operatingHrs: 720,
-        failures: failures,
-        downTime: downtime
-      });
-    }
-
-    // Monthly historical datasets (12 months)
-    const monthlyDatasets = [];
-    for (let m = 0; m < 12; m++) {
-      const devList = [];
-      for (let i = 1; i <= 15; i++) {
-        const tag = `TX-${String(i).padStart(2, '0')}`;
-        let failures = 0, downtime = 0;
-        
-        if (m === 0 && (i === 4 || i === 9)) { failures = 2; downtime = 35; }
-        else if (m === 3 && (i === 2 || i === 4 || i === 11 || i === 14)) { failures = 3; downtime = 45; }
-        else if (m === 6 && (i === 7 || i === 13)) { failures = 2; downtime = 34; }
-        else if (m === 8 && (i === 1 || i === 9)) { failures = 3; downtime = 42; }
-        else if (m === 10 && (i === 3)) { failures = 1; downtime = 18; }
-        else if (m % 2 === 1 && (i === 5)) { failures = 1; downtime = 12; }
-
-        devList.push({
-          tag: tag,
-          name: `หม้อแปลงไฟฟ้ากำลัง ${tag}`,
-          type: 'TX',
-          operatingHrs: 720,
-          failures: failures,
-          downTime: downtime
-        });
-      }
-      for (let i = 1; i <= 10; i++) {
-        const tag = `GIS-${String(i).padStart(2, '0')}`;
-        let failures = 0, downtime = 0;
-
-        if (m === 0 && (i === 3 || i === 7)) { failures = 2; downtime = 38; }
-        else if (m === 4 && (i === 6 || i === 8)) { failures = 3; downtime = 46; }
-        else if (m === 7 && (i === 2 || i === 5)) { failures = 2; downtime = 36; }
-        else if (m === 11 && (i === 10)) { failures = 1; downtime = 14; }
-
-        devList.push({
-          tag: tag,
-          name: `สวิตซ์เกียร์ฉนวนก๊าซ ${tag}`,
-          type: 'GIS',
-          operatingHrs: 720,
-          failures: failures,
-          downTime: downtime
-        });
-      }
-      monthlyDatasets.push(devList);
-    }
-
-    let selectedMonthIndex = 0;
-    let currentFilter = 'ALL';
-    const AVAIL_THRESHOLD = 96.0;
-
-    let statusChartInstance = null;
-    let failuresChartInstance = null;
-    let liveInterval = null;
-    let isLiveActive = true;
-
-    const solutions = {
-      TX: {
-        lowAvail: "🔴 <b>ตรวจพบค่าความพร้อมใช้งาน (Availability) ต่ำกว่า 96%:</b><br>• ดำเนินการทดสอบ DGA (Dissolved Gas Analysis) ตรวจวัดก๊าซไฮโดรคาร์บอนในน้ำมันหม้อแปลง<br>• ตรวจสอบจุดต่อสายและ Bushing ด้วยกล้องถ่ายภาพความร้อน (Infrared Thermoscan)<br>• วิเคราะห์การเสื่อมสภาพของฉนวนกระดาษ (Furan Test)",
-        normal: "🟢 <b>สถานะการทำงานปกติ (ผ่านเกณฑ์ ≥ 96%):</b><br>• อุปกรณ์มีความพร้อมใช้งานสูง ให้ปฏิบัติตามแผนการบำรุงรักษาเชิงป้องกันตามรอบปกติ"
-      },
-      GIS: {
-        lowAvail: "🔴 <b>ตรวจพบค่าความพร้อมใช้งาน (Availability) ต่ำกว่า 96%:</b><br>• ตรวจวัดระดับแรงดันและทดสอบการรั่วไหลของก๊าซ SF6 ด้วย Sniffer Detector<br>• ตรวจสอบการคายประจุบางส่วน (Partial Discharge Test) ภายในตู้สวิตซ์เกียร์<br>• ทดสอบความต้านทานหน้าสัมผัสทางไฟฟ้า (Contact Resistance Test)",
-        normal: "🟢 <b>สถานะการทำงานปกติ (ผ่านเกณฑ์ ≥ 96%):</b><br>• อุปกรณ์มีความพร้อมใช้งานสูง ให้ปฏิบัติตามแผนการบำรุงรักษาเชิงป้องกันตามรอบปกติ"
-      }
-    };
-
-    function onSliderChange(val) {
-      document.getElementById('slider-val').innerText = parseFloat(val).toFixed(1);
-      runSimulation();
-    }
-
-    function applyPreset(targetAvail, targetMttr = null) {
-      document.getElementById('sim-slider').value = targetAvail;
-      document.getElementById('slider-val').innerText = targetAvail.toFixed(1);
-      if (targetMttr) {
-        document.getElementById('sim-mttr-select').value = targetMttr.toFixed(1);
-      }
-      runSimulation();
-    }
-
-    function runSimulation() {
-      let avail = parseFloat(document.getElementById('sim-slider').value);
-      if (avail >= 100) avail = 99.99;
-      const mttr = parseFloat(document.getElementById('sim-mttr-select').value);
-
-      const targetMtbf = (avail * mttr) / (100 - avail);
-      const annualDowntime = 8760 * ((100 - avail) / 100);
-      const maxFailures = mttr > 0 ? Math.floor(annualDowntime / mttr) : 0;
-
-      document.getElementById('sim-result-mtbf').innerText = `${targetMtbf.toFixed(1)} ชม.`;
-      document.getElementById('sim-result-fails').innerText = `เสียได้ไม่เกิน ~${maxFailures} ครั้ง/ปี`;
-
-      document.getElementById('card-avail').value = avail.toFixed(2);
-      document.getElementById('card-mtbf').value = targetMtbf.toFixed(1);
-      document.getElementById('card-mttr').value = mttr.toFixed(1);
-
-      checkAvailStatus(avail);
-    }
-
-    function selectMonth(idx) {
-      selectedMonthIndex = idx;
-      const data = monthlyDatasets[selectedMonthIndex];
-
-      for (let i = 0; i < 12; i++) {
-        const btn = document.getElementById(`m-btn-${i}`);
-        if (i === idx) {
-          btn.className = "month-btn py-2 text-xs font-bold rounded-xl bg-brand-500 text-white border-brand-500 shadow-md transition";
-        } else {
-          btn.className = "month-btn py-2 text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition shadow-2xs";
-        }
-      }
-
-      const monthName = monthsNames[idx];
-      document.getElementById('current-month-badge').innerText = monthName;
-      document.getElementById('chart-month-tag-1').innerText = `ประจำเดือน ${monthName}`;
-      document.getElementById('chart-month-tag-2').innerText = `ประจำเดือน ${monthName}`;
-
-      updateMonthStats(data);
-    }
-
-    function updateMonthStats(data) {
-      let totalOp = 0, totalFail = 0, totalDown = 0;
-      let passCount = 0, failCount = 0;
-      let txFails = 0, gisFails = 0;
-      let txDown = 0, gisDown = 0;
-
-      data.forEach(d => {
-        totalOp += d.operatingHrs;
-        totalFail += d.failures;
-        totalDown += d.downTime;
-
-        if (d.type === 'TX') {
-          txFails += d.failures;
-          txDown += d.downTime;
-        } else {
-          gisFails += d.failures;
-          gisDown += d.downTime;
-        }
-
-        const avail = (d.operatingHrs + d.downTime) > 0 
-          ? (d.operatingHrs / (d.operatingHrs + d.downTime)) * 100 
-          : 100;
-
-        if (avail >= AVAIL_THRESHOLD) passCount++;
-        else failCount++;
-      });
-
-      const avgMtbf = totalFail > 0 ? (totalOp / totalFail) : totalOp;
-      const avgMttr = totalFail > 0 ? (totalDown / totalFail) : 0;
-      const avgAvail = (totalOp + totalDown) > 0 ? (totalOp / (totalOp + totalDown)) * 100 : 100;
-
-      document.getElementById('monthly-avail-val').innerText = `${avgAvail.toFixed(2)}%`;
-      document.getElementById('monthly-mtbf-val').innerText = `${avgMtbf.toFixed(1)} ชม.`;
-      document.getElementById('monthly-mttr-val').innerText = `${avgMttr.toFixed(1)} ชม.`;
-
-      const tag = document.getElementById('monthly-avail-tag');
-      if (avgAvail >= AVAIL_THRESHOLD) {
-        tag.className = "text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-lg font-bold";
-        tag.innerText = "● ผ่านเกณฑ์ภาพรวม";
-      } else {
-        tag.className = "text-xs bg-rose-100 text-rose-700 px-2 py-0.5 rounded-lg font-bold";
-        tag.innerText = "▲ ต่ำกว่าเกณฑ์ภาพรวม";
-      }
-
-      renderCharts(passCount, failCount, txFails, gisFails, txDown, gisDown);
-    }
-
-    function renderCharts(passCount, failCount, txFails, gisFails, txDown, gisDown) {
-      const ctx1 = document.getElementById('statusChart').getContext('2d');
-      if (statusChartInstance) statusChartInstance.destroy();
-
-      statusChartInstance = new Chart(ctx1, {
-        type: 'bar',
-        data: {
-          labels: ['ผ่านเกณฑ์ (≥96%)', 'ต่ำกว่าเกณฑ์ (<96%)'],
-          datasets: [{
-            label: 'จำนวนอุปกรณ์ (เครื่อง)',
-            data: [passCount, failCount],
-            backgroundColor: ['#10b981', '#f43f5e'],
-            borderRadius: 12,
-            borderSkipped: false,
-            barThickness: 45
-          }]
-        },
-        options: {
-          animation: { duration: 600 },
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { beginAtZero: true, max: 25, ticks: { stepSize: 5 } }
-          }
-        }
-      });
-
-      const ctx2 = document.getElementById('failuresChart').getContext('2d');
-      if (failuresChartInstance) failuresChartInstance.destroy();
-
-      failuresChartInstance = new Chart(ctx2, {
-        type: 'bar',
-        data: {
-          labels: ['หม้อแปลงไฟฟ้า (15 ตัว)', 'สวิตซ์เกียร์ GIS (10 ตัว)'],
-          datasets: [
-            {
-              label: 'ความขัดข้อง (ครั้ง)',
-              data: [txFails, gisFails],
-              backgroundColor: '#f05b82',
-              borderRadius: 10,
-              barThickness: 28
-            },
-            {
-              label: 'Down Time รวม (ชม.)',
-              data: [txDown, gisDown],
-              backgroundColor: '#fedce5',
-              borderColor: '#f05b82',
-              borderWidth: 1.5,
-              borderRadius: 10,
-              barThickness: 28
-            }
-          ]
-        },
-        options: {
-          animation: { duration: 600 },
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'top',
-              labels: { boxWidth: 12, font: { family: 'Prompt', size: 11 } }
-            }
-          },
-          scales: {
-            y: { beginAtZero: true, ticks: { stepSize: 10 } }
-          }
-        }
-      });
-    }
-
-    function toggleLiveMode() {
-      isLiveActive = !isLiveActive;
-      const btn = document.getElementById('live-btn');
-      const text = document.getElementById('live-status-text');
-
-      if (isLiveActive) {
-        btn.className = "flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-xl border border-emerald-300 hover:bg-emerald-200 transition shadow-xs";
-        text.innerText = "🔴 LIVE: กำลังอัปเดต";
-        startLiveStream();
-      } else {
-        btn.className = "flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-600 text-xs font-bold rounded-xl border border-slate-300 hover:bg-slate-200 transition shadow-xs";
-        text.innerText = "⏸️ PAUSE: หยุดชั่วคราว";
-        clearInterval(liveInterval);
-      }
-    }
-
-    function startLiveStream() {
-      clearInterval(liveInterval);
-      liveInterval = setInterval(() => {
-        if (!isLiveActive) return;
-
-        const randomIdx = Math.floor(Math.random() * realtimeData.length);
-        realtimeData[randomIdx].operatingHrs = Math.min(744, Math.max(680, realtimeData[randomIdx].operatingHrs + (Math.random() > 0.5 ? 1 : -1)));
-        
-        renderTable();
-        syncTableToCards();
-      }, 2000);
-    }
-
-    function onAvailCardDirectInput() {
-      let avail = parseFloat(document.getElementById('card-avail').value);
-      if (isNaN(avail)) return;
-      if (avail >= 100) avail = 99.99;
-      if (avail <= 0) avail = 1.0;
-
-      const mttr = parseFloat(document.getElementById('card-mttr').value) || 6.0;
-      const calculatedMtbf = (avail * mttr) / (100 - avail);
-
-      document.getElementById('card-mtbf').value = calculatedMtbf.toFixed(1);
-      checkAvailStatus(avail);
-    }
-
-    function onMtbfMttrCardInput() {
-      const mtbf = parseFloat(document.getElementById('card-mtbf').value) || 0;
-      const mttr = parseFloat(document.getElementById('card-mttr').value) || 0;
-
-      let avail = 100;
-      if (mtbf + mttr > 0) {
-        avail = (mtbf / (mtbf + mttr)) * 100;
-      }
-      
-      document.getElementById('card-avail').value = avail.toFixed(2);
-      checkAvailStatus(avail);
-    }
-
-    function checkAvailStatus(avail) {
-      const badge = document.getElementById('avail-status-tag');
-      if (avail >= AVAIL_THRESHOLD) {
-        badge.className = "text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-700";
-        badge.innerText = "● ผ่านเกณฑ์";
-      } else {
-        badge.className = "text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-rose-100 text-rose-700";
-        badge.innerText = "▲ ต่ำกว่าเกณฑ์";
-      }
-    }
-
-    function syncTableToCards() {
-      let totalOp = 0, totalFail = 0, totalDown = 0;
-      realtimeData.forEach(d => {
-        totalOp += d.operatingHrs;
-        totalFail += d.failures;
-        totalDown += d.downTime;
-      });
-
-      const avgMtbf = totalFail > 0 ? (totalOp / totalFail) : totalOp;
-      const avgMttr = totalFail > 0 ? (totalDown / totalFail) : 0;
-      const avgAvail = (totalOp + totalDown) > 0 ? (totalOp / (totalOp + totalDown)) * 100 : 100;
-
-      document.getElementById('card-avail').value = avgAvail.toFixed(2);
-      document.getElementById('card-mtbf').value = avgMtbf.toFixed(1);
-      document.getElementById('card-mttr').value = avgMttr.toFixed(1);
-      checkAvailStatus(avgAvail);
-    }
-
-    function renderTable() {
-      const tbody = document.getElementById('equipment-tbody');
-      tbody.innerHTML = '';
-
-      const filtered = realtimeData.filter(d => currentFilter === 'ALL' || d.type === currentFilter);
-
-      filtered.forEach((d) => {
-        const mtbf = d.failures > 0 ? (d.operatingHrs / d.failures) : d.operatingHrs;
-        const mttr = d.failures > 0 ? (d.downTime / d.failures) : 0;
-        const avail = (d.operatingHrs + d.downTime) > 0 
-          ? (d.operatingHrs / (d.operatingHrs + d.downTime)) * 100 
-          : 100;
-
-        const isPass = avail >= AVAIL_THRESHOLD;
-
-        const row = document.createElement('tr');
-        row.className = `hover:bg-brand-50/50 transition ${!isPass ? 'bg-rose-50/40' : ''}`;
-        row.innerHTML = `
-          <td class="p-3 pl-4 font-bold text-slate-800">${d.tag}</td>
-          <td class="p-3">
-            <span class="px-2 py-0.5 rounded text-[10px] font-semibold ${d.type === 'TX' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">
-              ${d.type === 'TX' ? 'Transformer' : 'GIS'}
-            </span>
-          </td>
-          <td class="p-3">
-            <input type="number" value="${d.operatingHrs}" min="1" class="w-16 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white" onchange="updateValue('${d.tag}', 'operatingHrs', this.value)">
-          </td>
-          <td class="p-3">
-            <input type="number" value="${d.failures}" min="0" class="w-12 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white font-bold ${d.failures > 0 ? 'text-rose-600' : 'text-slate-700'}" onchange="updateValue('${d.tag}', 'failures', this.value)">
-          </td>
-          <td class="p-3">
-            <input type="number" value="${d.downTime}" min="0" class="w-14 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white font-bold ${d.downTime > 0 ? 'text-rose-600' : 'text-slate-700'}" onchange="updateValue('${d.tag}', 'downTime', this.value)">
-          </td>
-          <td class="p-3 font-medium text-slate-700">${mtbf.toFixed(1)}</td>
-          <td class="p-3 font-medium text-slate-700">${mttr.toFixed(1)}</td>
-          <td class="p-3 font-bold ${!isPass ? 'text-rose-600' : 'text-emerald-600'}">${avail.toFixed(2)}%</td>
-          <td class="p-3">
-            <span class="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${isPass ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700 font-bold'}">
-              ${isPass ? '● ปกติ' : '▲ ต่ำกว่า 96%'}
-            </span>
-          </td>
-          <td class="p-3 pr-4 text-center">
-            <button onclick="showAdvice('${d.tag}')" class="text-[11px] bg-white border border-brand-300 hover:bg-brand-50 text-brand-700 px-2.5 py-1 rounded-lg transition font-medium shadow-2xs">
-              คำแนะนำ
-            </button>
-          </td>
-        `;
-        tbody.appendChild(row);
-      });
-    }
-
-    function updateValue(tag, key, val) {
-      const dev = realtimeData.find(d => d.tag === tag);
-      if (dev) {
-        dev[key] = parseFloat(val) || 0;
-        renderTable();
-        syncTableToCards();
-      }
-    }
-
-    function filterType(type) {
-      currentFilter = type;
-      ['ALL', 'TX', 'GIS'].forEach(t => {
-        const btn = document.getElementById(`filter-${t}`);
-        if (t === type) {
-          btn.className = "px-3 py-1 text-xs font-bold rounded-xl bg-brand-500 text-white transition shadow-2xs";
-        } else {
-          btn.className = "px-3 py-1 text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition";
-        }
-      });
-      renderTable();
-    }
-
-    function showAdvice(tag) {
-      const dev = realtimeData.find(d => d.tag === tag);
-      if (!dev) return;
-
-      const avail = (dev.operatingHrs + dev.downTime) > 0 
-        ? (dev.operatingHrs / (dev.operatingHrs + dev.downTime)) * 100 
-        : 100;
-
-      const modal = document.getElementById('modal-action');
-      const title = document.getElementById('modal-title');
-      const body = document.getElementById('modal-body');
-
-      title.innerText = `มาตรการบำรุงรักษา: ${dev.tag} (${dev.type === 'TX' ? 'หม้อแปลงไฟฟ้า' : 'สวิตซ์เกียร์ GIS'})`;
-
-      let msg = "";
-      if (avail < AVAIL_THRESHOLD) {
-        msg = `<div class="p-3 bg-rose-50 border border-rose-200 rounded-2xl text-rose-800">${solutions[dev.type].lowAvail}</div>`;
-      } else {
-        msg = `<div class="p-3 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-800">${solutions[dev.type].normal}</div>`;
-      }
-
-      body.innerHTML = msg;
-      modal.classList.remove('hidden');
-    }
-
-    function closeModal() {
-      document.getElementById('modal-action').classList.add('hidden');
-    }
-
-    function switchTab(tab) {
-      const vRealtime = document.getElementById('view-realtime');
-      const vMonthly = document.getElementById('view-monthly');
-      const vForm = document.getElementById('view-form');
-
-      const tRealtime = document.getElementById('tab-realtime');
-      const tMonthly = document.getElementById('tab-monthly');
-      const tForm = document.getElementById('tab-form');
-
-      vRealtime.classList.add('hidden');
-      vMonthly.classList.add('hidden');
-      vForm.classList.add('hidden');
-
-      tRealtime.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold";
-      tMonthly.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold";
-      tForm.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold";
-
-      if (tab === 'realtime') {
-        vRealtime.classList.remove('hidden');
-        tRealtime.className = "px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold";
-      } else if (tab === 'monthly') {
-        vMonthly.classList.remove('hidden');
-        tMonthly.className = "px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold";
-        selectMonth(selectedMonthIndex);
-      } else if (tab === 'form') {
-        vForm.classList.remove('hidden');
-        tForm.className = "px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold";
-      }
-    }
-
-    window.onload = () => {
-      renderTable();
-      runSimulation();
-      startLiveStream();
-    };
-  </script>
+  <!-- Header -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-brand-200 sticky top-0 z-30 no-print shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-600 to-brand-400 text-white flex items-center justify-center font-extrabold text-xl shadow-md shadow-brand-200">
+          ⚡
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-bold text-slate-800 leading-tight">RAM Executive Simulation System</h1>
+            <span class="px-2 py-0.5 bg-brand-100 text-brand-700 text-[10px] font-bold rounded-full uppercase tracking-wider">Live & Analytics</span>
+          </div>
+          <p class="text-xs text-brand-600 font-medium">ระบบวิเคราะห์ความน่าเชื่อถือสถานีไฟฟ้าแบบเรียลไทม์และสถิติรายเดือน</p>
+        </div>
+      </div>
+      
+      <!-- Nav Tabs & Live Toggle Button -->
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="toggleLiveMode()" id="live-btn" class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-xl border border-emerald-300 hover:bg-emerald-200 transition shadow-xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <span id="live-status-text">🔴 LIVE: กำลังอัปเดต</span>
+        </button>
+
+        <nav class="flex space-x-1 bg-brand-100/80 p-1 rounded-xl text-xs sm:text-sm font-medium">
+          <button onclick="switchTab('realtime')" id="tab-realtime" class="px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold">
+            ⚡ เรียลไทม์
+          </button>
+          <button onclick="switchTab('monthly')" id="tab-monthly" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold">
+            📅 สถิติรายเดือน
+          </button>
+          <button onclick="switchTab('form')" id="tab-form" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold">
+            📝 แบบฟอร์มบำรุงรักษา (A4)
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
+    
+    <!-- Tab 1: Real-time Live View (หน้าแรก) -->
+    <div id="view-realtime" class="space-y-6">
+
+      <!-- Executive Goal Simulator Box -->
+      <div class="bg-gradient-to-br from-white via-brand-50/30 to-brand-100/40 p-5 sm:p-6 rounded-3xl border-2 border-brand-200 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div>
+            <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">🎯 Executive Strategy Simulator</span>
+            <h2 class="text-base sm:text-lg font-bold text-slate-800">เครื่องมือจำลองเป้าหมาย Availability สำหรับผู้บริหาร</h2>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs text-slate-500 font-medium mr-1">เป้าหมายสำเร็จรูป:</span>
+            <button onclick="applyPreset(96.0)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">96% ขั้นต่ำ</button>
+            <button onclick="applyPreset(98.0)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">98% ดี</button>
+            <button onclick="applyPreset(99.0)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">99% มาตรฐาน Substation</button>
+            <button onclick="applyPreset(99.5)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">99.5% World-Class</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-white p-4 rounded-2xl border border-brand-100 shadow-2xs">
+          <div class="md:col-span-4">
+            <label class="block text-xs font-bold text-slate-600 mb-1">ต้องการ Availability เป้าหมาย:</label>
+            <div class="flex items-center gap-2">
+              <input type="range" id="sim-slider" min="90" max="99.9" step="0.1" value="96.0" class="w-full accent-brand-500 cursor-pointer" oninput="onSliderChange(this.value)">
+              <div class="flex items-center font-extrabold text-brand-600 text-xl bg-brand-50 px-3 py-1 rounded-xl border border-brand-200">
+                <span id="slider-val">96.0</span>%
+              </div>
+            </div>
+          </div>
+
+          <div class="md:col-span-4">
+            <label class="block text-xs font-bold text-slate-600 mb-1">สมมติเวลาบำรุงรักษาเฉลี่ยของช่าง (MTTR):</label>
+            <div class="flex items-center gap-2">
+              <select id="sim-mttr-select" class="w-full border border-brand-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700 bg-brand-50/40 focus:outline-none focus:border-brand-500" onchange="runSimulation()">
+                <option value="3.0">⚡ 3.0 ชม. (ทีมช่างระดับ World-Class / Spare พร้อม)</option>
+                <option value="4.0">🚀 4.0 ชม. (ทีมช่างมาตรฐานสถานีไฟฟ้า)</option>
+                <option value="5.0">⏱️ 5.0 ชม. (ทีมช่างระดับทั่วไป)</option>
+                <option value="6.0" selected>🔧 6.0 ชม. (กรณีงานบำรุงรักษาแก้ไขปกติ)</option>
+                <option value="8.0">⏳ 8.0 ชม. (กรณีต้องรอเบิกอะไหล่)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="md:col-span-4 bg-gradient-to-r from-brand-500 to-brand-600 p-3 rounded-xl text-white shadow-sm flex flex-col justify-between">
+            <span class="text-[11px] font-semibold text-brand-100 uppercase">ผลลัพธ์คำนวณเป้าหมาย MTBF ให้เครื่องจักร</span>
+            <div class="flex items-baseline justify-between mt-1">
+              <span id="sim-result-mtbf" class="text-2xl font-black tracking-tight">144.0 ชม.</span>
+              <span id="sim-result-fails" class="text-xs text-brand-100 bg-black/15 px-2 py-0.5 rounded-md font-medium">เสียได้ไม่เกิน ~58 ครั้ง/ปี</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Top 3 Direct-Editable Cards (Real-time) -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        
+        <!-- 1. Availability Card -->
+        <div class="bg-white p-5 rounded-3xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">AVAILABILITY (%)</span>
+              <span id="avail-status-tag" class="text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-700">
+                ● ผ่านเกณฑ์
+              </span>
+            </div>
+            
+            <div class="my-2 flex items-center">
+              <input type="number" id="card-avail" value="97.28" step="0.01" min="1" max="99.99" 
+                class="w-full text-3xl sm:text-4xl font-black text-brand-600 border-b-2 border-dashed border-brand-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
+                oninput="onAvailCardDirectInput()">
+              <span class="text-2xl sm:text-3xl font-black text-brand-600 ml-1">%</span>
+            </div>
+          </div>
+
+          <div class="pt-2.5 border-t border-brand-100 flex items-center justify-between text-xs">
+            <span class="text-slate-400">เกณฑ์ขั้นต่ำ:</span>
+            <span class="font-extrabold text-brand-700 bg-brand-50 px-2.5 py-0.5 rounded-md">เป้าหมาย ≥ 96.0%</span>
+          </div>
+        </div>
+
+        <!-- 2. MTBF Card -->
+        <div class="bg-white p-5 rounded-3xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">MTBF เฉลี่ย (ชม.)</span>
+              <span class="text-[10px] text-brand-600 font-bold bg-brand-50 px-2 py-0.5 rounded">พิมพ์แก้ไขได้</span>
+            </div>
+
+            <div class="my-2 flex items-center">
+              <input type="number" id="card-mtbf" value="1285.7" step="1" min="0" 
+                class="w-full text-3xl sm:text-4xl font-black text-slate-800 border-b-2 border-dashed border-slate-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
+                oninput="onMtbfMttrCardInput()">
+              <span class="text-base sm:text-lg font-bold text-slate-500 ml-1 shrink-0">ชม.</span>
+            </div>
+          </div>
+
+          <div class="pt-2.5 border-t border-brand-100 text-[11px] text-slate-400 font-medium">
+            ระยะเวลาที่เครื่องทำงานต่อเนื่อง
+          </div>
+        </div>
+
+        <!-- 3. MTTR Card -->
+        <div class="bg-white p-5 rounded-3xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">MTTR เฉลี่ย (ชม.)</span>
+              <span class="text-[10px] text-brand-600 font-bold bg-brand-50 px-2 py-0.5 rounded">พิมพ์แก้ไขได้</span>
+            </div>
+
+            <div class="my-2 flex items-center">
+              <input type="number" id="card-mttr" value="23.3" step="0.1" min="0.1" 
+                class="w-full text-3xl sm:text-4xl font-black text-slate-800 border-b-2 border-dashed border-slate-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
+                oninput="onMtbfMttrCardInput()">
+              <span class="text-base sm:text-lg font-bold text-slate-500 ml-1 shrink-0">ชม.</span>
+            </div>
+          </div>
+
+          <div class="pt-2.5 border-t border-brand-100 text-[11px] text-slate-400 font-medium">
+            เวลาเฉลี่ยในการบำรุงรักษา
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Equipment Table Section (25 Assets) Real-time -->
+      <div class="bg-white rounded-3xl border border-brand-200 shadow-sm overflow-hidden">
+        <div class="p-4 sm:p-5 border-b border-brand-100 flex flex-wrap justify-between items-center gap-3 bg-brand-50/50">
+          <div>
+            <h2 class="text-sm sm:text-base font-extrabold text-slate-800">รายการอุปกรณ์สถานีไฟฟ้าแบบ Real-time (หม้อแปลง 15 ตัว | GIS 10 ตัว)</h2>
+            <p class="text-xs text-slate-500">ข้อมูลคำนวณแบบ Real-time จำลองพบอุปกรณ์ที่มีความผิดปกติและต่ำกว่าเกณฑ์ 96%</p>
+          </div>
+          
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="syncTableToCards()" class="px-3.5 py-1.5 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-2xs">
+              🔄 ดึงค่าสรุปจากตารางขึ้นการ์ด
+            </button>
+            <button onclick="filterType('ALL')" id="filter-ALL" class="px-3 py-1 text-xs font-bold rounded-xl bg-brand-500 text-white transition shadow-2xs">ทั้งหมด (25)</button>
+            <button onclick="filterType('TX')" id="filter-TX" class="px-3 py-1 text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition">หม้อแปลง (15)</button>
+            <button onclick="filterType('GIS')" id="filter-GIS" class="px-3 py-1 text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition">GIS (10)</button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-brand-100/70 text-slate-600 text-xs uppercase font-semibold">
+              <tr>
+                <th class="p-3 pl-4">รหัสอุปกรณ์</th>
+                <th class="p-3">ประเภท</th>
+                <th class="p-3">เวลาทำงาน (ชม.)</th>
+                <th class="p-3">ความขัดข้อง (ครั้ง)</th>
+                <th class="p-3">เวลาบำรุงรักษา (ชม.)</th>
+                <th class="p-3">MTBF (ชม.)</th>
+                <th class="p-3">MTTR (ชม.)</th>
+                <th class="p-3">Availability</th>
+                <th class="p-3">สถานะ (≥96%)</th>
+                <th class="p-3 pr-4 text-center">มาตรการแก้ไข</th>
+              </tr>
+            </thead>
+            <tbody id="equipment-tbody" class="divide-y divide-brand-100 font-normal">
+              <!-- Rendered via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Monthly Analytics View (หน้าสถิติประจำเดือน) -->
+    <div id="view-monthly" class="hidden space-y-6">
+      
+      <!-- Month Selector Bar -->
+      <div class="bg-white p-4 sm:p-5 rounded-3xl border-2 border-brand-200 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+          <div>
+            <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">📅 Monthly Performance Filter</span>
+            <h2 class="text-base sm:text-lg font-extrabold text-slate-800">เลือกดูสถิติและผลการดำเนินงานประจำเดือน</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-400">กำลังแสดงผล:</span>
+            <span id="current-month-badge" class="px-3 py-1 bg-brand-500 text-white font-bold text-xs rounded-xl shadow-xs">มกราคม</span>
+          </div>
+        </div>
+
+        <!-- 12 Month Buttons -->
+        <div class="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-1.5 pt-1">
+          <button onclick="selectMonth(0)" id="m-btn-0" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ม.ค.</button>
+          <button onclick="selectMonth(1)" id="m-btn-1" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.พ.</button>
+          <button onclick="selectMonth(2)" id="m-btn-2" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">มี.ค.</button>
+          <button onclick="selectMonth(3)" id="m-btn-3" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">เม.ย.</button>
+          <button onclick="selectMonth(4)" id="m-btn-4" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">พ.ค.</button>
+          <button onclick="selectMonth(5)" id="m-btn-5" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">มิ.ย.</button>
+          <button onclick="selectMonth(6)" id="m-btn-6" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.ค.</button>
+          <button onclick="selectMonth(7)" id="m-btn-7" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ส.ค.</button>
+          <button onclick="selectMonth(8)" id="m-btn-8" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.ย.</button>
+          <button onclick="selectMonth(9)" id="m-btn-9" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ต.ค.</button>
+          <button onclick="selectMonth(10)" id="m-btn-10" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">พ.ย.</button>
+          <button onclick="selectMonth(11)" id="m-btn-11" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ธ.ค.</button>
+        </div>
+      </div>
+
+      <!-- Monthly Summary KPI Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white p-5 rounded-3xl border border-brand-200 shadow-sm">
+          <span class="text-xs font-bold text-slate-400 uppercase">Availability ประจำเดือน</span>
+          <div class="mt-2 flex items-baseline justify-between">
+            <span id="monthly-avail-val" class="text-3xl font-black text-brand-600">--%</span>
+            <span id="monthly-avail-tag" class="text-xs px-2 py-0.5 rounded-lg font-bold"></span>
+          </div>
+        </div>
+        <div class="bg-white p-5 rounded-3xl border border-brand-200 shadow-sm">
+          <span class="text-xs font-bold text-slate-400 uppercase">MTBF เฉลี่ย</span>
+          <div class="mt-2 flex items-baseline justify-between">
+            <span id="monthly-mtbf-val" class="text-3xl font-black text-slate-800">--</span>
+            <span class="text-xs text-slate-400 font-medium">ชั่วโมงทำงานต่อเนื่อง</span>
+          </div>
+        </div>
+        <div class="bg-white p-5 rounded-3xl border border-brand-200 shadow-sm">
+          <span class="text-xs font-bold text-slate-400 uppercase">MTTR เฉลี่ย</span>
+          <div class="mt-2 flex items-baseline justify-between">
+            <span id="monthly-mttr-val" class="text-3xl font-black text-slate-800">--</span>
+            <span class="text-xs text-slate-400 font-medium">ชั่วโมงบำรุงรักษา</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Monthly Bar Charts -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Chart 1: อุปกรณ์ผ่านเกณฑ์ vs ไม่ผ่านเกณฑ์ -->
+        <div class="lg:col-span-6 bg-white p-5 rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-sm font-extrabold text-slate-800">📊 สถานะความพร้อมอุปกรณ์ 25 รายการ</h3>
+              <p class="text-xs text-slate-400">จำนวนเครื่องที่ผ่านเกณฑ์ (≥96%) vs ต่ำกว่าเกณฑ์</p>
+            </div>
+            <span id="chart-month-tag-1" class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-xl">ประจำเดือน ม.ค.</span>
+          </div>
+          <div class="h-64 w-full relative">
+            <canvas id="statusChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 2: จำนวนครั้งที่ชำรุดและความเสียหายแยกประเภท -->
+        <div class="lg:col-span-6 bg-white p-5 rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-sm font-extrabold text-slate-800">📈 ความขัดข้องและเวลาบำรุงรักษา (หม้อแปลง vs GIS)</h3>
+              <p class="text-xs text-slate-400">เปรียบเทียบสถิติความเสียหายและชั่วโมง Down Time</p>
+            </div>
+            <span id="chart-month-tag-2" class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-xl">ประจำเดือน ม.ค.</span>
+          </div>
+          <div class="h-64 w-full relative">
+            <canvas id="failuresChart"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Tab 3: Printable Blank Inspection Form View (Paper เปล่าสำหรับเขียนหน้างาน) -->
+    <div id="view-form" class="hidden space-y-6">
+      <div class="flex flex-wrap justify-between items-center gap-3 no-print">
+        <div>
+          <h2 class="text-base sm:text-lg font-bold text-slate-800">แบบฟอร์มตรวจสอบและบำรุงรักษาหน้างาน (แบบฟอร์มเปล่า)</h2>
+          <p class="text-xs text-slate-500">พิมพ์เอกสารขนาด A4 เปล่า เพื่อให้ช่างเทคนิคหน้างานนำไปเขียนบันทึกด้วยตนเอง</p>
+        </div>
+        <button onclick="window.print()" class="flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-bold px-4 py-2 rounded-2xl text-xs sm:text-sm shadow-sm transition">
+          🖨️ สั่งพิมพ์แบบฟอร์มเปล่า (A4)
+        </button>
+      </div>
+
+      <!-- Printable A4 Blank Paper Container -->
+      <div id="printable-form" class="bg-white p-6 sm:p-10 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs">
+        
+        <!-- Header -->
+        <div class="border-b-2 border-brand-500 pb-3 mb-5 flex justify-between items-start">
+          <div>
+            <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">ใบตรวจสอบและประเมินผลการบำรุงรักษาอุปกรณ์สถานีไฟฟ้า</h1>
+            <p class="text-[11px] text-slate-500">Substation Maintenance & RAM Inspection Checklist Form</p>
+          </div>
+          <div class="text-right">
+            <span class="inline-block px-2.5 py-1 bg-slate-100 text-slate-700 font-bold text-[10px] rounded border border-slate-300">เอกสารสำหรับเขียนหน้างาน</span>
+            <p class="text-[10px] text-slate-400 mt-1">เลขที่เอกสาร: PM-SUB-______</p>
+          </div>
+        </div>
+
+        <!-- General Info Blank Lines -->
+        <div class="grid grid-cols-2 gap-y-3.5 gap-x-6 mb-6 text-xs text-slate-700">
+          <div class="flex items-baseline">
+            <span class="font-bold whitespace-nowrap">รหัสอุปกรณ์ (Tag):</span>
+            <span class="ml-2 flex-1 border-b border-dotted border-slate-400"></span>
+          </div>
+          <div class="flex items-baseline">
+            <span class="font-bold whitespace-nowrap">วันที่ปฏิบัติงาน:</span>
+            <span class="ml-2 flex-1 border-b border-dotted border-slate-400"></span>
+          </div>
+          <div class="flex items-baseline">
+            <span class="font-bold whitespace-nowrap">ชื่อช่างเทคนิคผู้ตรวจ:</span>
+            <span class="ml-2 flex-1 border-b border-dotted border-slate-400"></span>
+          </div>
+          <div class="flex items-baseline">
+            <span class="font-bold whitespace-nowrap">ตำแหน่ง / สังกัด:</span>
+            <span class="ml-2 flex-1 border-b border-dotted border-slate-400"></span>
+          </div>
+          <div class="col-span-2 flex items-center gap-4 pt-1">
+            <span class="font-bold whitespace-nowrap">ประเภทการบำรุงรักษา:</span>
+            <label class="flex items-center gap-1.5 cursor-pointer"><span class="w-3.5 h-3.5 border border-slate-400 rounded-sm inline-block"></span> เชิงป้องกัน (PM)</label>
+            <label class="flex items-center gap-1.5 cursor-pointer"><span class="w-3.5 h-3.5 border border-slate-400 rounded-sm inline-block"></span> ตามสภาพ (CBM)</label>
+            <label class="flex items-center gap-1.5 cursor-pointer"><span class="w-3.5 h-3.5 border border-slate-400 rounded-sm inline-block"></span> แก้ไขเร่งด่วน (CM)</label>
+          </div>
+        </div>
+
+        <!-- Checklists Blank Table -->
+        <div class="mb-5">
+          <h3 class="text-xs font-bold text-slate-800 uppercase mb-2">รายการตรวจสอบสภาพความพร้อมใช้งาน (Inspection Checklist)</h3>
+          <table class="w-full border border-slate-300 text-xs">
+            <thead class="bg-slate-100 text-slate-700 font-bold">
+              <tr>
+                <th class="border border-slate-300 p-2 text-left">รายการตรวจสอบ (Inspection Item)</th>
+                <th class="border border-slate-300 p-2 w-16 text-center">ปกติ</th>
+                <th class="border border-slate-300 p-2 w-16 text-center">ผิดปกติ</th>
+                <th class="border border-slate-300 p-2 w-52 text-left">หมายเหตุ / ค่าที่วัดได้จริง</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-300">
+              <tr class="h-10">
+                <td class="p-2 border-r border-slate-300 font-medium">1. สภาพภายนอก รอยรั่วซึม และระดับน้ำมัน / ก๊าซ SF6</td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-slate-300"></td>
+              </tr>
+              <tr class="h-10">
+                <td class="p-2 border-r border-slate-300 font-medium">2. อุณหภูมิผิวสัมผัสและขั้วต่อ Bushing (Thermoscan)</td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-slate-300"></td>
+              </tr>
+              <tr class="h-10">
+                <td class="p-2 border-r border-slate-300 font-medium">3. ค่าความเป็นฉนวน (Insulation Resistance / DGA)</td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-slate-300"></td>
+              </tr>
+              <tr class="h-10">
+                <td class="p-2 border-r border-slate-300 font-medium">4. กลไกขับเคลื่อนและหน้าสัมผัส (Contact Resistance)</td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-slate-300"></td>
+              </tr>
+              <tr class="h-10">
+                <td class="p-2 border-r border-slate-300 font-medium">5. ระบบสัญญาณเตือนและรีเลย์ป้องกัน (Protection Relays)</td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
+                <td class="p-2 border-slate-300"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Blank Corrective Action Lines -->
+        <div class="mb-6">
+          <label class="block text-xs font-bold text-slate-700 mb-2">ข้อเสนอแนะและมาตรการแก้ไขเพิ่มเติม (Action Taken / Recommendations):</label>
+          <div class="space-y-3.5 pt-1">
+            <div class="border-b border-dotted border-slate-400 h-4"></div>
+            <div class="border-b border-dotted border-slate-400 h-4"></div>
+            <div class="border-b border-dotted border-slate-400 h-4"></div>
+          </div>
+        </div>
+
+        <!-- Signature Blank Section -->
+        <div class="grid grid-cols-2 gap-8 text-center text-xs mt-10 pt-4 border-t border-slate-300">
+          <div>
+            <p class="mb-8">ลงชื่อ ..............................................................</p>
+            <p class="font-semibold">( .............................................................. )</p>
+            <p class="text-slate-500 text-[10px] mt-0.5">ช่างเทคนิคผู้ปฏิบัติงานหน้างาน</p>
+          </div>
+          <div>
+            <p class="mb-8">ลงชื่อ ..............................................................</p>
+            <p class="font-semibold">( .............................................................. )</p>
+            <p class="text-slate-500 text-[10px] mt-0.5">วิศวกรผู้ควบคุมและรับรองผล</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Action Modal for Correction Guidelines -->
+  <div id="modal-action" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-brand-200">
+      <div class="flex items-center justify-between pb-3 border-b border-brand-100">
+        <h3 id="modal-title" class="font-bold text-slate-800 text-sm">แนวทางแก้ไข</h3>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-lg">&times;</button>
+      </div>
+      <div id="modal-body" class="py-3 text-xs text-slate-600 space-y-2.5 leading-relaxed">
+      </div>
+      <div class="pt-3 border-t border-brand-100 flex justify-end">
+        <button onclick="closeModal()" class="px-4 py-1.5 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-bold">
+          รับทราบ / ปิดหน้าต่าง
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const monthsNames = [
+      'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+      'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+    ];
+
+    // Realtime live dataset (25 assets) with intentional realistic faults
+    const realtimeData = [];
+    for (let i = 1; i <= 15; i++) {
+      const tag = `TX-${String(i).padStart(2, '0')}`;
+      let failures = 0, downtime = 0;
+      
+      // Inject anomalies into transformers (TX-04, TX-09, TX-13 fail < 96%)
+      if (i === 4) { failures = 3; downtime = 42; }       // Avail: 94.48% (Failed)
+      else if (i === 9) { failures = 2; downtime = 35; }  // Avail: 95.36% (Failed)
+      else if (i === 13) { failures = 2; downtime = 32; } // Avail: 95.74% (Failed)
+      else if (i === 7) { failures = 1; downtime = 18; }  // Avail: 97.56% (Normal)
+      else if (i === 11) { failures = 1; downtime = 10; } // Avail: 98.63% (Normal)
+
+      realtimeData.push({
+        tag: tag,
+        name: `หม้อแปลงไฟฟ้ากำลัง ${tag}`,
+        type: 'TX',
+        operatingHrs: 720,
+        failures: failures,
+        downTime: downtime
+      });
+    }
+    for (let i = 1; i <= 10; i++) {
+      const tag = `GIS-${String(i).padStart(2, '0')}`;
+      let failures = 0, downtime = 0;
+
+      // Inject anomalies into GIS (GIS-03, GIS-07 fail < 96%)
+      if (i === 3) { failures = 2; downtime = 38; }       // Avail: 94.98% (Failed)
+      else if (i === 7) { failures = 3; downtime = 45; }  // Avail: 94.11% (Failed)
+      else if (i === 2) { failures = 1; downtime = 15; }  // Avail: 97.95% (Normal)
+
+      realtimeData.push({
+        tag: tag,
+        name: `สวิตซ์เกียร์ฉนวนก๊าซ ${tag}`,
+        type: 'GIS',
+        operatingHrs: 720,
+        failures: failures,
+        downTime: downtime
+      });
+    }
+
+    // Monthly historical datasets (12 months) with realistic variations
+    const monthlyDatasets = [];
+    for (let m = 0; m < 12; m++) {
+      const devList = [];
+      for (let i = 1; i <= 15; i++) {
+        const tag = `TX-${String(i).padStart(2, '0')}`;
+        let failures = 0, downtime = 0;
+        
+        // Simulating seasonal faults
+        if (m === 0 && (i === 4 || i === 9)) { failures = 2; downtime = 35; }
+        else if (m === 3 && (i === 2 || i === 4 || i === 11 || i === 14)) { failures = 3; downtime = 45; } // Summer peak load
+        else if (m === 6 && (i === 7 || i === 13)) { failures = 2; downtime = 34; }
+        else if (m === 8 && (i === 1 || i === 9)) { failures = 3; downtime = 42; }
+        else if (m === 10 && (i === 3)) { failures = 1; downtime = 18; }
+        else if (m % 2 === 1 && (i === 5)) { failures = 1; downtime = 12; }
+
+        devList.push({
+          tag: tag,
+          name: `หม้อแปลงไฟฟ้ากำลัง ${tag}`,
+          type: 'TX',
+          operatingHrs: 720,
+          failures: failures,
+          downTime: downtime
+        });
+      }
+      for (let i = 1; i <= 10; i++) {
+        const tag = `GIS-${String(i).padStart(2, '0')}`;
+        let failures = 0, downtime = 0;
+
+        if (m === 0 && (i === 3 || i === 7)) { failures = 2; downtime = 38; }
+        else if (m === 4 && (i === 6 || i === 8)) { failures = 3; downtime = 46; }
+        else if (m === 7 && (i === 2 || i === 5)) { failures = 2; downtime = 36; }
+        else if (m === 11 && (i === 10)) { failures = 1; downtime = 14; }
+
+        devList.push({
+          tag: tag,
+          name: `สวิตซ์เกียร์ฉนวนก๊าซ ${tag}`,
+          type: 'GIS',
+          operatingHrs: 720,
+          failures: failures,
+          downTime: downtime
+        });
+      }
+      monthlyDatasets.push(devList);
+    }
+
+    let selectedMonthIndex = 0;
+    let currentFilter = 'ALL';
+    const AVAIL_THRESHOLD = 96.0;
+
+    let statusChartInstance = null;
+    let failuresChartInstance = null;
+    let liveInterval = null;
+    let isLiveActive = true;
+
+    const solutions = {
+      TX: {
+        lowAvail: "🔴 <b>ตรวจพบค่าความพร้อมใช้งาน (Availability) ต่ำกว่า 96%:</b><br>• ดำเนินการทดสอบ DGA (Dissolved Gas Analysis) ตรวจวัดก๊าซไฮโดรคาร์บอนในน้ำมันหม้อแปลง<br>• ตรวจสอบจุดต่อสายและ Bushing ด้วยกล้องถ่ายภาพความร้อน (Infrared Thermoscan)<br>• วิเคราะห์การเสื่อมสภาพของฉนวนกระดาษ (Furan Test)",
+        normal: "🟢 <b>สถานะการทำงานปกติ (ผ่านเกณฑ์ ≥ 96%):</b><br>• อุปกรณ์มีความพร้อมใช้งานสูง ให้ปฏิบัติตามแผนการบำรุงรักษาเชิงป้องกันตามรอบปกติ"
+      },
+      GIS: {
+        lowAvail: "🔴 <b>ตรวจพบค่าความพร้อมใช้งาน (Availability) ต่ำกว่า 96%:</b><br>• ตรวจวัดระดับแรงดันและทดสอบการรั่วไหลของก๊าซ SF6 ด้วย Sniffer Detector<br>• ตรวจสอบการคายประจุบางส่วน (Partial Discharge Test) ภายในตู้สวิตซ์เกียร์<br>• ทดสอบความต้านทานหน้าสัมผัสทางไฟฟ้า (Contact Resistance Test)",
+        normal: "🟢 <b>สถานะการทำงานปกติ (ผ่านเกณฑ์ ≥ 96%):</b><br>• อุปกรณ์มีความพร้อมใช้งานสูง ให้ปฏิบัติตามแผนการบำรุงรักษาเชิงป้องกันตามรอบปกติ"
+      }
+    };
+
+    // Executive Strategy Simulator
+    function onSliderChange(val) {
+      document.getElementById('slider-val').innerText = parseFloat(val).toFixed(1);
+      runSimulation();
+    }
+
+    function applyPreset(targetAvail, targetMttr = null) {
+      document.getElementById('sim-slider').value = targetAvail;
+      document.getElementById('slider-val').innerText = targetAvail.toFixed(1);
+      if (targetMttr) {
+        document.getElementById('sim-mttr-select').value = targetMttr.toFixed(1);
+      }
+      runSimulation();
+    }
+
+    function runSimulation() {
+      let avail = parseFloat(document.getElementById('sim-slider').value);
+      if (avail >= 100) avail = 99.99;
+      const mttr = parseFloat(document.getElementById('sim-mttr-select').value);
+
+      const targetMtbf = (avail * mttr) / (100 - avail);
+      const annualDowntime = 8760 * ((100 - avail) / 100);
+      const maxFailures = mttr > 0 ? Math.floor(annualDowntime / mttr) : 0;
+
+      document.getElementById('sim-result-mtbf').innerText = `${targetMtbf.toFixed(1)} ชม.`;
+      document.getElementById('sim-result-fails').innerText = `เสียได้ไม่เกิน ~${maxFailures} ครั้ง/ปี`;
+
+      document.getElementById('card-avail').value = avail.toFixed(2);
+      document.getElementById('card-mtbf').value = targetMtbf.toFixed(1);
+      document.getElementById('card-mttr').value = mttr.toFixed(1);
+
+      checkAvailStatus(avail);
+    }
+
+    // Month Selector in Tab 2
+    function selectMonth(idx) {
+      selectedMonthIndex = idx;
+      const data = monthlyDatasets[selectedMonthIndex];
+
+      for (let i = 0; i < 12; i++) {
+        const btn = document.getElementById(`m-btn-${i}`);
+        if (i === idx) {
+          btn.className = "month-btn py-2 text-xs font-bold rounded-xl bg-brand-500 text-white border-brand-500 shadow-md transition";
+        } else {
+          btn.className = "month-btn py-2 text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition shadow-2xs";
+        }
+      }
+
+      const monthName = monthsNames[idx];
+      document.getElementById('current-month-badge').innerText = monthName;
+      document.getElementById('chart-month-tag-1').innerText = `ประจำเดือน ${monthName}`;
+      document.getElementById('chart-month-tag-2').innerText = `ประจำเดือน ${monthName}`;
+
+      updateMonthStats(data);
+    }
+
+    function updateMonthStats(data) {
+      let totalOp = 0, totalFail = 0, totalDown = 0;
+      let passCount = 0, failCount = 0;
+      let txFails = 0, gisFails = 0;
+      let txDown = 0, gisDown = 0;
+
+      data.forEach(d => {
+        totalOp += d.operatingHrs;
+        totalFail += d.failures;
+        totalDown += d.downTime;
+
+        if (d.type === 'TX') {
+          txFails += d.failures;
+          txDown += d.downTime;
+        } else {
+          gisFails += d.failures;
+          gisDown += d.downTime;
+        }
+
+        const avail = (d.operatingHrs + d.downTime) > 0 
+          ? (d.operatingHrs / (d.operatingHrs + d.downTime)) * 100 
+          : 100;
+
+        if (avail >= AVAIL_THRESHOLD) passCount++;
+        else failCount++;
+      });
+
+      const avgMtbf = totalFail > 0 ? (totalOp / totalFail) : totalOp;
+      const avgMttr = totalFail > 0 ? (totalDown / totalFail) : 0;
+      const avgAvail = (totalOp + totalDown) > 0 ? (totalOp / (totalOp + totalDown)) * 100 : 100;
+
+      document.getElementById('monthly-avail-val').innerText = `${avgAvail.toFixed(2)}%`;
+      document.getElementById('monthly-mtbf-val').innerText = `${avgMtbf.toFixed(1)} ชม.`;
+      document.getElementById('monthly-mttr-val').innerText = `${avgMttr.toFixed(1)} ชม.`;
+
+      const tag = document.getElementById('monthly-avail-tag');
+      if (avgAvail >= AVAIL_THRESHOLD) {
+        tag.className = "text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-lg font-bold";
+        tag.innerText = "● ผ่านเกณฑ์ภาพรวม";
+      } else {
+        tag.className = "text-xs bg-rose-100 text-rose-700 px-2 py-0.5 rounded-lg font-bold";
+        tag.innerText = "▲ ต่ำกว่าเกณฑ์ภาพรวม";
+      }
+
+      renderCharts(passCount, failCount, txFails, gisFails, txDown, gisDown);
+    }
+
+    function renderCharts(passCount, failCount, txFails, gisFails, txDown, gisDown) {
+      const ctx1 = document.getElementById('statusChart').getContext('2d');
+      if (statusChartInstance) statusChartInstance.destroy();
+
+      statusChartInstance = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: ['ผ่านเกณฑ์ (≥96%)', 'ต่ำกว่าเกณฑ์ (<96%)'],
+          datasets: [{
+            label: 'จำนวนอุปกรณ์ (เครื่อง)',
+            data: [passCount, failCount],
+            backgroundColor: ['#10b981', '#f43f5e'],
+            borderRadius: 12,
+            borderSkipped: false,
+            barThickness: 45
+          }]
+        },
+        options: {
+          animation: { duration: 600 },
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, max: 25, ticks: { stepSize: 5 } }
+          }
+        }
+      });
+
+      const ctx2 = document.getElementById('failuresChart').getContext('2d');
+      if (failuresChartInstance) failuresChartInstance.destroy();
+
+      failuresChartInstance = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+          labels: ['หม้อแปลงไฟฟ้า (15 ตัว)', 'สวิตซ์เกียร์ GIS (10 ตัว)'],
+          datasets: [
+            {
+              label: 'ความขัดข้อง (ครั้ง)',
+              data: [txFails, gisFails],
+              backgroundColor: '#f05b82',
+              borderRadius: 10,
+              barThickness: 28
+            },
+            {
+              label: 'Down Time รวม (ชม.)',
+              data: [txDown, gisDown],
+              backgroundColor: '#fedce5',
+              borderColor: '#f05b82',
+              borderWidth: 1.5,
+              borderRadius: 10,
+              barThickness: 28
+            }
+          ]
+        },
+        options: {
+          animation: { duration: 600 },
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: { boxWidth: 12, font: { family: 'Prompt', size: 11 } }
+            }
+          },
+          scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 10 } }
+          }
+        }
+      });
+    }
+
+    // Live Real-Time Auto-Stream
+    function toggleLiveMode() {
+      isLiveActive = !isLiveActive;
+      const btn = document.getElementById('live-btn');
+      const text = document.getElementById('live-status-text');
+
+      if (isLiveActive) {
+        btn.className = "flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-xl border border-emerald-300 hover:bg-emerald-200 transition shadow-xs";
+        text.innerText = "🔴 LIVE: กำลังอัปเดต";
+        startLiveStream();
+      } else {
+        btn.className = "flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-600 text-xs font-bold rounded-xl border border-slate-300 hover:bg-slate-200 transition shadow-xs";
+        text.innerText = "⏸️ PAUSE: หยุดชั่วคราว";
+        clearInterval(liveInterval);
+      }
+    }
+
+    function startLiveStream() {
+      clearInterval(liveInterval);
+      liveInterval = setInterval(() => {
+        if (!isLiveActive) return;
+
+        const randomIdx = Math.floor(Math.random() * realtimeData.length);
+        realtimeData[randomIdx].operatingHrs = Math.min(744, Math.max(680, realtimeData[randomIdx].operatingHrs + (Math.random() > 0.5 ? 1 : -1)));
+        
+        renderTable();
+        syncTableToCards();
+      }, 2000);
+    }
+
+    // Direct Card Input
+    function onAvailCardDirectInput() {
+      let avail = parseFloat(document.getElementById('card-avail').value);
+      if (isNaN(avail)) return;
+      if (avail >= 100) avail = 99.99;
+      if (avail <= 0) avail = 1.0;
+
+      const mttr = parseFloat(document.getElementById('card-mttr').value) || 6.0;
+      const calculatedMtbf = (avail * mttr) / (100 - avail);
+
+      document.getElementById('card-mtbf').value = calculatedMtbf.toFixed(1);
+      checkAvailStatus(avail);
+    }
+
+    function onMtbfMttrCardInput() {
+      const mtbf = parseFloat(document.getElementById('card-mtbf').value) || 0;
+      const mttr = parseFloat(document.getElementById('card-mttr').value) || 0;
+
+      let avail = 100;
+      if (mtbf + mttr > 0) {
+        avail = (mtbf / (mtbf + mttr)) * 100;
+      }
+      
+      document.getElementById('card-avail').value = avail.toFixed(2);
+      checkAvailStatus(avail);
+    }
+
+    function checkAvailStatus(avail) {
+      const badge = document.getElementById('avail-status-tag');
+      if (avail >= AVAIL_THRESHOLD) {
+        badge.className = "text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-700";
+        badge.innerText = "● ผ่านเกณฑ์";
+      } else {
+        badge.className = "text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-rose-100 text-rose-700";
+        badge.innerText = "▲ ต่ำกว่าเกณฑ์";
+      }
+    }
+
+    function syncTableToCards() {
+      let totalOp = 0, totalFail = 0, totalDown = 0;
+      realtimeData.forEach(d => {
+        totalOp += d.operatingHrs;
+        totalFail += d.failures;
+        totalDown += d.downTime;
+      });
+
+      const avgMtbf = totalFail > 0 ? (totalOp / totalFail) : totalOp;
+      const avgMttr = totalFail > 0 ? (totalDown / totalFail) : 0;
+      const avgAvail = (totalOp + totalDown) > 0 ? (totalOp / (totalOp + totalDown)) * 100 : 100;
+
+      document.getElementById('card-avail').value = avgAvail.toFixed(2);
+      document.getElementById('card-mtbf').value = avgMtbf.toFixed(1);
+      document.getElementById('card-mttr').value = avgMttr.toFixed(1);
+      checkAvailStatus(avgAvail);
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('equipment-tbody');
+      tbody.innerHTML = '';
+
+      const filtered = realtimeData.filter(d => currentFilter === 'ALL' || d.type === currentFilter);
+
+      filtered.forEach((d) => {
+        const mtbf = d.failures > 0 ? (d.operatingHrs / d.failures) : d.operatingHrs;
+        const mttr = d.failures > 0 ? (d.downTime / d.failures) : 0;
+        const avail = (d.operatingHrs + d.downTime) > 0 
+          ? (d.operatingHrs / (d.operatingHrs + d.downTime)) * 100 
+          : 100;
+
+        const isPass = avail >= AVAIL_THRESHOLD;
+
+        const row = document.createElement('tr');
+        row.className = `hover:bg-brand-50/50 transition ${!isPass ? 'bg-rose-50/40' : ''}`;
+        row.innerHTML = `
+          <td class="p-3 pl-4 font-bold text-slate-800">${d.tag}</td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded text-[10px] font-semibold ${d.type === 'TX' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">
+              ${d.type === 'TX' ? 'Transformer' : 'GIS'}
+            </span>
+          </td>
+          <td class="p-3">
+            <input type="number" value="${d.operatingHrs}" min="1" class="w-16 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white" onchange="updateValue('${d.tag}', 'operatingHrs', this.value)">
+          </td>
+          <td class="p-3">
+            <input type="number" value="${d.failures}" min="0" class="w-12 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white font-bold ${d.failures > 0 ? 'text-rose-600' : 'text-slate-700'}" onchange="updateValue('${d.tag}', 'failures', this.value)">
+          </td>
+          <td class="p-3">
+            <input type="number" value="${d.downTime}" min="0" class="w-14 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white font-bold ${d.downTime > 0 ? 'text-rose-600' : 'text-slate-700'}" onchange="updateValue('${d.tag}', 'downTime', this.value)">
+          </td>
+          <td class="p-3 font-medium text-slate-700">${mtbf.toFixed(1)}</td>
+          <td class="p-3 font-medium text-slate-700">${mttr.toFixed(1)}</td>
+          <td class="p-3 font-bold ${!isPass ? 'text-rose-600' : 'text-emerald-600'}">${avail.toFixed(2)}%</td>
+          <td class="p-3">
+            <span class="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${isPass ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700 font-bold'}">
+              ${isPass ? '● ปกติ' : '▲ ต่ำกว่า 96%'}
+            </span>
+          </td>
+          <td class="p-3 pr-4 text-center">
+            <button onclick="showAdvice('${d.tag}')" class="text-[11px] bg-white border border-brand-300 hover:bg-brand-50 text-brand-700 px-2.5 py-1 rounded-lg transition font-medium shadow-2xs">
+              คำแนะนำ
+            </button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function updateValue(tag, key, val) {
+      const dev = realtimeData.find(d => d.tag === tag);
+      if (dev) {
+        dev[key] = parseFloat(val) || 0;
+        renderTable();
+        syncTableToCards();
+      }
+    }
+
+    function filterType(type) {
+      currentFilter = type;
+      ['ALL', 'TX', 'GIS'].forEach(t => {
+        const btn = document.getElementById(`filter-${t}`);
+        if (t === type) {
+          btn.className = "px-3 py-1 text-xs font-bold rounded-xl bg-brand-500 text-white transition shadow-2xs";
+        } else {
+          btn.className = "px-3 py-1 text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition";
+        }
+      });
+      renderTable();
+    }
+
+    function showAdvice(tag) {
+      const dev = realtimeData.find(d => d.tag === tag);
+      if (!dev) return;
+
+      const avail = (dev.operatingHrs + dev.downTime) > 0 
+        ? (dev.operatingHrs / (dev.operatingHrs + dev.downTime)) * 100 
+        : 100;
+
+      const modal = document.getElementById('modal-action');
+      const title = document.getElementById('modal-title');
+      const body = document.getElementById('modal-body');
+
+      title.innerText = `มาตรการบำรุงรักษา: ${dev.tag} (${dev.type === 'TX' ? 'หม้อแปลงไฟฟ้า' : 'สวิตซ์เกียร์ GIS'})`;
+
+      let msg = "";
+      if (avail < AVAIL_THRESHOLD) {
+        msg = `<div class="p-3 bg-rose-50 border border-rose-200 rounded-2xl text-rose-800">${solutions[dev.type].lowAvail}</div>`;
+      } else {
+        msg = `<div class="p-3 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-800">${solutions[dev.type].normal}</div>`;
+      }
+
+      body.innerHTML = msg;
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('modal-action').classList.add('hidden');
+    }
+
+    // Tab Switching Functionality
+    function switchTab(tab) {
+      const vRealtime = document.getElementById('view-realtime');
+      const vMonthly = document.getElementById('view-monthly');
+      const vForm = document.getElementById('view-form');
+
+      const tRealtime = document.getElementById('tab-realtime');
+      const tMonthly = document.getElementById('tab-monthly');
+      const tForm = document.getElementById('tab-form');
+
+      vRealtime.classList.add('hidden');
+      vMonthly.classList.add('hidden');
+      vForm.classList.add('hidden');
+
+      tRealtime.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold";
+      tMonthly.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold";
+      tForm.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold";
+
+      if (tab === 'realtime') {
+        vRealtime.classList.remove('hidden');
+        tRealtime.className = "px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold";
+      } else if (tab === 'monthly') {
+        vMonthly.classList.remove('hidden');
+        tMonthly.className = "px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold";
+        selectMonth(selectedMonthIndex);
+      } else if (tab === 'form') {
+        vForm.classList.remove('hidden');
+        tForm.className = "px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold";
+      }
+    }
+
+    window.onload = () => {
+      renderTable();
+      runSimulation();
+      startLiveStream();
+    };
+  </script>
 </body>
 </html>
