@@ -22,12 +22,11 @@
           },
           colors: {
             brand: {
-              50: '#fff5f7',
-              100: '#ffeef2',
-              200: '#fedce5',
+              50: '#fff7f9',
+              100: '#ffedf2',
+              200: '#fedce6',
               300: '#fdbecd',
               400: '#f88da7',
-              50: '#f05b82',
               500: '#f05b82',
               600: '#de3866',
               700: '#ba234e',
@@ -49,12 +48,10 @@
       -moz-appearance: textfield;
     }
 
-    /* Mobile scrolling improvements */
     .table-responsive {
       -webkit-overflow-scrolling: touch;
     }
 
-    /* Prevent any text overflow clipping */
     .clean-cell {
       word-break: break-word;
       overflow-wrap: break-word;
@@ -62,7 +59,7 @@
       line-height: 1.35;
     }
 
-    /* Universal A4 Print Engine for Desktop, iOS & Android */
+    /* Universal A4 Print Engine */
     @media print {
       html, body {
         width: 210mm !important;
@@ -108,7 +105,7 @@
 <body class="bg-brand-50 text-slate-700 min-h-screen flex flex-col font-sans antialiased">
 
   <!-- Header -->
-  <header class="bg-white/95 backdrop-blur-md border-b border-brand-200 sticky top-0 z-30 no-print shadow-xs">
+  <header class="bg-white/90 backdrop-blur-md border-b border-brand-200 sticky top-0 z-30 no-print shadow-xs">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex flex-col md:flex-row justify-between items-center gap-3">
       <div class="flex items-center space-x-3 w-full md:w-auto justify-between md:justify-start">
         <div class="flex items-center space-x-2.5">
@@ -124,7 +121,7 @@
           </div>
         </div>
 
-        <!-- Live Toggle Button for Mobile view -->
+        <!-- Live Toggle Button for Mobile -->
         <button onclick="toggleLiveMode()" class="md:hidden flex items-center gap-1 px-2.5 py-1 bg-emerald-100 text-emerald-700 text-[11px] font-bold rounded-xl border border-emerald-300 shadow-xs">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
           <span>LIVE</span>
@@ -156,11 +153,11 @@
   <!-- Main Content Container -->
   <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 flex-1 w-full space-y-5 sm:space-y-6">
     
-    <!-- Tab 1: Real-time Live View (หน้าแรก) -->
+    <!-- Tab 1: Real-time Live View -->
     <div id="view-realtime" class="space-y-5 sm:space-y-6">
 
       <!-- Executive Goal Simulator Box -->
-      <div class="bg-gradient-to-br from-white via-brand-50/30 to-brand-100/40 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm">
+      <div class="bg-gradient-to-br from-white via-brand-50/40 to-brand-100/50 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm">
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 mb-4">
           <div>
             <span class="text-[10px] sm:text-xs font-bold text-brand-600 uppercase tracking-wider">🎯 Executive Strategy Simulator</span>
@@ -209,7 +206,7 @@
         </div>
       </div>
       
-      <!-- Top 3 Direct-Editable Cards (Real-time) -->
+      <!-- Top 3 Calculated Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
         
         <!-- 1. Availability Card -->
@@ -280,7 +277,7 @@
 
       </div>
 
-      <!-- Equipment Table Section (25 Assets) Real-time -->
+      <!-- Equipment Table Section -->
       <div class="bg-white rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm overflow-hidden">
         <div class="p-3.5 sm:p-5 border-b border-brand-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-brand-50/50">
           <div>
@@ -315,14 +312,14 @@
               </tr>
             </thead>
             <tbody id="equipment-tbody" class="divide-y divide-brand-100 font-normal">
-              <!-- Rendered via JavaScript -->
+              <!-- Rendered via JS -->
             </tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- Tab 2: Monthly Analytics View (หน้าสถิติประจำเดือน) -->
+    <!-- Tab 2: Monthly Analytics View -->
     <div id="view-monthly" class="hidden space-y-5 sm:space-y-6">
       
       <!-- Month Selector Bar -->
@@ -355,7 +352,7 @@
         </div>
       </div>
 
-      <!-- Monthly Summary KPI Cards -->
+      <!-- Monthly KPI Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
         <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm">
           <span class="text-xs font-bold text-slate-400 uppercase">Availability ประจำเดือน</span>
@@ -380,10 +377,8 @@
         </div>
       </div>
 
-      <!-- Interactive Monthly Bar Charts -->
+      <!-- Charts -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
-        
-        <!-- Chart 1: อุปกรณ์ผ่านเกณฑ์ vs ไม่ผ่านเกณฑ์ -->
         <div class="lg:col-span-6 bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
           <div class="flex items-center justify-between mb-3">
             <div>
@@ -397,7 +392,6 @@
           </div>
         </div>
 
-        <!-- Chart 2: จำนวนครั้งที่ชำรุดและความเสียหายแยกประเภท -->
         <div class="lg:col-span-6 bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
           <div class="flex items-center justify-between mb-3">
             <div>
@@ -410,15 +404,14 @@
             <canvas id="failuresChart"></canvas>
           </div>
         </div>
-
       </div>
 
     </div>
 
-    <!-- Tab 3: Inspection Form View (จัดช่องว่าง สัดส่วนข้อความ และไม่มีข้อความล้นเส้น) -->
+    <!-- Tab 3: Inspection Form View -->
     <div id="view-form" class="hidden space-y-5 sm:space-y-6">
       
-      <!-- Sub-navigation to switch between Transformer and GIS Forms -->
+      <!-- Sub-nav for Forms -->
       <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 no-print bg-white p-3.5 sm:p-4 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm">
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
           <span class="text-xs font-bold text-slate-700">📋 เลือกแบบฟอร์ม:</span>
@@ -437,10 +430,9 @@
         </button>
       </div>
 
-      <!-- FORM 1: Transformer Inspection Sheet (A4 Full Page Clean Layout) -->
+      <!-- FORM 1: Transformer Sheet -->
       <div id="form-tx-container" class="active-print-form bg-white p-5 sm:p-8 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs flex flex-col justify-between">
         
-        <!-- Header Section -->
         <div>
           <div class="border-b-2 border-brand-500 pb-2 mb-3.5 flex justify-between items-start">
             <div>
@@ -453,7 +445,6 @@
             </div>
           </div>
 
-          <!-- General Info Blank Lines -->
           <div class="grid grid-cols-2 gap-y-2.5 gap-x-6 mb-3.5 text-xs text-slate-700">
             <div class="flex items-baseline">
               <span class="font-bold whitespace-nowrap">รหัสอุปกรณ์ (Tag):</span>
@@ -479,7 +470,6 @@
             </div>
           </div>
 
-          <!-- Checklists Table for Transformer (No text overflow / Clean wraps) -->
           <div class="mb-3.5">
             <h3 class="text-xs font-bold text-slate-800 uppercase mb-1">รายการตรวจสอบสภาพความพร้อมใช้งาน (INSPECTION CHECKLIST)</h3>
             <table class="w-full border border-slate-300 text-[11px] table-fixed">
@@ -562,7 +552,6 @@
             </table>
           </div>
 
-          <!-- Blank Corrective Action Lines -->
           <div class="mb-3.5">
             <label class="block text-xs font-bold text-slate-700 mb-1">ข้อเสนอแนะและมาตรการแก้ไขเพิ่มเติม (Action Taken / Recommendations):</label>
             <div class="space-y-2 pt-0.5">
@@ -572,7 +561,6 @@
           </div>
         </div>
 
-        <!-- Signature Blank Section -->
         <div class="grid grid-cols-2 gap-8 text-center text-xs mt-4 pt-2.5 border-t border-slate-300">
           <div>
             <p class="mb-6">ลงชื่อ ..............................................................</p>
@@ -588,10 +576,9 @@
 
       </div>
 
-      <!-- FORM 2: GIS Inspection Sheet (A4 Full Page Clean Layout) -->
+      <!-- FORM 2: GIS Sheet -->
       <div id="form-gis-container" class="hidden bg-white p-5 sm:p-8 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs flex flex-col justify-between">
         
-        <!-- Header -->
         <div>
           <div class="border-b-2 border-brand-500 pb-2 mb-3.5 flex justify-between items-start">
             <div>
@@ -604,7 +591,6 @@
             </div>
           </div>
 
-          <!-- General Info Blank Lines -->
           <div class="grid grid-cols-2 gap-y-2.5 gap-x-6 mb-3.5 text-xs text-slate-700">
             <div class="flex items-baseline">
               <span class="font-bold whitespace-nowrap">รหัสอุปกรณ์ (Tag):</span>
@@ -630,7 +616,6 @@
             </div>
           </div>
 
-          <!-- Checklists Table for GIS (No text overflow / Clean wraps) -->
           <div class="mb-3.5">
             <h3 class="text-xs font-bold text-slate-800 uppercase mb-1">รายการตรวจสอบสภาพความพร้อมใช้งาน (INSPECTION CHECKLIST)</h3>
             <table class="w-full border border-slate-300 text-[11px] table-fixed">
@@ -701,7 +686,6 @@
             </table>
           </div>
 
-          <!-- Blank Corrective Action Lines -->
           <div class="mb-3.5">
             <label class="block text-xs font-bold text-slate-700 mb-1">ข้อเสนอแนะและมาตรการแก้ไขเพิ่มเติม (Action Taken / Recommendations):</label>
             <div class="space-y-2 pt-0.5">
@@ -711,7 +695,6 @@
           </div>
         </div>
 
-        <!-- Signature Blank Section -->
         <div class="grid grid-cols-2 gap-8 text-center text-xs mt-4 pt-2.5 border-t border-slate-300">
           <div>
             <p class="mb-6">ลงชื่อ ..............................................................</p>
@@ -731,7 +714,7 @@
 
   </main>
 
-  <!-- Action Modal for Correction Guidelines -->
+  <!-- Action Modal -->
   <div id="modal-action" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-brand-200">
       <div class="flex items-center justify-between pb-3 border-b border-brand-100">
@@ -754,7 +737,6 @@
       'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
     ];
 
-    // Realtime live dataset (25 assets) with intentional realistic faults
     const realtimeData = [];
     for (let i = 1; i <= 15; i++) {
       const tag = `TX-${String(i).padStart(2, '0')}`;
@@ -793,7 +775,6 @@
       });
     }
 
-    // Monthly historical datasets (12 months)
     const monthlyDatasets = [];
     for (let m = 0; m < 12; m++) {
       const devList = [];
@@ -858,7 +839,6 @@
       }
     };
 
-    // Executive Strategy Simulator
     function onSliderChange(val) {
       document.getElementById('slider-val').innerText = parseFloat(val).toFixed(1);
       runSimulation();
@@ -892,7 +872,6 @@
       checkAvailStatus(avail);
     }
 
-    // Month Selector in Tab 2
     function selectMonth(idx) {
       selectedMonthIndex = idx;
       const data = monthlyDatasets[selectedMonthIndex];
@@ -1032,7 +1011,6 @@
       });
     }
 
-    // Live Real-Time Auto-Stream
     function toggleLiveMode() {
       isLiveActive = !isLiveActive;
       const btn = document.getElementById('live-btn');
@@ -1062,7 +1040,6 @@
       }, 2000);
     }
 
-    // Direct Card Input
     function onAvailCardDirectInput() {
       let avail = parseFloat(document.getElementById('card-avail').value);
       if (isNaN(avail)) return;
@@ -1220,7 +1197,6 @@
       document.getElementById('modal-action').classList.add('hidden');
     }
 
-    // Switch between Main Tabs
     function switchTab(tab) {
       const vRealtime = document.getElementById('view-realtime');
       const vMonthly = document.getElementById('view-monthly');
@@ -1251,7 +1227,6 @@
       }
     }
 
-    // Switch Form Sub-tabs (Transformer Form vs GIS Form)
     function switchFormType(type) {
       const formTx = document.getElementById('form-tx-container');
       const formGis = document.getElementById('form-gis-container');
