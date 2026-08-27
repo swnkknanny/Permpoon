@@ -51,16 +51,16 @@
       body * {
         visibility: hidden;
       }
-      #printable-form, #printable-form * {
+      .active-print-form, .active-print-form * {
         visibility: visible;
       }
-      #printable-form {
+      .active-print-form {
         position: absolute;
         left: 0;
         top: 0;
         width: 100%;
         margin: 0;
-        padding: 8mm 10mm;
+        padding: 6mm 10mm;
         box-shadow: none;
         border: none;
       }
@@ -69,7 +69,7 @@
       }
       @page {
         size: A4 portrait;
-        margin: 8mm;
+        margin: 6mm 8mm;
       }
     }
   </style>
@@ -88,7 +88,7 @@
             <h1 class="text-base sm:text-lg font-bold text-slate-800 leading-tight">RAM Executive Simulation System</h1>
             <span class="px-2 py-0.5 bg-brand-100 text-brand-700 text-[10px] font-bold rounded-full uppercase tracking-wider">Live & Analytics</span>
           </div>
-          <p class="text-xs text-brand-600 font-medium">ระบบวิเคราะห์ความน่าเชื่อถือสถานีไฟฟ้าแบบเรียลไทม์และสถิติรายเดือน</p>
+          <p class="text-xs text-brand-600 font-medium">ระบบวิเคราะห์ความน่าเชื่อถือสถานีไฟฟ้าและแบบฟอร์มตรวจสอบบำรุงรักษา</p>
         </div>
       </div>
       
@@ -376,131 +376,308 @@
 
     </div>
 
-    <!-- Tab 3: Printable Blank Inspection Form View (Paper เปล่าสำหรับเขียนหน้างาน) -->
+    <!-- Tab 3: Inspection Form View (ส่วนกรอกข้อมูลแบบเดิม + เนื้อหาตารางใหม่) -->
     <div id="view-form" class="hidden space-y-6">
-      <div class="flex flex-wrap justify-between items-center gap-3 no-print">
-        <div>
-          <h2 class="text-base sm:text-lg font-bold text-slate-800">แบบฟอร์มตรวจสอบและบำรุงรักษาหน้างาน (แบบฟอร์มเปล่า)</h2>
-          <p class="text-xs text-slate-500">พิมพ์เอกสารขนาด A4 เปล่า เพื่อให้ช่างเทคนิคหน้างานนำไปเขียนบันทึกด้วยตนเอง</p>
+      
+      <!-- Sub-navigation to switch between Transformer and GIS Forms -->
+      <div class="flex flex-wrap justify-between items-center gap-3 no-print bg-white p-4 rounded-3xl border border-brand-200 shadow-sm">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-slate-700">📋 เลือกประเภทแบบฟอร์ม:</span>
+          <div class="inline-flex bg-brand-100/80 p-1 rounded-2xl text-xs font-bold">
+            <button onclick="switchFormType('tx')" id="btn-form-tx" class="px-4 py-2 rounded-xl bg-white text-brand-700 shadow-sm transition">
+              🔌 แบบฟอร์มตรวจหม้อแปลงไฟฟ้า
+            </button>
+            <button onclick="switchFormType('gis')" id="btn-form-gis" class="px-4 py-2 rounded-xl text-slate-600 hover:text-brand-600 transition">
+              ⚡ แบบฟอร์มตรวจสวิตซ์เกียร์ฉนวนก๊าซ (GIS)
+            </button>
+          </div>
         </div>
+
         <button onclick="window.print()" class="flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-bold px-4 py-2 rounded-2xl text-xs sm:text-sm shadow-sm transition">
-          🖨️ สั่งพิมพ์แบบฟอร์มเปล่า (A4)
+          🖨️ สั่งพิมพ์แบบฟอร์มนี้ (A4)
         </button>
       </div>
 
-      <!-- Printable A4 Blank Paper Container -->
-      <div id="printable-form" class="bg-white p-6 sm:p-10 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs">
+      <!-- FORM 1: Transformer Inspection Sheet -->
+      <div id="form-tx-container" class="active-print-form bg-white p-6 sm:p-10 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs">
         
         <!-- Header -->
-        <div class="border-b-2 border-brand-500 pb-3 mb-5 flex justify-between items-start">
+        <div class="border-b-2 border-brand-500 pb-3 mb-4 flex justify-between items-start">
           <div>
-            <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">ใบตรวจสอบและประเมินผลการบำรุงรักษาอุปกรณ์สถานีไฟฟ้า</h1>
-            <p class="text-[11px] text-slate-500">Substation Maintenance & RAM Inspection Checklist Form</p>
+            <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">ใบตรวจสอบและประเมินผลการบำรุงรักษาหม้อแปลงไฟฟ้า (Power Transformer)</h1>
+            <p class="text-[11px] text-slate-500">Substation Power Transformer Maintenance Inspection Checklist Form</p>
           </div>
           <div class="text-right">
-            <span class="inline-block px-2.5 py-1 bg-slate-100 text-slate-700 font-bold text-[10px] rounded border border-slate-300">เอกสารสำหรับเขียนหน้างาน</span>
-            <p class="text-[10px] text-slate-400 mt-1">เลขที่เอกสาร: PM-SUB-______</p>
+            <span class="inline-block px-2 py-0.5 bg-brand-100 text-brand-700 font-semibold text-[10px] rounded">ขนาดมาตรฐาน A4</span>
+            <p class="text-[10px] text-slate-400 mt-1">วันที่พิมพ์: <span class="print-date-label"></span></p>
           </div>
         </div>
 
-        <!-- General Info Blank Lines -->
-        <div class="grid grid-cols-2 gap-y-3.5 gap-x-6 mb-6 text-xs text-slate-700">
-          <div class="flex items-baseline">
-            <span class="font-bold whitespace-nowrap">รหัสอุปกรณ์ (Tag):</span>
-            <span class="ml-2 flex-1 border-b border-dotted border-slate-400"></span>
+        <!-- General Info Form (แบบเดิม) -->
+        <div class="grid grid-cols-2 gap-3 mb-4 text-xs">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">รหัสอุปกรณ์ (Equipment Tag):</label>
+            <select id="form-device-select-tx" class="w-full border border-slate-300 rounded-lg p-1.5 bg-slate-50 text-xs">
+              <!-- Rendered via JS -->
+            </select>
           </div>
-          <div class="flex items-baseline">
-            <span class="font-bold whitespace-nowrap">วันที่ปฏิบัติงาน:</span>
-            <span class="ml-2 flex-1 border-b border-dotted border-slate-400"></span>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">วันที่ปฏิบัติงาน (Inspection Date):</label>
+            <input type="date" class="form-date-input w-full border border-slate-300 rounded-lg p-1.5 bg-slate-50 text-xs">
           </div>
-          <div class="flex items-baseline">
-            <span class="font-bold whitespace-nowrap">ชื่อช่างเทคนิคผู้ตรวจ:</span>
-            <span class="ml-2 flex-1 border-b border-dotted border-slate-400"></span>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">ชื่อช่างเทคนิคผู้ปฏิบัติงาน:</label>
+            <input type="text" placeholder="ระบุชื่อ-นามสกุล ช่างผู้รับผิดชอบ" class="w-full border border-slate-300 rounded-lg p-1.5 bg-slate-50 text-xs">
           </div>
-          <div class="flex items-baseline">
-            <span class="font-bold whitespace-nowrap">ตำแหน่ง / สังกัด:</span>
-            <span class="ml-2 flex-1 border-b border-dotted border-slate-400"></span>
-          </div>
-          <div class="col-span-2 flex items-center gap-4 pt-1">
-            <span class="font-bold whitespace-nowrap">ประเภทการบำรุงรักษา:</span>
-            <label class="flex items-center gap-1.5 cursor-pointer"><span class="w-3.5 h-3.5 border border-slate-400 rounded-sm inline-block"></span> เชิงป้องกัน (PM)</label>
-            <label class="flex items-center gap-1.5 cursor-pointer"><span class="w-3.5 h-3.5 border border-slate-400 rounded-sm inline-block"></span> ตามสภาพ (CBM)</label>
-            <label class="flex items-center gap-1.5 cursor-pointer"><span class="w-3.5 h-3.5 border border-slate-400 rounded-sm inline-block"></span> แก้ไขเร่งด่วน (CM)</label>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">ประเภทการบำรุงรักษา:</label>
+            <select class="w-full border border-slate-300 rounded-lg p-1.5 bg-slate-50 text-xs">
+              <option>การบำรุงรักษาเชิงป้องกัน (Preventive Maintenance)</option>
+              <option>การบำรุงรักษาตามสภาพ (Condition-based Maintenance)</option>
+              <option>การบำรุงรักษาแก้ไข (Corrective Maintenance)</option>
+            </select>
           </div>
         </div>
 
-        <!-- Checklists Blank Table -->
-        <div class="mb-5">
-          <h3 class="text-xs font-bold text-slate-800 uppercase mb-2">รายการตรวจสอบสภาพความพร้อมใช้งาน (Inspection Checklist)</h3>
-          <table class="w-full border border-slate-300 text-xs">
+        <!-- Checklists Table for Transformer (เนื้อหาตารางใหม่) -->
+        <div class="mb-4">
+          <h3 class="text-xs font-bold text-slate-800 uppercase mb-1.5">รายการตรวจสอบสภาพความพร้อมใช้งาน</h3>
+          <table class="w-full border border-slate-200 text-xs">
             <thead class="bg-slate-100 text-slate-700 font-bold">
               <tr>
-                <th class="border border-slate-300 p-2 text-left">รายการตรวจสอบ (Inspection Item)</th>
-                <th class="border border-slate-300 p-2 w-16 text-center">ปกติ</th>
-                <th class="border border-slate-300 p-2 w-16 text-center">ผิดปกติ</th>
-                <th class="border border-slate-300 p-2 w-52 text-left">หมายเหตุ / ค่าที่วัดได้จริง</th>
+                <th class="border border-slate-200 p-1.5 text-left w-44">รายการตรวจ (Item)</th>
+                <th class="border border-slate-200 p-1.5 text-left">วิธีการตรวจ / ค่ามาตรฐาน</th>
+                <th class="border border-slate-200 p-1.5 w-44 text-left">ผลการตรวจ (P/F/ค่าที่วัดได้)</th>
+                <th class="border border-slate-200 p-1.5 w-24 text-center">หมายเหตุ</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-300">
-              <tr class="h-10">
-                <td class="p-2 border-r border-slate-300 font-medium">1. สภาพภายนอก รอยรั่วซึม และระดับน้ำมัน / ก๊าซ SF6</td>
-                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
-                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
-                <td class="p-2 border-slate-300"></td>
+            <tbody class="divide-y divide-slate-200">
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">ระดับน้ำมัน (Oil Level)</td>
+                <td class="p-1.5 border-r border-slate-200">ตรวจที่ Main Tank และ OLTC (อยู่ในแถบ Normal ตาม Temp.)</td>
+                <td class="p-1.5 border-r border-slate-200"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                <td class="p-1.5 text-center"></td>
               </tr>
-              <tr class="h-10">
-                <td class="p-2 border-r border-slate-300 font-medium">2. อุณหภูมิผิวสัมผัสและขั้วต่อ Bushing (Thermoscan)</td>
-                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
-                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
-                <td class="p-2 border-slate-300"></td>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">อุณหภูมิน้ำมันและขดลวด (OTI / WTI)</td>
+                <td class="p-1.5 border-r border-slate-200">บันทึกค่าอุณหภูมิ (°C) และเข็ม Max Value</td>
+                <td class="p-1.5 border-r border-slate-200">Oil: ______ °C / Wdg: ______ °C</td>
+                <td class="p-1.5 text-center"></td>
               </tr>
-              <tr class="h-10">
-                <td class="p-2 border-r border-slate-300 font-medium">3. ค่าความเป็นฉนวน (Insulation Resistance / DGA)</td>
-                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
-                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
-                <td class="p-2 border-slate-300"></td>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">สารดูดความชื้น (Silica Gel)</td>
+                <td class="p-1.5 border-r border-slate-200">สีของสารดูดความชื้น (ต้องไม่เปลี่ยนสีเกิน 2/3 กระบอก)</td>
+                <td class="p-1.5 border-r border-slate-200">
+                  <div class="flex flex-wrap gap-x-1.5">
+                    <label>[&nbsp;&nbsp;] ปกติ</label>
+                    <label>[&nbsp;&nbsp;] เริ่มเปลี่ยนสี</label>
+                    <label>[&nbsp;&nbsp;] เสื่อมสภาพ</label>
+                  </div>
+                </td>
+                <td class="p-1.5 text-center"></td>
               </tr>
-              <tr class="h-10">
-                <td class="p-2 border-r border-slate-300 font-medium">4. กลไกขับเคลื่อนและหน้าสัมผัส (Contact Resistance)</td>
-                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
-                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
-                <td class="p-2 border-slate-300"></td>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">แรงดันก๊าซไนโตรเจน (N2 Pressure)</td>
+                <td class="p-1.5 border-r border-slate-200">ตรวจสอบเกจวัดแรงดันถัง N2 (ถ้ามี)</td>
+                <td class="p-1.5 border-r border-slate-200">_________ psi / bar</td>
+                <td class="p-1.5 text-center"></td>
               </tr>
-              <tr class="h-10">
-                <td class="p-2 border-r border-slate-300 font-medium">5. ระบบสัญญาณเตือนและรีเลย์ป้องกัน (Protection Relays)</td>
-                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
-                <td class="p-2 border-r border-slate-300 text-center"><span class="inline-block w-4 h-4 rounded-full border border-slate-400"></span></td>
-                <td class="p-2 border-slate-300"></td>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">Bushing & Arcing Horn</td>
+                <td class="p-1.5 border-r border-slate-200">ไม่แตกร้าว, ไม่มีคราบวาบไฟตามผิว, คราบสกปรก</td>
+                <td class="p-1.5 border-r border-slate-200"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                <td class="p-1.5 text-center"></td>
+              </tr>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">การรั่วซึม (Oil Leakage)</td>
+                <td class="p-1.5 border-r border-slate-200">หน้าแปลน, วาล์ว, ครีบระบายความร้อน, รอยต่อถัง</td>
+                <td class="p-1.5 border-r border-slate-200">
+                  <div class="flex flex-wrap gap-x-1.5">
+                    <label>[&nbsp;&nbsp;] ไม่พบ</label>
+                    <label>[&nbsp;&nbsp;] พบรอยซึม</label>
+                    <label>[&nbsp;&nbsp;] รั่วหยด</label>
+                  </div>
+                </td>
+                <td class="p-1.5 text-center"></td>
+              </tr>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">ระบบระบายความร้อน (Cooling Fans/Pumps)</td>
+                <td class="p-1.5 border-r border-slate-200">เสียงการทำงานปกติ, ไม่มีสั่นสะเทือนผิดปกติ</td>
+                <td class="p-1.5 border-r border-slate-200"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                <td class="p-1.5 text-center"></td>
+              </tr>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">กราวด์ (Grounding Connection)</td>
+                <td class="p-1.5 border-r border-slate-200">สายต่อลงดินของตัวถังและ Neutral แน่นหนา ไม่ขาด</td>
+                <td class="p-1.5 border-r border-slate-200"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] หลุด/หลวม</label></td>
+                <td class="p-1.5 text-center"></td>
+              </tr>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">เสียงและกลิ่น (Abnormal Noise/Smell)</td>
+                <td class="p-1.5 border-r border-slate-200">เสียงฮัมปกติ (Humming), ไม่มีเสียง Corona / กลิ่นไหม้</td>
+                <td class="p-1.5 border-r border-slate-200"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                <td class="p-1.5 text-center"></td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- Blank Corrective Action Lines -->
+        <!-- Corrective Action Note (แบบเดิม) -->
         <div class="mb-6">
-          <label class="block text-xs font-bold text-slate-700 mb-2">ข้อเสนอแนะและมาตรการแก้ไขเพิ่มเติม (Action Taken / Recommendations):</label>
-          <div class="space-y-3.5 pt-1">
-            <div class="border-b border-dotted border-slate-400 h-4"></div>
-            <div class="border-b border-dotted border-slate-400 h-4"></div>
-            <div class="border-b border-dotted border-slate-400 h-4"></div>
-          </div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">ข้อเสนอแนะและมาตรการแก้ไข (Action Taken / Recommendations):</label>
+          <textarea rows="2" class="w-full border border-slate-300 rounded-lg p-1.5 text-xs bg-slate-50" placeholder="บันทึกข้อสังเกตหรือมาตรการแก้ไขเพิ่มเติมสำหรับการบำรุงรักษาครั้งถัดไป..."></textarea>
         </div>
 
-        <!-- Signature Blank Section -->
-        <div class="grid grid-cols-2 gap-8 text-center text-xs mt-10 pt-4 border-t border-slate-300">
+        <!-- Signature Section (แบบเดิม) -->
+        <div class="grid grid-cols-2 gap-6 text-center text-xs mt-6 pt-3 border-t border-slate-200">
           <div>
-            <p class="mb-8">ลงชื่อ ..............................................................</p>
+            <p class="mb-6">ลงชื่อ ..............................................................</p>
             <p class="font-semibold">( .............................................................. )</p>
-            <p class="text-slate-500 text-[10px] mt-0.5">ช่างเทคนิคผู้ปฏิบัติงานหน้างาน</p>
+            <p class="text-slate-500 text-[10px] mt-0.5">ช่างเทคนิคผู้ปฏิบัติงาน</p>
           </div>
           <div>
-            <p class="mb-8">ลงชื่อ ..............................................................</p>
+            <p class="mb-6">ลงชื่อ ..............................................................</p>
             <p class="font-semibold">( .............................................................. )</p>
             <p class="text-slate-500 text-[10px] mt-0.5">วิศวกรผู้ควบคุมและรับรองผล</p>
           </div>
         </div>
 
       </div>
+
+      <!-- FORM 2: GIS Inspection Sheet -->
+      <div id="form-gis-container" class="hidden bg-white p-6 sm:p-10 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs">
+        
+        <!-- Header -->
+        <div class="border-b-2 border-brand-500 pb-3 mb-4 flex justify-between items-start">
+          <div>
+            <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">ใบตรวจสอบและประเมินผลการบำรุงรักษาสวิตซ์เกียร์ฉนวนก๊าซ (GIS)</h1>
+            <p class="text-[11px] text-slate-500">Substation Gas-Insulated Switchgear Maintenance Inspection Checklist Form</p>
+          </div>
+          <div class="text-right">
+            <span class="inline-block px-2 py-0.5 bg-brand-100 text-brand-700 font-semibold text-[10px] rounded">ขนาดมาตรฐาน A4</span>
+            <p class="text-[10px] text-slate-400 mt-1">วันที่พิมพ์: <span class="print-date-label"></span></p>
+          </div>
+        </div>
+
+        <!-- General Info Form (แบบเดิม) -->
+        <div class="grid grid-cols-2 gap-3 mb-4 text-xs">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">รหัสอุปกรณ์ (Equipment Tag):</label>
+            <select id="form-device-select-gis" class="w-full border border-slate-300 rounded-lg p-1.5 bg-slate-50 text-xs">
+              <!-- Rendered via JS -->
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">วันที่ปฏิบัติงาน (Inspection Date):</label>
+            <input type="date" class="form-date-input w-full border border-slate-300 rounded-lg p-1.5 bg-slate-50 text-xs">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">ชื่อช่างเทคนิคผู้ปฏิบัติงาน:</label>
+            <input type="text" placeholder="ระบุชื่อ-นามสกุล ช่างผู้รับผิดชอบ" class="w-full border border-slate-300 rounded-lg p-1.5 bg-slate-50 text-xs">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">ประเภทการบำรุงรักษา:</label>
+            <select class="w-full border border-slate-300 rounded-lg p-1.5 bg-slate-50 text-xs">
+              <option>การบำรุงรักษาเชิงป้องกัน (Preventive Maintenance)</option>
+              <option>การบำรุงรักษาตามสภาพ (Condition-based Maintenance)</option>
+              <option>การบำรุงรักษาแก้ไข (Corrective Maintenance)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Checklists Table for GIS (เนื้อหาตารางใหม่) -->
+        <div class="mb-4">
+          <h3 class="text-xs font-bold text-slate-800 uppercase mb-1.5">รายการตรวจสอบสภาพความพร้อมใช้งาน</h3>
+          <table class="w-full border border-slate-200 text-xs">
+            <thead class="bg-slate-100 text-slate-700 font-bold">
+              <tr>
+                <th class="border border-slate-200 p-1.5 text-left w-44">รายการตรวจ (Item)</th>
+                <th class="border border-slate-200 p-1.5 text-left">วิธีการตรวจ / ค่ามาตรฐาน</th>
+                <th class="border border-slate-200 p-1.5 w-44 text-left">ผลการตรวจ (P/F/ค่าที่วัดได้)</th>
+                <th class="border border-slate-200 p-1.5 w-24 text-center">หมายเหตุ</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200">
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">แรงดันก๊าซ SF6 (SF6 Density/Pressure)</td>
+                <td class="p-1.5 border-r border-slate-200">ตรวจทุก Gas Compartment (เข็มอยู่ในแถบสีเขียว)</td>
+                <td class="p-1.5 border-r border-slate-200">
+                  <div class="flex flex-wrap gap-x-1.5">
+                    <label>[&nbsp;&nbsp;] เขียวทุกช่อง</label>
+                    <label>[&nbsp;&nbsp;] เตือน Stage 1</label>
+                    <label>[&nbsp;&nbsp;] ผิดปกติ</label>
+                  </div>
+                </td>
+                <td class="p-1.5 text-[10px] text-slate-500">บันทึกช่องที่ตก: ________</td>
+              </tr>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">ตำแหน่งสวิตช์ (Position Indicator)</td>
+                <td class="p-1.5 border-r border-slate-200">สถานะ CB, DS, ES สอดคล้องกับระบบควบคุม (Open/Close)</td>
+                <td class="p-1.5 border-r border-slate-200"><label class="mr-2">[&nbsp;&nbsp;] ตรงตามสถานะ</label><label>[&nbsp;&nbsp;] ไม่ตรง</label></td>
+                <td class="p-1.5 text-center"></td>
+              </tr>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">กลไกขับเคลื่อน (Operating Mechanism)</td>
+                <td class="p-1.5 border-r border-slate-200">สปริงชาร์จเต็ม (Charged), แรงดันไฮดรอลิก/ลมปกติ</td>
+                <td class="p-1.5 border-r border-slate-200"><label class="mr-2">[&nbsp;&nbsp;] พร้อมทำงาน</label><label>[&nbsp;&nbsp;] ไม่พร้อม</label></td>
+                <td class="p-1.5 text-center"></td>
+              </tr>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">ตัวนับจำนวนครั้ง (Operation Counter)</td>
+                <td class="p-1.5 border-r border-slate-200">บันทึกเลข Counter ของ CB แต่ละเฟส</td>
+                <td class="p-1.5 border-r border-slate-200">A: ______ &nbsp; B: ______ &nbsp; C: ______</td>
+                <td class="p-1.5 text-center"></td>
+              </tr>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">ตู้ควบคุมเฉพาะจุด (Local Control Cabinet - LCC)</td>
+                <td class="p-1.5 border-r border-slate-200">ไฟสถานะปกติ, ไม่มี Alarm ค้าง, สวิตช์ Local/Remote ถูกต้อง</td>
+                <td class="p-1.5 border-r border-slate-200"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] มี Alarm</label></td>
+                <td class="p-1.5 text-center"></td>
+              </tr>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">ฮีตเตอร์และระบายอากาศ (Heater & Vent)</td>
+                <td class="p-1.5 border-r border-slate-200">ฮีตเตอร์ในตู้ LCC ทำงาน (ไม่อับชื้น / ไม่มีหยดน้ำเกาะ)</td>
+                <td class="p-1.5 border-r border-slate-200"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ไม่ทำงาน</label></td>
+                <td class="p-1.5 text-center"></td>
+              </tr>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">การต่อลงดินและโครงสร้าง (Grounding & Structure)</td>
+                <td class="p-1.5 border-r border-slate-200">กราวด์ Enclosure แน่นหนา, โครงสร้างไม่มีสนิมรุนแรง</td>
+                <td class="p-1.5 border-r border-slate-200"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                <td class="p-1.5 text-center"></td>
+              </tr>
+              <tr>
+                <td class="p-1.5 border-r border-slate-200 font-medium">ความผิดปกติทางกายภาพ (Visual & Acoustic)</td>
+                <td class="p-1.5 border-r border-slate-200">ไม่มีเสียง Discharge / Partial Discharge, ไม่มีกลิ่นผิดปกติ</td>
+                <td class="p-1.5 border-r border-slate-200"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                <td class="p-1.5 text-center"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Corrective Action Note (แบบเดิม) -->
+        <div class="mb-6">
+          <label class="block text-xs font-semibold text-slate-700 mb-1">ข้อเสนอแนะและมาตรการแก้ไข (Action Taken / Recommendations):</label>
+          <textarea rows="2" class="w-full border border-slate-300 rounded-lg p-1.5 text-xs bg-slate-50" placeholder="บันทึกข้อสังเกตหรือมาตรการแก้ไขเพิ่มเติมสำหรับการบำรุงรักษาครั้งถัดไป..."></textarea>
+        </div>
+
+        <!-- Signature Section (แบบเดิม) -->
+        <div class="grid grid-cols-2 gap-6 text-center text-xs mt-6 pt-3 border-t border-slate-200">
+          <div>
+            <p class="mb-6">ลงชื่อ ..............................................................</p>
+            <p class="font-semibold">( .............................................................. )</p>
+            <p class="text-slate-500 text-[10px] mt-0.5">ช่างเทคนิคผู้ปฏิบัติงาน</p>
+          </div>
+          <div>
+            <p class="mb-6">ลงชื่อ ..............................................................</p>
+            <p class="font-semibold">( .............................................................. )</p>
+            <p class="text-slate-500 text-[10px] mt-0.5">วิศวกรผู้ควบคุมและรับรองผล</p>
+          </div>
+        </div>
+
+      </div>
+
     </div>
 
   </main>
@@ -534,12 +711,11 @@
       const tag = `TX-${String(i).padStart(2, '0')}`;
       let failures = 0, downtime = 0;
       
-      // Inject anomalies into transformers (TX-04, TX-09, TX-13 fail < 96%)
-      if (i === 4) { failures = 3; downtime = 42; }       // Avail: 94.48% (Failed)
-      else if (i === 9) { failures = 2; downtime = 35; }  // Avail: 95.36% (Failed)
-      else if (i === 13) { failures = 2; downtime = 32; } // Avail: 95.74% (Failed)
-      else if (i === 7) { failures = 1; downtime = 18; }  // Avail: 97.56% (Normal)
-      else if (i === 11) { failures = 1; downtime = 10; } // Avail: 98.63% (Normal)
+      if (i === 4) { failures = 3; downtime = 42; }
+      else if (i === 9) { failures = 2; downtime = 35; }
+      else if (i === 13) { failures = 2; downtime = 32; }
+      else if (i === 7) { failures = 1; downtime = 18; }
+      else if (i === 11) { failures = 1; downtime = 10; }
 
       realtimeData.push({
         tag: tag,
@@ -554,10 +730,9 @@
       const tag = `GIS-${String(i).padStart(2, '0')}`;
       let failures = 0, downtime = 0;
 
-      // Inject anomalies into GIS (GIS-03, GIS-07 fail < 96%)
-      if (i === 3) { failures = 2; downtime = 38; }       // Avail: 94.98% (Failed)
-      else if (i === 7) { failures = 3; downtime = 45; }  // Avail: 94.11% (Failed)
-      else if (i === 2) { failures = 1; downtime = 15; }  // Avail: 97.95% (Normal)
+      if (i === 3) { failures = 2; downtime = 38; }
+      else if (i === 7) { failures = 3; downtime = 45; }
+      else if (i === 2) { failures = 1; downtime = 15; }
 
       realtimeData.push({
         tag: tag,
@@ -569,7 +744,7 @@
       });
     }
 
-    // Monthly historical datasets (12 months) with realistic variations
+    // Monthly historical datasets (12 months)
     const monthlyDatasets = [];
     for (let m = 0; m < 12; m++) {
       const devList = [];
@@ -577,9 +752,8 @@
         const tag = `TX-${String(i).padStart(2, '0')}`;
         let failures = 0, downtime = 0;
         
-        // Simulating seasonal faults
         if (m === 0 && (i === 4 || i === 9)) { failures = 2; downtime = 35; }
-        else if (m === 3 && (i === 2 || i === 4 || i === 11 || i === 14)) { failures = 3; downtime = 45; } // Summer peak load
+        else if (m === 3 && (i === 2 || i === 4 || i === 11 || i === 14)) { failures = 3; downtime = 45; }
         else if (m === 6 && (i === 7 || i === 13)) { failures = 2; downtime = 34; }
         else if (m === 8 && (i === 1 || i === 9)) { failures = 3; downtime = 42; }
         else if (m === 10 && (i === 3)) { failures = 1; downtime = 18; }
@@ -997,7 +1171,7 @@
       document.getElementById('modal-action').classList.add('hidden');
     }
 
-    // Tab Switching Functionality
+    // Switch between Main Tabs
     function switchTab(tab) {
       const vRealtime = document.getElementById('view-realtime');
       const vMonthly = document.getElementById('view-monthly');
@@ -1028,9 +1202,66 @@
       }
     }
 
+    // Switch Form Sub-tabs (Transformer Form vs GIS Form)
+    function switchFormType(type) {
+      const formTx = document.getElementById('form-tx-container');
+      const formGis = document.getElementById('form-gis-container');
+      const btnTx = document.getElementById('btn-form-tx');
+      const btnGis = document.getElementById('btn-form-gis');
+
+      if (type === 'tx') {
+        formTx.classList.remove('hidden');
+        formTx.classList.add('active-print-form');
+        formGis.classList.add('hidden');
+        formGis.classList.remove('active-print-form');
+
+        btnTx.className = "px-4 py-2 rounded-xl bg-white text-brand-700 shadow-sm transition font-bold";
+        btnGis.className = "px-4 py-2 rounded-xl text-slate-600 hover:text-brand-600 transition font-bold";
+      } else {
+        formGis.classList.remove('hidden');
+        formGis.classList.add('active-print-form');
+        formTx.classList.add('hidden');
+        formTx.classList.remove('active-print-form');
+
+        btnGis.className = "px-4 py-2 rounded-xl bg-white text-brand-700 shadow-sm transition font-bold";
+        btnTx.className = "px-4 py-2 rounded-xl text-slate-600 hover:text-brand-600 transition font-bold";
+      }
+    }
+
+    function initFormElements() {
+      // Transformer Select Dropdown
+      const selectTx = document.getElementById('form-device-select-tx');
+      selectTx.innerHTML = '';
+      realtimeData.filter(d => d.type === 'TX').forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d.tag;
+        opt.innerText = `${d.tag} - ${d.name}`;
+        selectTx.appendChild(opt);
+      });
+
+      // GIS Select Dropdown
+      const selectGis = document.getElementById('form-device-select-gis');
+      selectGis.innerHTML = '';
+      realtimeData.filter(d => d.type === 'GIS').forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d.tag;
+        opt.innerText = `${d.tag} - ${d.name}`;
+        selectGis.appendChild(opt);
+      });
+
+      const today = new Date().toISOString().split('T')[0];
+      document.querySelectorAll('.form-date-input').forEach(inp => inp.value = today);
+
+      const printDateStr = new Date().toLocaleDateString('th-TH', {
+        year: 'numeric', month: 'long', day: 'numeric'
+      });
+      document.querySelectorAll('.print-date-label').forEach(lbl => lbl.innerText = printDateStr);
+    }
+
     window.onload = () => {
       renderTable();
       runSimulation();
+      initFormElements();
       startLiveStream();
     };
   </script>
