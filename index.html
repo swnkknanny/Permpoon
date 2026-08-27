@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>RAM Executive Real-time & Monthly Analytics Dashboard</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -38,6 +38,7 @@
   </script>
 
   <style>
+    /* Remove input number arrows */
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { 
       -webkit-appearance: none; 
@@ -47,30 +48,38 @@
       -moz-appearance: textfield;
     }
 
+    /* Mobile scrolling improvements */
+    .table-responsive {
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Universal A4 Print Engine for Desktop, iOS & Android */
     @media print {
       html, body {
-        width: 210mm;
-        height: 297mm;
+        width: 210mm !important;
+        height: 297mm !important;
         background: #ffffff !important;
         margin: 0 !important;
         padding: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
       body * {
-        visibility: hidden;
+        visibility: hidden !important;
       }
       .active-print-form, .active-print-form * {
-        visibility: visible;
+        visibility: visible !important;
       }
       .active-print-form {
-        position: absolute;
-        left: 0;
-        top: 0;
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
         width: 210mm !important;
         min-height: 282mm !important;
         height: 282mm !important;
-        box-sizing: border-box;
+        box-sizing: border-box !important;
         margin: 0 !important;
-        padding: 10mm 12mm !important;
+        padding: 8mm 12mm !important;
         box-shadow: none !important;
         border: none !important;
         display: flex !important;
@@ -82,45 +91,53 @@
       }
       @page {
         size: A4 portrait;
-        margin: 6mm 8mm;
+        margin: 5mm 6mm;
       }
     }
   </style>
 </head>
-<body class="bg-brand-50 text-slate-700 min-h-screen flex flex-col font-sans">
+<body class="bg-brand-50 text-slate-700 min-h-screen flex flex-col font-sans antialiased">
 
   <!-- Header -->
-  <header class="bg-white/90 backdrop-blur-md border-b border-brand-200 sticky top-0 z-30 no-print shadow-xs">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-3">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-600 to-brand-400 text-white flex items-center justify-center font-extrabold text-xl shadow-md shadow-brand-200">
-          ⚡
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-base sm:text-lg font-bold text-slate-800 leading-tight">RAM Executive Simulation System</h1>
-            <span class="px-2 py-0.5 bg-brand-100 text-brand-700 text-[10px] font-bold rounded-full uppercase tracking-wider">Live & Analytics</span>
+  <header class="bg-white/95 backdrop-blur-md border-b border-brand-200 sticky top-0 z-30 no-print shadow-xs">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex flex-col md:flex-row justify-between items-center gap-3">
+      <div class="flex items-center space-x-3 w-full md:w-auto justify-between md:justify-start">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-brand-600 to-brand-400 text-white flex items-center justify-center font-extrabold text-lg sm:text-xl shadow-md shadow-brand-200 shrink-0">
+            ⚡
           </div>
-          <p class="text-xs text-brand-600 font-medium">ระบบวิเคราะห์ความน่าเชื่อถือสถานีไฟฟ้าและแบบฟอร์มตรวจสอบบำรุงรักษา</p>
+          <div>
+            <div class="flex items-center gap-1.5 sm:gap-2">
+              <h1 class="text-sm sm:text-base lg:text-lg font-bold text-slate-800 leading-tight">RAM Executive System</h1>
+              <span class="px-2 py-0.5 bg-brand-100 text-brand-700 text-[9px] sm:text-[10px] font-bold rounded-full uppercase tracking-wider">Live & Analytics</span>
+            </div>
+            <p class="text-[10px] sm:text-xs text-brand-600 font-medium">ระบบวิเคราะห์ความน่าเชื่อถือสถานีไฟฟ้าและแบบฟอร์มบำรุงรักษา</p>
+          </div>
         </div>
+
+        <!-- Live Toggle Button for Mobile view -->
+        <button onclick="toggleLiveMode()" class="md:hidden flex items-center gap-1 px-2.5 py-1 bg-emerald-100 text-emerald-700 text-[11px] font-bold rounded-xl border border-emerald-300 shadow-xs">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+          <span>LIVE</span>
+        </button>
       </div>
       
-      <!-- Nav Tabs & Live Toggle Button -->
-      <div class="flex flex-wrap items-center gap-2">
-        <button onclick="toggleLiveMode()" id="live-btn" class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-xl border border-emerald-300 hover:bg-emerald-200 transition shadow-xs">
+      <!-- Nav Tabs & Desktop Live Button -->
+      <div class="flex flex-wrap items-center justify-center md:justify-end gap-2 w-full md:w-auto">
+        <button onclick="toggleLiveMode()" id="live-btn" class="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-xl border border-emerald-300 hover:bg-emerald-200 transition shadow-xs">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
           <span id="live-status-text">🔴 LIVE: กำลังอัปเดต</span>
         </button>
 
-        <nav class="flex space-x-1 bg-brand-100/80 p-1 rounded-xl text-xs sm:text-sm font-medium">
-          <button onclick="switchTab('realtime')" id="tab-realtime" class="px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold">
+        <nav class="flex space-x-1 bg-brand-100/80 p-1 rounded-xl text-xs sm:text-sm font-medium w-full sm:w-auto justify-center">
+          <button onclick="switchTab('realtime')" id="tab-realtime" class="flex-1 sm:flex-initial px-3 sm:px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold text-center">
             ⚡ เรียลไทม์
           </button>
-          <button onclick="switchTab('monthly')" id="tab-monthly" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold">
+          <button onclick="switchTab('monthly')" id="tab-monthly" class="flex-1 sm:flex-initial px-3 sm:px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold text-center">
             📅 สถิติรายเดือน
           </button>
-          <button onclick="switchTab('form')" id="tab-form" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold">
-            📝 แบบฟอร์มบำรุงรักษา (A4)
+          <button onclick="switchTab('form')" id="tab-form" class="flex-1 sm:flex-initial px-3 sm:px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold text-center">
+            📝 แบบฟอร์ม (A4)
           </button>
         </nav>
       </div>
@@ -128,33 +145,33 @@
   </header>
 
   <!-- Main Content Container -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 flex-1 w-full space-y-5 sm:space-y-6">
     
     <!-- Tab 1: Real-time Live View (หน้าแรก) -->
-    <div id="view-realtime" class="space-y-6">
+    <div id="view-realtime" class="space-y-5 sm:space-y-6">
 
       <!-- Executive Goal Simulator Box -->
-      <div class="bg-gradient-to-br from-white via-brand-50/30 to-brand-100/40 p-5 sm:p-6 rounded-3xl border-2 border-brand-200 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+      <div class="bg-gradient-to-br from-white via-brand-50/30 to-brand-100/40 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 mb-4">
           <div>
-            <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">🎯 Executive Strategy Simulator</span>
-            <h2 class="text-base sm:text-lg font-bold text-slate-800">เครื่องมือจำลองเป้าหมาย Availability สำหรับผู้บริหาร</h2>
+            <span class="text-[10px] sm:text-xs font-bold text-brand-600 uppercase tracking-wider">🎯 Executive Strategy Simulator</span>
+            <h2 class="text-sm sm:text-base lg:text-lg font-bold text-slate-800">เครื่องมือจำลองเป้าหมาย Availability สำหรับผู้บริหาร</h2>
           </div>
-          <div class="flex items-center gap-1.5">
-            <span class="text-xs text-slate-500 font-medium mr-1">เป้าหมายสำเร็จรูป:</span>
-            <button onclick="applyPreset(96.0)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">96% ขั้นต่ำ</button>
-            <button onclick="applyPreset(98.0)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">98% ดี</button>
-            <button onclick="applyPreset(99.0)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">99% มาตรฐาน Substation</button>
-            <button onclick="applyPreset(99.5)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">99.5% World-Class</button>
+          <div class="flex flex-wrap items-center gap-1.5 w-full lg:w-auto">
+            <span class="text-[11px] sm:text-xs text-slate-500 font-medium mr-1">เป้าหมาย:</span>
+            <button onclick="applyPreset(96.0)" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">96% ขั้นต่ำ</button>
+            <button onclick="applyPreset(98.0)" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">98% ดี</button>
+            <button onclick="applyPreset(99.0)" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">99% Substation</button>
+            <button onclick="applyPreset(99.5)" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">99.5% World-Class</button>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-white p-4 rounded-2xl border border-brand-100 shadow-2xs">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5 sm:gap-4 items-center bg-white p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border border-brand-100 shadow-2xs">
           <div class="md:col-span-4">
             <label class="block text-xs font-bold text-slate-600 mb-1">ต้องการ Availability เป้าหมาย:</label>
             <div class="flex items-center gap-2">
-              <input type="range" id="sim-slider" min="90" max="99.9" step="0.1" value="96.0" class="w-full accent-brand-500 cursor-pointer" oninput="onSliderChange(this.value)">
-              <div class="flex items-center font-extrabold text-brand-600 text-xl bg-brand-50 px-3 py-1 rounded-xl border border-brand-200">
+              <input type="range" id="sim-slider" min="90" max="99.9" step="0.1" value="96.0" class="w-full accent-brand-500 cursor-pointer h-2 bg-slate-200 rounded-lg" oninput="onSliderChange(this.value)">
+              <div class="flex items-center font-extrabold text-brand-600 text-lg sm:text-xl bg-brand-50 px-2.5 py-1 rounded-xl border border-brand-200 shrink-0">
                 <span id="slider-val">96.0</span>%
               </div>
             </div>
@@ -163,91 +180,91 @@
           <div class="md:col-span-4">
             <label class="block text-xs font-bold text-slate-600 mb-1">สมมติเวลาบำรุงรักษาเฉลี่ยของช่าง (MTTR):</label>
             <div class="flex items-center gap-2">
-              <select id="sim-mttr-select" class="w-full border border-brand-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700 bg-brand-50/40 focus:outline-none focus:border-brand-500" onchange="runSimulation()">
-                <option value="3.0">⚡ 3.0 ชม. (ทีมช่างระดับ World-Class / Spare พร้อม)</option>
-                <option value="4.0">🚀 4.0 ชม. (ทีมช่างมาตรฐานสถานีไฟฟ้า)</option>
-                <option value="5.0">⏱️ 5.0 ชม. (ทีมช่างระดับทั่วไป)</option>
-                <option value="6.0" selected>🔧 6.0 ชม. (กรณีงานบำรุงรักษาแก้ไขปกติ)</option>
+              <select id="sim-mttr-select" class="w-full border border-brand-200 rounded-xl px-2.5 sm:px-3 py-1.5 text-xs font-bold text-slate-700 bg-brand-50/40 focus:outline-none focus:border-brand-500 truncate" onchange="runSimulation()">
+                <option value="3.0">⚡ 3.0 ชม. (ระดับ World-Class / Spare พร้อม)</option>
+                <option value="4.0">🚀 4.0 ชม. (มาตรฐานสถานีไฟฟ้า)</option>
+                <option value="5.0">⏱️ 5.0 ชม. (ระดับทั่วไป)</option>
+                <option value="6.0" selected>🔧 6.0 ชม. (กรณีงานบำรุงรักษาปกติ)</option>
                 <option value="8.0">⏳ 8.0 ชม. (กรณีต้องรอเบิกอะไหล่)</option>
               </select>
             </div>
           </div>
 
           <div class="md:col-span-4 bg-gradient-to-r from-brand-500 to-brand-600 p-3 rounded-xl text-white shadow-sm flex flex-col justify-between">
-            <span class="text-[11px] font-semibold text-brand-100 uppercase">ผลลัพธ์คำนวณเป้าหมาย MTBF ให้เครื่องจักร</span>
+            <span class="text-[10px] sm:text-[11px] font-semibold text-brand-100 uppercase">ผลลัพธ์คำนวณเป้าหมาย MTBF ให้เครื่องจักร</span>
             <div class="flex items-baseline justify-between mt-1">
-              <span id="sim-result-mtbf" class="text-2xl font-black tracking-tight">144.0 ชม.</span>
-              <span id="sim-result-fails" class="text-xs text-brand-100 bg-black/15 px-2 py-0.5 rounded-md font-medium">เสียได้ไม่เกิน ~58 ครั้ง/ปี</span>
+              <span id="sim-result-mtbf" class="text-xl sm:text-2xl font-black tracking-tight">144.0 ชม.</span>
+              <span id="sim-result-fails" class="text-[11px] sm:text-xs text-brand-100 bg-black/15 px-2 py-0.5 rounded-md font-medium">เสียได้ไม่เกิน ~58 ครั้ง/ปี</span>
             </div>
           </div>
         </div>
       </div>
       
       <!-- Top 3 Direct-Editable Cards (Real-time) -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
         
         <!-- 1. Availability Card -->
-        <div class="bg-white p-5 rounded-3xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition flex flex-col justify-between">
+        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition flex flex-col justify-between">
           <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">AVAILABILITY (%)</span>
-              <span id="avail-status-tag" class="text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-700">
+            <div class="flex justify-between items-center mb-1.5">
+              <span class="text-[11px] sm:text-xs font-extrabold text-slate-500 uppercase tracking-wider">AVAILABILITY (%)</span>
+              <span id="avail-status-tag" class="text-[10px] sm:text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-700">
                 ● ผ่านเกณฑ์
               </span>
             </div>
             
-            <div class="my-2 flex items-center">
+            <div class="my-1.5 flex items-center">
               <input type="number" id="card-avail" value="97.28" step="0.01" min="1" max="99.99" 
-                class="w-full text-3xl sm:text-4xl font-black text-brand-600 border-b-2 border-dashed border-brand-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
+                class="w-full text-2xl sm:text-3xl lg:text-4xl font-black text-brand-600 border-b-2 border-dashed border-brand-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
                 oninput="onAvailCardDirectInput()">
-              <span class="text-2xl sm:text-3xl font-black text-brand-600 ml-1">%</span>
+              <span class="text-xl sm:text-2xl lg:text-3xl font-black text-brand-600 ml-1">%</span>
             </div>
           </div>
 
-          <div class="pt-2.5 border-t border-brand-100 flex items-center justify-between text-xs">
+          <div class="pt-2 border-t border-brand-100 flex items-center justify-between text-[11px] sm:text-xs">
             <span class="text-slate-400">เกณฑ์ขั้นต่ำ:</span>
-            <span class="font-extrabold text-brand-700 bg-brand-50 px-2.5 py-0.5 rounded-md">เป้าหมาย ≥ 96.0%</span>
+            <span class="font-extrabold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-md">เป้าหมาย ≥ 96.0%</span>
           </div>
         </div>
 
         <!-- 2. MTBF Card -->
-        <div class="bg-white p-5 rounded-3xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition flex flex-col justify-between">
+        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition flex flex-col justify-between">
           <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">MTBF เฉลี่ย (ชม.)</span>
-              <span class="text-[10px] text-brand-600 font-bold bg-brand-50 px-2 py-0.5 rounded">พิมพ์แก้ไขได้</span>
+            <div class="flex justify-between items-center mb-1.5">
+              <span class="text-[11px] sm:text-xs font-extrabold text-slate-500 uppercase tracking-wider">MTBF เฉลี่ย (ชม.)</span>
+              <span class="text-[9px] sm:text-[10px] text-brand-600 font-bold bg-brand-50 px-2 py-0.5 rounded">พิมพ์แก้ไขได้</span>
             </div>
 
-            <div class="my-2 flex items-center">
+            <div class="my-1.5 flex items-center">
               <input type="number" id="card-mtbf" value="1285.7" step="1" min="0" 
-                class="w-full text-3xl sm:text-4xl font-black text-slate-800 border-b-2 border-dashed border-slate-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
+                class="w-full text-2xl sm:text-3xl lg:text-4xl font-black text-slate-800 border-b-2 border-dashed border-slate-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
                 oninput="onMtbfMttrCardInput()">
-              <span class="text-base sm:text-lg font-bold text-slate-500 ml-1 shrink-0">ชม.</span>
+              <span class="text-sm sm:text-base font-bold text-slate-500 ml-1 shrink-0">ชม.</span>
             </div>
           </div>
 
-          <div class="pt-2.5 border-t border-brand-100 text-[11px] text-slate-400 font-medium">
+          <div class="pt-2 border-t border-brand-100 text-[10px] sm:text-[11px] text-slate-400 font-medium">
             ระยะเวลาที่เครื่องทำงานต่อเนื่อง
           </div>
         </div>
 
         <!-- 3. MTTR Card -->
-        <div class="bg-white p-5 rounded-3xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition flex flex-col justify-between">
+        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition flex flex-col justify-between">
           <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">MTTR เฉลี่ย (ชม.)</span>
-              <span class="text-[10px] text-brand-600 font-bold bg-brand-50 px-2 py-0.5 rounded">พิมพ์แก้ไขได้</span>
+            <div class="flex justify-between items-center mb-1.5">
+              <span class="text-[11px] sm:text-xs font-extrabold text-slate-500 uppercase tracking-wider">MTTR เฉลี่ย (ชม.)</span>
+              <span class="text-[9px] sm:text-[10px] text-brand-600 font-bold bg-brand-50 px-2 py-0.5 rounded">พิมพ์แก้ไขได้</span>
             </div>
 
-            <div class="my-2 flex items-center">
+            <div class="my-1.5 flex items-center">
               <input type="number" id="card-mttr" value="23.3" step="0.1" min="0.1" 
-                class="w-full text-3xl sm:text-4xl font-black text-slate-800 border-b-2 border-dashed border-slate-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
+                class="w-full text-2xl sm:text-3xl lg:text-4xl font-black text-slate-800 border-b-2 border-dashed border-slate-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
                 oninput="onMtbfMttrCardInput()">
-              <span class="text-base sm:text-lg font-bold text-slate-500 ml-1 shrink-0">ชม.</span>
+              <span class="text-sm sm:text-base font-bold text-slate-500 ml-1 shrink-0">ชม.</span>
             </div>
           </div>
 
-          <div class="pt-2.5 border-t border-brand-100 text-[11px] text-slate-400 font-medium">
+          <div class="pt-2 border-t border-brand-100 text-[10px] sm:text-[11px] text-slate-400 font-medium">
             เวลาเฉลี่ยในการบำรุงรักษา
           </div>
         </div>
@@ -255,37 +272,37 @@
       </div>
 
       <!-- Equipment Table Section (25 Assets) Real-time -->
-      <div class="bg-white rounded-3xl border border-brand-200 shadow-sm overflow-hidden">
-        <div class="p-4 sm:p-5 border-b border-brand-100 flex flex-wrap justify-between items-center gap-3 bg-brand-50/50">
+      <div class="bg-white rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm overflow-hidden">
+        <div class="p-3.5 sm:p-5 border-b border-brand-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-brand-50/50">
           <div>
             <h2 class="text-sm sm:text-base font-extrabold text-slate-800">รายการอุปกรณ์สถานีไฟฟ้าแบบ Real-time (หม้อแปลง 15 ตัว | GIS 10 ตัว)</h2>
-            <p class="text-xs text-slate-500">ข้อมูลคำนวณแบบ Real-time จำลองพบอุปกรณ์ที่มีความผิดปกติและต่ำกว่าเกณฑ์ 96%</p>
+            <p class="text-[11px] sm:text-xs text-slate-500">ข้อมูลคำนวณแบบ Real-time จำลองพบอุปกรณ์ที่มีความผิดปกติและต่ำกว่าเกณฑ์ 96%</p>
           </div>
           
-          <div class="flex flex-wrap items-center gap-2">
-            <button onclick="syncTableToCards()" class="px-3.5 py-1.5 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-2xs">
-              🔄 ดึงค่าสรุปจากตารางขึ้นการ์ด
+          <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 w-full sm:w-auto">
+            <button onclick="syncTableToCards()" class="px-3 py-1.5 text-[11px] sm:text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-2xs">
+              🔄 ดึงค่าสรุปขึ้นการ์ด
             </button>
-            <button onclick="filterType('ALL')" id="filter-ALL" class="px-3 py-1 text-xs font-bold rounded-xl bg-brand-500 text-white transition shadow-2xs">ทั้งหมด (25)</button>
-            <button onclick="filterType('TX')" id="filter-TX" class="px-3 py-1 text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition">หม้อแปลง (15)</button>
-            <button onclick="filterType('GIS')" id="filter-GIS" class="px-3 py-1 text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition">GIS (10)</button>
+            <button onclick="filterType('ALL')" id="filter-ALL" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-brand-500 text-white transition shadow-2xs">ทั้งหมด (25)</button>
+            <button onclick="filterType('TX')" id="filter-TX" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition">หม้อแปลง (15)</button>
+            <button onclick="filterType('GIS')" id="filter-GIS" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition">GIS (10)</button>
           </div>
         </div>
 
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-brand-100/70 text-slate-600 text-xs uppercase font-semibold">
+        <div class="overflow-x-auto table-responsive">
+          <table class="w-full text-left text-xs sm:text-sm min-w-[700px]">
+            <thead class="bg-brand-100/70 text-slate-600 text-[11px] sm:text-xs uppercase font-semibold">
               <tr>
-                <th class="p-3 pl-4">รหัสอุปกรณ์</th>
-                <th class="p-3">ประเภท</th>
-                <th class="p-3">เวลาทำงาน (ชม.)</th>
-                <th class="p-3">ความขัดข้อง (ครั้ง)</th>
-                <th class="p-3">เวลาบำรุงรักษา (ชม.)</th>
-                <th class="p-3">MTBF (ชม.)</th>
-                <th class="p-3">MTTR (ชม.)</th>
-                <th class="p-3">Availability</th>
-                <th class="p-3">สถานะ (≥96%)</th>
-                <th class="p-3 pr-4 text-center">มาตรการแก้ไข</th>
+                <th class="p-2.5 sm:p-3 pl-3 sm:pl-4">รหัสอุปกรณ์</th>
+                <th class="p-2.5 sm:p-3">ประเภท</th>
+                <th class="p-2.5 sm:p-3">เวลาทำงาน (ชม.)</th>
+                <th class="p-2.5 sm:p-3">ความขัดข้อง (ครั้ง)</th>
+                <th class="p-2.5 sm:p-3">เวลาบำรุงรักษา (ชม.)</th>
+                <th class="p-2.5 sm:p-3">MTBF (ชม.)</th>
+                <th class="p-2.5 sm:p-3">MTTR (ชม.)</th>
+                <th class="p-2.5 sm:p-3">Availability</th>
+                <th class="p-2.5 sm:p-3">สถานะ (≥96%)</th>
+                <th class="p-2.5 sm:p-3 pr-3 sm:pr-4 text-center">มาตรการแก้ไข</th>
               </tr>
             </thead>
             <tbody id="equipment-tbody" class="divide-y divide-brand-100 font-normal">
@@ -297,55 +314,55 @@
     </div>
 
     <!-- Tab 2: Monthly Analytics View (หน้าสถิติประจำเดือน) -->
-    <div id="view-monthly" class="hidden space-y-6">
+    <div id="view-monthly" class="hidden space-y-5 sm:space-y-6">
       
       <!-- Month Selector Bar -->
-      <div class="bg-white p-4 sm:p-5 rounded-3xl border-2 border-brand-200 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+      <div class="bg-white p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-2.5 mb-3">
           <div>
-            <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">📅 Monthly Performance Filter</span>
-            <h2 class="text-base sm:text-lg font-extrabold text-slate-800">เลือกดูสถิติและผลการดำเนินงานประจำเดือน</h2>
+            <span class="text-[10px] sm:text-xs font-bold text-brand-600 uppercase tracking-wider">📅 Monthly Performance Filter</span>
+            <h2 class="text-sm sm:text-base lg:text-lg font-extrabold text-slate-800">เลือกดูสถิติและผลการดำเนินงานประจำเดือน</h2>
           </div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-slate-400">กำลังแสดงผล:</span>
-            <span id="current-month-badge" class="px-3 py-1 bg-brand-500 text-white font-bold text-xs rounded-xl shadow-xs">มกราคม</span>
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs text-slate-400">แสดงผล:</span>
+            <span id="current-month-badge" class="px-2.5 py-0.5 sm:px-3 sm:py-1 bg-brand-500 text-white font-bold text-xs rounded-xl shadow-xs">มกราคม</span>
           </div>
         </div>
 
         <!-- 12 Month Buttons -->
         <div class="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-1.5 pt-1">
-          <button onclick="selectMonth(0)" id="m-btn-0" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ม.ค.</button>
-          <button onclick="selectMonth(1)" id="m-btn-1" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.พ.</button>
-          <button onclick="selectMonth(2)" id="m-btn-2" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">มี.ค.</button>
-          <button onclick="selectMonth(3)" id="m-btn-3" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">เม.ย.</button>
-          <button onclick="selectMonth(4)" id="m-btn-4" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">พ.ค.</button>
-          <button onclick="selectMonth(5)" id="m-btn-5" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">มิ.ย.</button>
-          <button onclick="selectMonth(6)" id="m-btn-6" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.ค.</button>
-          <button onclick="selectMonth(7)" id="m-btn-7" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ส.ค.</button>
-          <button onclick="selectMonth(8)" id="m-btn-8" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.ย.</button>
-          <button onclick="selectMonth(9)" id="m-btn-9" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ต.ค.</button>
-          <button onclick="selectMonth(10)" id="m-btn-10" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">พ.ย.</button>
-          <button onclick="selectMonth(11)" id="m-btn-11" class="month-btn py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ธ.ค.</button>
+          <button onclick="selectMonth(0)" id="m-btn-0" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ม.ค.</button>
+          <button onclick="selectMonth(1)" id="m-btn-1" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.พ.</button>
+          <button onclick="selectMonth(2)" id="m-btn-2" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">มี.ค.</button>
+          <button onclick="selectMonth(3)" id="m-btn-3" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">เม.ย.</button>
+          <button onclick="selectMonth(4)" id="m-btn-4" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">พ.ค.</button>
+          <button onclick="selectMonth(5)" id="m-btn-5" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">มิ.ย.</button>
+          <button onclick="selectMonth(6)" id="m-btn-6" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.ค.</button>
+          <button onclick="selectMonth(7)" id="m-btn-7" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ส.ค.</button>
+          <button onclick="selectMonth(8)" id="m-btn-8" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ก.ย.</button>
+          <button onclick="selectMonth(9)" id="m-btn-9" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ต.ค.</button>
+          <button onclick="selectMonth(10)" id="m-btn-10" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">พ.ย.</button>
+          <button onclick="selectMonth(11)" id="m-btn-11" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">ธ.ค.</button>
         </div>
       </div>
 
       <!-- Monthly Summary KPI Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-white p-5 rounded-3xl border border-brand-200 shadow-sm">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm">
           <span class="text-xs font-bold text-slate-400 uppercase">Availability ประจำเดือน</span>
           <div class="mt-2 flex items-baseline justify-between">
-            <span id="monthly-avail-val" class="text-3xl font-black text-brand-600">--%</span>
+            <span id="monthly-avail-val" class="text-2xl sm:text-3xl font-black text-brand-600">--%</span>
             <span id="monthly-avail-tag" class="text-xs px-2 py-0.5 rounded-lg font-bold"></span>
           </div>
         </div>
-        <div class="bg-white p-5 rounded-3xl border border-brand-200 shadow-sm">
+        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm">
           <span class="text-xs font-bold text-slate-400 uppercase">MTBF เฉลี่ย</span>
           <div class="mt-2 flex items-baseline justify-between">
-            <span id="monthly-mtbf-val" class="text-3xl font-black text-slate-800">--</span>
+            <span id="monthly-mtbf-val" class="text-2xl sm:text-3xl font-black text-slate-800">--</span>
             <span class="text-xs text-slate-400 font-medium">ชั่วโมงทำงานต่อเนื่อง</span>
           </div>
         </div>
-        <div class="bg-white p-5 rounded-3xl border border-brand-200 shadow-sm">
+        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm">
           <span class="text-xs font-bold text-slate-400 uppercase">MTTR เฉลี่ย</span>
           <div class="mt-2 flex items-baseline justify-between">
             <span id="monthly-mttr-val" class="text-3xl font-black text-slate-800">--</span>
@@ -355,32 +372,32 @@
       </div>
 
       <!-- Interactive Monthly Bar Charts -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
         
         <!-- Chart 1: อุปกรณ์ผ่านเกณฑ์ vs ไม่ผ่านเกณฑ์ -->
-        <div class="lg:col-span-6 bg-white p-5 rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
-          <div class="flex items-center justify-between mb-4">
+        <div class="lg:col-span-6 bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-3">
             <div>
-              <h3 class="text-sm font-extrabold text-slate-800">📊 สถานะความพร้อมอุปกรณ์ 25 รายการ</h3>
-              <p class="text-xs text-slate-400">จำนวนเครื่องที่ผ่านเกณฑ์ (≥96%) vs ต่ำกว่าเกณฑ์</p>
+              <h3 class="text-xs sm:text-sm font-extrabold text-slate-800">📊 สถานะความพร้อมอุปกรณ์ 25 รายการ</h3>
+              <p class="text-[11px] sm:text-xs text-slate-400">จำนวนเครื่องที่ผ่านเกณฑ์ (≥96%) vs ต่ำกว่าเกณฑ์</p>
             </div>
-            <span id="chart-month-tag-1" class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-xl">ประจำเดือน ม.ค.</span>
+            <span id="chart-month-tag-1" class="text-xs font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded-lg">ประจำเดือน ม.ค.</span>
           </div>
-          <div class="h-64 w-full relative">
+          <div class="h-60 sm:h-64 w-full relative">
             <canvas id="statusChart"></canvas>
           </div>
         </div>
 
         <!-- Chart 2: จำนวนครั้งที่ชำรุดและความเสียหายแยกประเภท -->
-        <div class="lg:col-span-6 bg-white p-5 rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
-          <div class="flex items-center justify-between mb-4">
+        <div class="lg:col-span-6 bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-3">
             <div>
-              <h3 class="text-sm font-extrabold text-slate-800">📈 ความขัดข้องและเวลาบำรุงรักษา (หม้อแปลง vs GIS)</h3>
-              <p class="text-xs text-slate-400">เปรียบเทียบสถิติความเสียหายและชั่วโมง Down Time</p>
+              <h3 class="text-xs sm:text-sm font-extrabold text-slate-800">📈 ความขัดข้องและเวลาบำรุงรักษา (หม้อแปลง vs GIS)</h3>
+              <p class="text-[11px] sm:text-xs text-slate-400">เปรียบเทียบสถิติความเสียหายและชั่วโมง Down Time</p>
             </div>
-            <span id="chart-month-tag-2" class="text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-xl">ประจำเดือน ม.ค.</span>
+            <span id="chart-month-tag-2" class="text-xs font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded-lg">ประจำเดือน ม.ค.</span>
           </div>
-          <div class="h-64 w-full relative">
+          <div class="h-60 sm:h-64 w-full relative">
             <canvas id="failuresChart"></canvas>
           </div>
         </div>
@@ -389,25 +406,25 @@
 
     </div>
 
-    <!-- Tab 3: Inspection Form View (จัดสัดส่วน A4 เต็มหน้ากระดาษพอดี 100%) -->
-    <div id="view-form" class="hidden space-y-6">
+    <!-- Tab 3: Inspection Form View (A4 เต็มหน้ากระดาษพอดี 100%) -->
+    <div id="view-form" class="hidden space-y-5 sm:space-y-6">
       
       <!-- Sub-navigation to switch between Transformer and GIS Forms -->
-      <div class="flex flex-wrap justify-between items-center gap-3 no-print bg-white p-4 rounded-3xl border border-brand-200 shadow-sm">
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-bold text-slate-700">📋 เลือกประเภทแบบฟอร์ม:</span>
-          <div class="inline-flex bg-brand-100/80 p-1 rounded-2xl text-xs font-bold">
-            <button onclick="switchFormType('tx')" id="btn-form-tx" class="px-4 py-2 rounded-xl bg-white text-brand-700 shadow-sm transition">
-              🔌 แบบฟอร์มตรวจหม้อแปลงไฟฟ้า
+      <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 no-print bg-white p-3.5 sm:p-4 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+          <span class="text-xs font-bold text-slate-700">📋 เลือกแบบฟอร์ม:</span>
+          <div class="inline-flex bg-brand-100/80 p-1 rounded-2xl text-xs font-bold w-full sm:w-auto">
+            <button onclick="switchFormType('tx')" id="btn-form-tx" class="flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-white text-brand-700 shadow-sm transition text-center">
+              🔌 ตรวจหม้อแปลงไฟฟ้า
             </button>
-            <button onclick="switchFormType('gis')" id="btn-form-gis" class="px-4 py-2 rounded-xl text-slate-600 hover:text-brand-600 transition">
-              ⚡ แบบฟอร์มตรวจสวิตซ์เกียร์ฉนวนก๊าซ (GIS)
+            <button onclick="switchFormType('gis')" id="btn-form-gis" class="flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-slate-600 hover:text-brand-600 transition text-center">
+              ⚡ ตรวจสวิตซ์เกียร์ (GIS)
             </button>
           </div>
         </div>
 
-        <button onclick="window.print()" class="flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-bold px-4 py-2 rounded-2xl text-xs sm:text-sm shadow-sm transition">
-          🖨️ สั่งพิมพ์แบบฟอร์มนี้ (A4 เต็มหน้า)
+        <button onclick="window.print()" class="flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-bold px-4 py-2 rounded-xl sm:rounded-2xl text-xs sm:text-sm shadow-sm transition w-full sm:w-auto">
+          🖨️ สั่งพิมพ์เอกสารนี้ (A4 เต็มหน้า)
         </button>
       </div>
 
@@ -877,9 +894,9 @@
       for (let i = 0; i < 12; i++) {
         const btn = document.getElementById(`m-btn-${i}`);
         if (i === idx) {
-          btn.className = "month-btn py-2 text-xs font-bold rounded-xl bg-brand-500 text-white border-brand-500 shadow-md transition";
+          btn.className = "month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl bg-brand-500 text-white border-brand-500 shadow-md transition";
         } else {
-          btn.className = "month-btn py-2 text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition shadow-2xs";
+          btn.className = "month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition shadow-2xs";
         }
       }
 
@@ -1113,31 +1130,31 @@
         const row = document.createElement('tr');
         row.className = `hover:bg-brand-50/50 transition ${!isPass ? 'bg-rose-50/40' : ''}`;
         row.innerHTML = `
-          <td class="p-3 pl-4 font-bold text-slate-800">${d.tag}</td>
-          <td class="p-3">
+          <td class="p-2.5 sm:p-3 pl-3 sm:pl-4 font-bold text-slate-800">${d.tag}</td>
+          <td class="p-2.5 sm:p-3">
             <span class="px-2 py-0.5 rounded text-[10px] font-semibold ${d.type === 'TX' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">
               ${d.type === 'TX' ? 'Transformer' : 'GIS'}
             </span>
           </td>
-          <td class="p-3">
-            <input type="number" value="${d.operatingHrs}" min="1" class="w-16 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white" onchange="updateValue('${d.tag}', 'operatingHrs', this.value)">
+          <td class="p-2.5 sm:p-3">
+            <input type="number" value="${d.operatingHrs}" min="1" class="w-14 sm:w-16 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white" onchange="updateValue('${d.tag}', 'operatingHrs', this.value)">
           </td>
-          <td class="p-3">
-            <input type="number" value="${d.failures}" min="0" class="w-12 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white font-bold ${d.failures > 0 ? 'text-rose-600' : 'text-slate-700'}" onchange="updateValue('${d.tag}', 'failures', this.value)">
+          <td class="p-2.5 sm:p-3">
+            <input type="number" value="${d.failures}" min="0" class="w-10 sm:w-12 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white font-bold ${d.failures > 0 ? 'text-rose-600' : 'text-slate-700'}" onchange="updateValue('${d.tag}', 'failures', this.value)">
           </td>
-          <td class="p-3">
-            <input type="number" value="${d.downTime}" min="0" class="w-14 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white font-bold ${d.downTime > 0 ? 'text-rose-600' : 'text-slate-700'}" onchange="updateValue('${d.tag}', 'downTime', this.value)">
+          <td class="p-2.5 sm:p-3">
+            <input type="number" value="${d.downTime}" min="0" class="w-12 sm:w-14 border border-brand-200 rounded-lg px-1.5 py-0.5 text-center bg-white font-bold ${d.downTime > 0 ? 'text-rose-600' : 'text-slate-700'}" onchange="updateValue('${d.tag}', 'downTime', this.value)">
           </td>
-          <td class="p-3 font-medium text-slate-700">${mtbf.toFixed(1)}</td>
-          <td class="p-3 font-medium text-slate-700">${mttr.toFixed(1)}</td>
-          <td class="p-3 font-bold ${!isPass ? 'text-rose-600' : 'text-emerald-600'}">${avail.toFixed(2)}%</td>
-          <td class="p-3">
-            <span class="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${isPass ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700 font-bold'}">
+          <td class="p-2.5 sm:p-3 font-medium text-slate-700">${mtbf.toFixed(1)}</td>
+          <td class="p-2.5 sm:p-3 font-medium text-slate-700">${mttr.toFixed(1)}</td>
+          <td class="p-2.5 sm:p-3 font-bold ${!isPass ? 'text-rose-600' : 'text-emerald-600'}">${avail.toFixed(2)}%</td>
+          <td class="p-2.5 sm:p-3">
+            <span class="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-full ${isPass ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700 font-bold'}">
               ${isPass ? '● ปกติ' : '▲ ต่ำกว่า 96%'}
             </span>
           </td>
-          <td class="p-3 pr-4 text-center">
-            <button onclick="showAdvice('${d.tag}')" class="text-[11px] bg-white border border-brand-300 hover:bg-brand-50 text-brand-700 px-2.5 py-1 rounded-lg transition font-medium shadow-2xs">
+          <td class="p-2.5 sm:p-3 pr-3 sm:pr-4 text-center">
+            <button onclick="showAdvice('${d.tag}')" class="text-[10px] sm:text-[11px] bg-white border border-brand-300 hover:bg-brand-50 text-brand-700 px-2 sm:px-2.5 py-1 rounded-lg transition font-medium shadow-2xs">
               คำแนะนำ
             </button>
           </td>
@@ -1160,9 +1177,9 @@
       ['ALL', 'TX', 'GIS'].forEach(t => {
         const btn = document.getElementById(`filter-${t}`);
         if (t === type) {
-          btn.className = "px-3 py-1 text-xs font-bold rounded-xl bg-brand-500 text-white transition shadow-2xs";
+          btn.className = "px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-brand-500 text-white transition shadow-2xs";
         } else {
-          btn.className = "px-3 py-1 text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition";
+          btn.className = "px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition";
         }
       });
       renderTable();
@@ -1211,20 +1228,20 @@
       vMonthly.classList.add('hidden');
       vForm.classList.add('hidden');
 
-      tRealtime.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold";
-      tMonthly.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold";
-      tForm.className = "px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold";
+      tRealtime.className = "flex-1 sm:flex-initial px-3 sm:px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold text-center";
+      tMonthly.className = "flex-1 sm:flex-initial px-3 sm:px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold text-center";
+      tForm.className = "flex-1 sm:flex-initial px-3 sm:px-3.5 py-1.5 rounded-lg transition-all text-slate-600 hover:text-brand-600 font-bold text-center";
 
       if (tab === 'realtime') {
         vRealtime.classList.remove('hidden');
-        tRealtime.className = "px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold";
+        tRealtime.className = "flex-1 sm:flex-initial px-3 sm:px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold text-center";
       } else if (tab === 'monthly') {
         vMonthly.classList.remove('hidden');
-        tMonthly.className = "px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold";
+        tMonthly.className = "flex-1 sm:flex-initial px-3 sm:px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold text-center";
         selectMonth(selectedMonthIndex);
       } else if (tab === 'form') {
         vForm.classList.remove('hidden');
-        tForm.className = "px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold";
+        tForm.className = "flex-1 sm:flex-initial px-3 sm:px-3.5 py-1.5 rounded-lg transition-all bg-white text-brand-700 shadow-sm font-bold text-center";
       }
     }
 
@@ -1241,16 +1258,16 @@
         formGis.classList.add('hidden');
         formGis.classList.remove('active-print-form');
 
-        btnTx.className = "px-4 py-2 rounded-xl bg-white text-brand-700 shadow-sm transition font-bold";
-        btnGis.className = "px-4 py-2 rounded-xl text-slate-600 hover:text-brand-600 transition font-bold";
+        btnTx.className = "flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-white text-brand-700 shadow-sm transition font-bold text-center";
+        btnGis.className = "flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-slate-600 hover:text-brand-600 transition font-bold text-center";
       } else {
         formGis.classList.remove('hidden');
         formGis.classList.add('active-print-form');
         formTx.classList.add('hidden');
         formTx.classList.remove('active-print-form');
 
-        btnGis.className = "px-4 py-2 rounded-xl bg-white text-brand-700 shadow-sm transition font-bold";
-        btnTx.className = "px-4 py-2 rounded-xl text-slate-600 hover:text-brand-600 transition font-bold";
+        btnGis.className = "flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-white text-brand-700 shadow-sm transition font-bold text-center";
+        btnTx.className = "flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-slate-600 hover:text-brand-600 transition font-bold text-center";
       }
     }
 
