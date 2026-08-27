@@ -38,7 +38,7 @@
   </script>
 
   <style>
-    /* ลบลูกศรใน input number */
+    /* Remove input number arrows */
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { 
       -webkit-appearance: none; 
@@ -59,7 +59,7 @@
       line-height: 1.4;
     }
 
-    /* จัดหน้าพิมพ์ A4 เต็มแผ่น 100% กระจายสัดส่วนลงตัว */
+    /* จัดหน้าพิมพ์ A4 เต็มแผ่น 100% */
     @media print {
       html, body {
         width: 210mm !important;
@@ -205,11 +205,11 @@
         </div>
       </div>
       
-      <!-- Top 3 Direct-Editable Cards -->
+      <!-- Top 3 Live Real-time Status Cards (Read-only / Auto-calculated) -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
         
-        <!-- 1. Availability Card -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition flex flex-col justify-between">
+        <!-- 1. Availability Card (Read-only Live Sync) -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm flex flex-col justify-between">
           <div>
             <div class="flex justify-between items-center mb-1.5">
               <span class="text-[11px] sm:text-xs font-extrabold text-slate-500 uppercase tracking-wider">AVAILABILITY (%)</span>
@@ -218,58 +218,52 @@
               </span>
             </div>
             
-            <div class="my-1.5 flex items-center">
-              <input type="number" id="card-avail" value="97.28" step="0.01" min="1" max="99.99" 
-                class="w-full text-2xl sm:text-3xl lg:text-4xl font-black text-brand-600 border-b-2 border-dashed border-brand-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
-                oninput="onAvailCardDirectInput()">
-              <span class="text-xl sm:text-2xl lg:text-3xl font-black text-brand-600 ml-1">%</span>
+            <div class="my-2.5 flex items-baseline justify-between">
+              <span id="card-avail-text" class="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-600 tracking-tight">--</span>
+              <span class="text-2xl sm:text-3xl font-black text-brand-600 ml-1">%</span>
             </div>
           </div>
 
-          <div class="pt-2 border-t border-brand-100 flex items-center justify-between text-[11px] sm:text-xs">
+          <div class="pt-2.5 border-t border-brand-100 flex items-center justify-between text-[11px] sm:text-xs">
             <span class="text-slate-400">เกณฑ์ขั้นต่ำ:</span>
             <span class="font-extrabold text-brand-700 bg-brand-50 px-2.5 py-0.5 rounded-md">เป้าหมาย ≥ 96.0%</span>
           </div>
         </div>
 
-        <!-- 2. MTBF Card -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition flex flex-col justify-between">
+        <!-- 2. MTBF Card (Read-only Live Sync) -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm flex flex-col justify-between">
           <div>
             <div class="flex justify-between items-center mb-1.5">
               <span class="text-[11px] sm:text-xs font-extrabold text-slate-500 uppercase tracking-wider">MTBF เฉลี่ย (ชม.)</span>
-              <span class="text-[9px] sm:text-[10px] text-brand-600 font-bold bg-brand-50 px-2 py-0.5 rounded">พิมพ์แก้ไขได้</span>
+              <span class="text-[9px] sm:text-[10px] text-slate-400 font-semibold bg-slate-100 px-2 py-0.5 rounded">คำนวณอัตโนมัติ</span>
             </div>
 
-            <div class="my-1.5 flex items-center">
-              <input type="number" id="card-mtbf" value="1285.7" step="1" min="0" 
-                class="w-full text-2xl sm:text-3xl lg:text-4xl font-black text-slate-800 border-b-2 border-dashed border-slate-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
-                oninput="onMtbfMttrCardInput()">
-              <span class="text-sm sm:text-base font-bold text-slate-500 ml-1 shrink-0">ชม.</span>
+            <div class="my-2.5 flex items-baseline justify-between">
+              <span id="card-mtbf-text" class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-800 tracking-tight">--</span>
+              <span class="text-base sm:text-lg font-bold text-slate-500 ml-1 shrink-0">ชม.</span>
             </div>
           </div>
 
-          <div class="pt-2 border-t border-brand-100 text-[10px] sm:text-[11px] text-slate-400 font-medium">
-            ระยะเวลาที่เครื่องทำงานต่อเนื่อง
+          <div class="pt-2.5 border-t border-brand-100 text-[10px] sm:text-[11px] text-slate-400 font-medium">
+            ระยะเวลาเฉลี่ยที่เครื่องทำงานต่อเนื่อง
           </div>
         </div>
 
-        <!-- 3. MTTR Card -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm hover:border-brand-400 transition flex flex-col justify-between">
+        <!-- 3. MTTR Card (Read-only Live Sync) -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm flex flex-col justify-between">
           <div>
             <div class="flex justify-between items-center mb-1.5">
               <span class="text-[11px] sm:text-xs font-extrabold text-slate-500 uppercase tracking-wider">MTTR เฉลี่ย (ชม.)</span>
-              <span class="text-[9px] sm:text-[10px] text-brand-600 font-bold bg-brand-50 px-2 py-0.5 rounded">พิมพ์แก้ไขได้</span>
+              <span class="text-[9px] sm:text-[10px] text-slate-400 font-semibold bg-slate-100 px-2 py-0.5 rounded">คำนวณอัตโนมัติ</span>
             </div>
 
-            <div class="my-1.5 flex items-center">
-              <input type="number" id="card-mttr" value="23.3" step="0.1" min="0.1" 
-                class="w-full text-2xl sm:text-3xl lg:text-4xl font-black text-slate-800 border-b-2 border-dashed border-slate-300 focus:border-brand-500 focus:outline-none bg-transparent hover:bg-brand-50/50 transition py-0.5" 
-                oninput="onMtbfMttrCardInput()">
-              <span class="text-sm sm:text-base font-bold text-slate-500 ml-1 shrink-0">ชม.</span>
+            <div class="my-2.5 flex items-baseline justify-between">
+              <span id="card-mttr-text" class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-800 tracking-tight">--</span>
+              <span class="text-base sm:text-lg font-bold text-slate-500 ml-1 shrink-0">ชม.</span>
             </div>
           </div>
 
-          <div class="pt-2 border-t border-brand-100 text-[10px] sm:text-[11px] text-slate-400 font-medium">
+          <div class="pt-2.5 border-t border-brand-100 text-[10px] sm:text-[11px] text-slate-400 font-medium">
             เวลาเฉลี่ยในการบำรุงรักษา
           </div>
         </div>
@@ -286,7 +280,7 @@
           
           <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 w-full sm:w-auto">
             <button onclick="syncTableToCards()" class="px-3 py-1.5 text-[11px] sm:text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-2xs">
-              🔄 ดึงค่าสรุปขึ้นการ์ด
+              🔄 รีเฟรชข้อมูลตาราง
             </button>
             <button onclick="filterType('ALL')" id="filter-ALL" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-brand-500 text-white transition shadow-2xs">ทั้งหมด (25)</button>
             <button onclick="filterType('TX')" id="filter-TX" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition">หม้อแปลง (15)</button>
@@ -475,12 +469,12 @@
             </div>
           </div>
 
-          <!-- Checklists Table -->
+          <!-- Checklists Table for Transformer -->
           <div class="mb-4">
             <h3 class="text-xs font-bold text-slate-800 uppercase mb-1.5">รายการตรวจสอบสภาพความพร้อมใช้งาน (INSPECTION CHECKLIST)</h3>
             <table class="w-full border border-slate-300 text-[11px] table-fixed">
               <thead class="bg-slate-100 text-slate-700 font-bold">
-                <tr class="h-9">
+                <tr>
                   <th class="border border-slate-300 p-2 text-left w-[24%]">รายการตรวจ (Item)</th>
                   <th class="border border-slate-300 p-2 text-left w-[28%]">วิธีการตรวจ / ค่ามาตรฐาน</th>
                   <th class="border border-slate-300 p-2 w-[18%] text-left">ผลการตรวจ</th>
@@ -632,7 +626,7 @@
             <h3 class="text-xs font-bold text-slate-800 uppercase mb-1.5">รายการตรวจสอบสภาพความพร้อมใช้งาน (INSPECTION CHECKLIST)</h3>
             <table class="w-full border border-slate-300 text-[11px] table-fixed">
               <thead class="bg-slate-100 text-slate-700 font-bold">
-                <tr class="h-9">
+                <tr>
                   <th class="border border-slate-300 p-2 text-left w-[24%]">รายการตรวจ (Item)</th>
                   <th class="border border-slate-300 p-2 text-left w-[28%]">วิธีการตรวจ / ค่ามาตรฐาน</th>
                   <th class="border border-slate-300 p-2 w-[18%] text-left">ผลการตรวจ</th>
@@ -880,12 +874,6 @@
 
       document.getElementById('sim-result-mtbf').innerText = `${targetMtbf.toFixed(1)} ชม.`;
       document.getElementById('sim-result-fails').innerText = `เสียได้ไม่เกิน ~${maxFailures} ครั้ง/ปี`;
-
-      document.getElementById('card-avail').value = avail.toFixed(2);
-      document.getElementById('card-mtbf').value = targetMtbf.toFixed(1);
-      document.getElementById('card-mttr').value = mttr.toFixed(1);
-
-      checkAvailStatus(avail);
     }
 
     function selectMonth(idx) {
@@ -1056,39 +1044,13 @@
       }, 2000);
     }
 
-    function onAvailCardDirectInput() {
-      let avail = parseFloat(document.getElementById('card-avail').value);
-      if (isNaN(avail)) return;
-      if (avail >= 100) avail = 99.99;
-      if (avail <= 0) avail = 1.0;
-
-      const mttr = parseFloat(document.getElementById('card-mttr').value) || 6.0;
-      const calculatedMtbf = (avail * mttr) / (100 - avail);
-
-      document.getElementById('card-mtbf').value = calculatedMtbf.toFixed(1);
-      checkAvailStatus(avail);
-    }
-
-    function onMtbfMttrCardInput() {
-      const mtbf = parseFloat(document.getElementById('card-mtbf').value) || 0;
-      const mttr = parseFloat(document.getElementById('card-mttr').value) || 0;
-
-      let avail = 100;
-      if (mtbf + mttr > 0) {
-        avail = (mtbf / (mtbf + mttr)) * 100;
-      }
-      
-      document.getElementById('card-avail').value = avail.toFixed(2);
-      checkAvailStatus(avail);
-    }
-
     function checkAvailStatus(avail) {
       const badge = document.getElementById('avail-status-tag');
       if (avail >= AVAIL_THRESHOLD) {
-        badge.className = "text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-700";
+        badge.className = "text-[10px] sm:text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-700";
         badge.innerText = "● ผ่านเกณฑ์";
       } else {
-        badge.className = "text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-rose-100 text-rose-700";
+        badge.className = "text-[10px] sm:text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-rose-100 text-rose-700";
         badge.innerText = "▲ ต่ำกว่าเกณฑ์";
       }
     }
@@ -1105,9 +1067,10 @@
       const avgMttr = totalFail > 0 ? (totalDown / totalFail) : 0;
       const avgAvail = (totalOp + totalDown) > 0 ? (totalOp / (totalOp + totalDown)) * 100 : 100;
 
-      document.getElementById('card-avail').value = avgAvail.toFixed(2);
-      document.getElementById('card-mtbf').value = avgMtbf.toFixed(1);
-      document.getElementById('card-mttr').value = avgMttr.toFixed(1);
+      // Update Read-only Display Text
+      document.getElementById('card-avail-text').innerText = avgAvail.toFixed(2);
+      document.getElementById('card-mtbf-text').innerText = avgMtbf.toFixed(1);
+      document.getElementById('card-mttr-text').innerText = avgMttr.toFixed(1);
       checkAvailStatus(avgAvail);
     }
 
@@ -1270,6 +1233,7 @@
 
     window.onload = () => {
       renderTable();
+      syncTableToCards();
       runSimulation();
       startLiveStream();
     };
