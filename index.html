@@ -38,7 +38,7 @@
   </script>
 
   <style>
-    /* Remove input number arrows */
+    /* ลบลูกศรใน input number */
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { 
       -webkit-appearance: none; 
@@ -52,14 +52,16 @@
       -webkit-overflow-scrolling: touch;
     }
 
+    /* ป้องกันข้อความล้นช่องและตัดคำอัตโนมัติอย่างสวยงาม */
     .clean-cell {
-      word-break: break-word;
-      overflow-wrap: break-word;
-      white-space: normal;
-      line-height: 1.4;
+      word-break: break-word !important;
+      overflow-wrap: break-word !important;
+      white-space: normal !important;
+      line-height: 1.45 !important;
+      vertical-align: middle !important;
     }
 
-    /* จัดหน้าพิมพ์ A4 เต็มแผ่น 100% */
+    /* จัดหน้าพิมพ์ A4 เต็มแผ่น 100% สัดส่วนพอดี 1 หน้าเป๊ะ */
     @media print {
       html, body {
         width: 210mm !important;
@@ -81,11 +83,11 @@
         left: 0 !important;
         top: 0 !important;
         width: 210mm !important;
-        min-height: 282mm !important;
-        height: 282mm !important;
+        min-height: 284mm !important;
+        height: 284mm !important;
         box-sizing: border-box !important;
         margin: 0 !important;
-        padding: 10mm 14mm !important;
+        padding: 8mm 12mm !important;
         box-shadow: none !important;
         border: none !important;
         display: flex !important;
@@ -97,7 +99,7 @@
       }
       @page {
         size: A4 portrait;
-        margin: 6mm 8mm;
+        margin: 4mm 6mm;
       }
     }
   </style>
@@ -205,10 +207,10 @@
         </div>
       </div>
       
-      <!-- Top 3 Live Real-time Status Cards (Read-only / Auto-calculated) -->
+      <!-- Top 3 Live Real-time Status Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
         
-        <!-- 1. Availability Card (Read-only Live Sync) -->
+        <!-- 1. Availability Card -->
         <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm flex flex-col justify-between">
           <div>
             <div class="flex justify-between items-center mb-1.5">
@@ -230,7 +232,7 @@
           </div>
         </div>
 
-        <!-- 2. MTBF Card (Read-only Live Sync) -->
+        <!-- 2. MTBF Card -->
         <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm flex flex-col justify-between">
           <div>
             <div class="flex justify-between items-center mb-1.5">
@@ -249,7 +251,7 @@
           </div>
         </div>
 
-        <!-- 3. MTTR Card (Read-only Live Sync) -->
+        <!-- 3. MTTR Card -->
         <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm flex flex-col justify-between">
           <div>
             <div class="flex justify-between items-center mb-1.5">
@@ -405,7 +407,7 @@
 
     </div>
 
-    <!-- Tab 3: Inspection Form View (A4 เต็มหน้าพอดี 100%) -->
+    <!-- Tab 3: Inspection Form View (แก้ไขข้อความไม่ล้นเส้น 100%) -->
     <div id="view-form" class="hidden space-y-5 sm:space-y-6">
       
       <!-- Sub-navigation to switch between Transformer and GIS Forms -->
@@ -427,7 +429,7 @@
         </button>
       </div>
 
-      <!-- FORM 1: Transformer Inspection Sheet -->
+      <!-- FORM 1: Transformer Inspection Sheet (Clean Wrap - No Overflow) -->
       <div id="form-tx-container" class="active-print-form bg-white p-6 sm:p-10 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs flex flex-col justify-between">
         
         <!-- Header Section -->
@@ -469,36 +471,36 @@
             </div>
           </div>
 
-          <!-- Checklists Table for Transformer -->
+          <!-- Checklists Table for Transformer (Clean Wrap) -->
           <div class="mb-4">
             <h3 class="text-xs font-bold text-slate-800 uppercase mb-1.5">รายการตรวจสอบสภาพความพร้อมใช้งาน (INSPECTION CHECKLIST)</h3>
-            <table class="w-full border border-slate-300 text-[11px] table-fixed">
+            <table class="w-full border border-slate-300 text-[11px] table-auto">
               <thead class="bg-slate-100 text-slate-700 font-bold">
                 <tr>
-                  <th class="border border-slate-300 p-2 text-left w-[24%]">รายการตรวจ (Item)</th>
-                  <th class="border border-slate-300 p-2 text-left w-[28%]">วิธีการตรวจ / ค่ามาตรฐาน</th>
-                  <th class="border border-slate-300 p-2 w-[18%] text-left">ผลการตรวจ</th>
-                  <th class="border border-slate-300 p-2 w-[30%] text-left bg-brand-50/70 text-slate-800 font-extrabold">หมายเหตุ / สาเหตุที่พบ / ค่าที่วัดได้</th>
+                  <th class="border border-slate-300 p-2 text-left w-[25%]">รายการตรวจ (Item)</th>
+                  <th class="border border-slate-300 p-2 text-left w-[30%]">วิธีการตรวจ / ค่ามาตรฐาน</th>
+                  <th class="border border-slate-300 p-2 w-[22%] text-left">ผลการตรวจ</th>
+                  <th class="border border-slate-300 p-2 w-[23%] text-left bg-brand-50/70 text-slate-800 font-extrabold">หมายเหตุ / สาเหตุที่พบ / ค่าที่วัดได้</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-300">
-                <tr class="h-10">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">ระดับน้ำมัน (Oil Level)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">ตรวจที่ Main Tank และ OLTC (อยู่ในแถบ Normal ตาม Temp.)</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label class="inline-block">[&nbsp;&nbsp;] ผิดปกติ</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
-                <tr class="h-10">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">อุณหภูมิน้ำมันและขดลวด (OTI / WTI)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">บันทึกค่าอุณหภูมิ (°C) และเข็ม Max Value</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell text-[10px] whitespace-nowrap">Oil: ___°C / Wdg: ___°C</td>
+                  <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">Oil: ___°C / Wdg: ___°C</td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
-                <tr class="h-10">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">สารดูดความชื้น (Silica Gel)</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">สีสารดูดความชื้น (ต้องไม่เปลี่ยนสีเกิน 2/3 กระบอก)</td>
+                  <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">สีของสารดูดความชื้น (ต้องไม่เปลี่ยนสีเกิน 2/3 กระบอก)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">
-                    <div class="flex flex-wrap gap-x-1.5">
+                    <div class="flex flex-wrap gap-x-1.5 gap-y-0.5">
                       <label>[&nbsp;&nbsp;] ปกติ</label>
                       <label>[&nbsp;&nbsp;] เปลี่ยนสี</label>
                       <label>[&nbsp;&nbsp;] เสื่อม</label>
@@ -506,23 +508,23 @@
                   </td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
-                <tr class="h-10">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">แรงดันก๊าซไนโตรเจน (N2 Pressure)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">ตรวจสอบเกจวัดแรงดันถัง N2 (ถ้ามี)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">_________ psi / bar</td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
-                <tr class="h-10">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">Bushing & Arcing Horn</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">ไม่แตกร้าว, ไม่มีคราบวาบไฟตามผิว, คราบสกปรก</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label class="inline-block">[&nbsp;&nbsp;] ผิดปกติ</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
-                <tr class="h-10">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">การรั่วซึม (Oil Leakage)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">หน้าแปลน, วาล์ว, ครีบระบายความร้อน, รอยต่อถัง</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">
-                    <div class="flex flex-wrap gap-x-1.5">
+                    <div class="flex flex-wrap gap-x-1.5 gap-y-0.5">
                       <label>[&nbsp;&nbsp;] ไม่พบ</label>
                       <label>[&nbsp;&nbsp;] ซึม</label>
                       <label>[&nbsp;&nbsp;] หยด</label>
@@ -530,22 +532,22 @@
                   </td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
-                <tr class="h-10">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">ระบบระบายความร้อน (Cooling)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">เสียงการทำงานปกติ, ไม่มีสั่นสะเทือนผิดปกติ</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label class="inline-block">[&nbsp;&nbsp;] ผิดปกติ</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
-                <tr class="h-10">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">กราวด์ (Grounding Connection)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">สายต่อลงดินตัวถังและ Neutral แน่นหนา ไม่ขาด</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] หลุด/หลวม</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] หลุด/หลวม</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
-                <tr class="h-10">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">เสียงและกลิ่น (Noise/Smell)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">เสียงฮัมปกติ (Humming), ไม่มี Corona / กลิ่นไหม้</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label class="inline-block">[&nbsp;&nbsp;] ผิดปกติ</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
               </tbody>
@@ -554,7 +556,7 @@
 
           <!-- Blank Corrective Action Lines -->
           <div class="mb-4">
-            <label class="block text-xs font-bold text-slate-700 mb-1.5">ข้อเสนอแนะและมาตรการแก้ไขเพิ่มเติม (Action Taken / Recommendations):</label>
+            <label class="block text-xs font-bold text-slate-700 mb-1">ข้อเสนอแนะและมาตรการแก้ไขเพิ่มเติม (Action Taken / Recommendations):</label>
             <div class="space-y-2.5 pt-0.5">
               <div class="border-b border-dotted border-slate-400 h-3.5"></div>
               <div class="border-b border-dotted border-slate-400 h-3.5"></div>
@@ -566,12 +568,12 @@
         <!-- Signature Section -->
         <div class="grid grid-cols-2 gap-10 text-center text-xs mt-4 pt-3 border-t-2 border-slate-300">
           <div>
-            <p class="mb-7">ลงชื่อ ..............................................................</p>
+            <p class="mb-6">ลงชื่อ ..............................................................</p>
             <p class="font-bold text-slate-800">( .............................................................. )</p>
             <p class="text-slate-500 text-[10px] mt-0.5">ช่างเทคนิคผู้ปฏิบัติงานหน้างาน</p>
           </div>
           <div>
-            <p class="mb-7">ลงชื่อ ..............................................................</p>
+            <p class="mb-6">ลงชื่อ ..............................................................</p>
             <p class="font-bold text-slate-800">( .............................................................. )</p>
             <p class="text-slate-500 text-[10px] mt-0.5">วิศวกรผู้ควบคุมและรับรองผล</p>
           </div>
@@ -579,7 +581,7 @@
 
       </div>
 
-      <!-- FORM 2: GIS Inspection Sheet -->
+      <!-- FORM 2: GIS Inspection Sheet (Clean Wrap - No Overflow) -->
       <div id="form-gis-container" class="hidden bg-white p-6 sm:p-10 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs flex flex-col justify-between">
         
         <!-- Header -->
@@ -621,24 +623,24 @@
             </div>
           </div>
 
-          <!-- Checklists Table for GIS -->
+          <!-- Checklists Table for GIS (Clean Wrap) -->
           <div class="mb-4">
             <h3 class="text-xs font-bold text-slate-800 uppercase mb-1.5">รายการตรวจสอบสภาพความพร้อมใช้งาน (INSPECTION CHECKLIST)</h3>
-            <table class="w-full border border-slate-300 text-[11px] table-fixed">
+            <table class="w-full border border-slate-300 text-[11px] table-auto">
               <thead class="bg-slate-100 text-slate-700 font-bold">
                 <tr>
-                  <th class="border border-slate-300 p-2 text-left w-[24%]">รายการตรวจ (Item)</th>
-                  <th class="border border-slate-300 p-2 text-left w-[28%]">วิธีการตรวจ / ค่ามาตรฐาน</th>
-                  <th class="border border-slate-300 p-2 w-[18%] text-left">ผลการตรวจ</th>
-                  <th class="border border-slate-300 p-2 w-[30%] text-left bg-brand-50/70 text-slate-800 font-extrabold">หมายเหตุ / สาเหตุที่พบ / ค่าที่วัดได้</th>
+                  <th class="border border-slate-300 p-2 text-left w-[25%]">รายการตรวจ (Item)</th>
+                  <th class="border border-slate-300 p-2 text-left w-[30%]">วิธีการตรวจ / ค่ามาตรฐาน</th>
+                  <th class="border border-slate-300 p-2 w-[22%] text-left">ผลการตรวจ</th>
+                  <th class="border border-slate-300 p-2 w-[23%] text-left bg-brand-50/70 text-slate-800 font-extrabold">หมายเหตุ / สาเหตุที่พบ / ค่าที่วัดได้</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-300">
-                <tr class="h-11">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">แรงดันก๊าซ SF6 (SF6 Pressure)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">ตรวจทุก Gas Compartment (เข็มอยู่ในแถบสีเขียว)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">
-                    <div class="flex flex-wrap gap-x-1.5">
+                    <div class="flex flex-wrap gap-x-1.5 gap-y-0.5">
                       <label>[&nbsp;&nbsp;] เขียว</label>
                       <label>[&nbsp;&nbsp;] เตือน St.1</label>
                       <label>[&nbsp;&nbsp;] ผิดปกติ</label>
@@ -646,46 +648,46 @@
                   </td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
-                <tr class="h-11">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">ตำแหน่งสวิตช์ (Position Indicator)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">สถานะ CB, DS, ES สอดคล้องกับระบบควบคุม (Open/Close)</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ตรงสถานะ</label><label>[&nbsp;&nbsp;] ไม่ตรง</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ตรงสถานะ</label><label class="inline-block">[&nbsp;&nbsp;] ไม่ตรง</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
-                <tr class="h-11">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">กลไกขับเคลื่อน (Mechanism)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">สปริงชาร์จเต็ม (Charged), แรงดันไฮดรอลิก/ลมปกติ</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] พร้อมทำงาน</label><label>[&nbsp;&nbsp;] ไม่พร้อม</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] พร้อมทำงาน</label><label class="inline-block">[&nbsp;&nbsp;] ไม่พร้อม</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
-                <tr class="h-11">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">ตัวนับจำนวนครั้ง (Operation Counter)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">บันทึกเลข Counter ของ CB แต่ละเฟส</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">A: ___ B: ___ C: ___</td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
-                <tr class="h-11">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">ตู้ควบคุมเฉพาะจุด (LCC)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">ไฟสถานะปกติ, ไม่มี Alarm ค้าง, สวิตช์ Local/Remote ถูกต้อง</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] มี Alarm</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label class="inline-block">[&nbsp;&nbsp;] มี Alarm</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
-                <tr class="h-11">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">ฮีตเตอร์และระบายอากาศ (Heater/Vent)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">ฮีตเตอร์ในตู้ LCC ทำงาน (ไม่อับชื้น / ไม่มีหยดน้ำเกาะ)</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ไม่ทำงาน</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label class="inline-block">[&nbsp;&nbsp;] ไม่ทำงาน</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
-                <tr class="h-11">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">การต่อลงดินและโครงสร้าง (Grounding)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">กราวด์ Enclosure แน่นหนา, โครงสร้างไม่มีสนิมรุนแรง</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label class="inline-block">[&nbsp;&nbsp;] ผิดปกติ</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
-                <tr class="h-11">
+                <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">ความผิดปกติทางกายภาพ (Visual/Acoustic)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">ไม่มีเสียง Discharge / Partial Discharge, ไม่มีกลิ่นผิดปกติ</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label class="inline-block">[&nbsp;&nbsp;] ผิดปกติ</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
               </tbody>
