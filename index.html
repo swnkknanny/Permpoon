@@ -8,6 +8,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- SheetJS CDN สำหรับ Export Excel -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <!-- Google Fonts: Prompt -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,7 +54,6 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* ป้องกันข้อความล้นช่องและตัดคำอัตโนมัติอย่างสวยงาม */
     .clean-cell {
       word-break: break-word !important;
       overflow-wrap: break-word !important;
@@ -61,7 +62,7 @@
       vertical-align: middle !important;
     }
 
-    /* จัดหน้าพิมพ์ A4 เต็มแผ่น 100% สัดส่วนพอดี 1 หน้าเป๊ะ */
+    /* จัดหน้าพิมพ์ A4 เต็มแผ่น 100% */
     @media print {
       html, body {
         width: 210mm !important;
@@ -272,7 +273,7 @@
 
       </div>
 
-      <!-- Equipment Table Section (25 Assets) -->
+      <!-- Equipment Table Section (25 Assets) with Excel Export Button -->
       <div class="bg-white rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm overflow-hidden">
         <div class="p-3.5 sm:p-5 border-b border-brand-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-brand-50/50">
           <div>
@@ -281,8 +282,13 @@
           </div>
           
           <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 w-full sm:w-auto">
-            <button onclick="syncTableToCards()" class="px-3 py-1.5 text-[11px] sm:text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-2xs">
-              🔄 รีเฟรชข้อมูลตาราง
+            <!-- ปุ่มส่งออกเป็น Excel -->
+            <button onclick="exportToExcel()" class="px-3 py-1.5 text-[11px] sm:text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-2xs flex items-center gap-1.5">
+              <span>📥</span>
+              <span>ส่งออก Excel</span>
+            </button>
+            <button onclick="syncTableToCards()" class="px-3 py-1.5 text-[11px] sm:text-xs font-bold rounded-xl bg-brand-500 hover:bg-brand-600 text-white transition shadow-2xs">
+              🔄 รีเฟรช
             </button>
             <button onclick="filterType('ALL')" id="filter-ALL" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-brand-500 text-white transition shadow-2xs">ทั้งหมด (25)</button>
             <button onclick="filterType('TX')" id="filter-TX" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition">หม้อแปลง (15)</button>
@@ -407,7 +413,7 @@
 
     </div>
 
-    <!-- Tab 3: Inspection Form View (แก้ไขข้อความไม่ล้นเส้น 100%) -->
+    <!-- Tab 3: Inspection Form View -->
     <div id="view-form" class="hidden space-y-5 sm:space-y-6">
       
       <!-- Sub-navigation to switch between Transformer and GIS Forms -->
@@ -429,7 +435,7 @@
         </button>
       </div>
 
-      <!-- FORM 1: Transformer Inspection Sheet (Clean Wrap - No Overflow) -->
+      <!-- FORM 1: Transformer Inspection Sheet -->
       <div id="form-tx-container" class="active-print-form bg-white p-6 sm:p-10 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs flex flex-col justify-between">
         
         <!-- Header Section -->
@@ -471,7 +477,7 @@
             </div>
           </div>
 
-          <!-- Checklists Table for Transformer (Clean Wrap) -->
+          <!-- Checklists Table for Transformer -->
           <div class="mb-4">
             <h3 class="text-xs font-bold text-slate-800 uppercase mb-1.5">รายการตรวจสอบสภาพความพร้อมใช้งาน (INSPECTION CHECKLIST)</h3>
             <table class="w-full border border-slate-300 text-[11px] table-auto">
@@ -556,7 +562,7 @@
 
           <!-- Blank Corrective Action Lines -->
           <div class="mb-4">
-            <label class="block text-xs font-bold text-slate-700 mb-1">ข้อเสนอแนะและมาตรการแก้ไขเพิ่มเติม (Action Taken / Recommendations):</label>
+            <label class="block text-xs font-bold text-slate-700 mb-1.5">ข้อเสนอแนะและมาตรการแก้ไขเพิ่มเติม (Action Taken / Recommendations):</label>
             <div class="space-y-2.5 pt-0.5">
               <div class="border-b border-dotted border-slate-400 h-3.5"></div>
               <div class="border-b border-dotted border-slate-400 h-3.5"></div>
@@ -581,7 +587,7 @@
 
       </div>
 
-      <!-- FORM 2: GIS Inspection Sheet (Clean Wrap - No Overflow) -->
+      <!-- FORM 2: GIS Inspection Sheet -->
       <div id="form-gis-container" class="hidden bg-white p-6 sm:p-10 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs flex flex-col justify-between">
         
         <!-- Header -->
@@ -623,7 +629,7 @@
             </div>
           </div>
 
-          <!-- Checklists Table for GIS (Clean Wrap) -->
+          <!-- Checklists Table for GIS -->
           <div class="mb-4">
             <h3 class="text-xs font-bold text-slate-800 uppercase mb-1.5">รายการตรวจสอบสภาพความพร้อมใช้งาน (INSPECTION CHECKLIST)</h3>
             <table class="w-full border border-slate-300 text-[11px] table-auto">
@@ -669,13 +675,13 @@
                 <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">ตู้ควบคุมเฉพาะจุด (LCC)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">ไฟสถานะปกติ, ไม่มี Alarm ค้าง, สวิตช์ Local/Remote ถูกต้อง</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label class="inline-block">[&nbsp;&nbsp;] มี Alarm</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label class="inline-block">[&nbsp;&nbsp;] มี Alarm</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
                 <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">ฮีตเตอร์และระบายอากาศ (Heater/Vent)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">ฮีตเตอร์ในตู้ LCC ทำงาน (ไม่อับชื้น / ไม่มีหยดน้ำเกาะ)</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label class="inline-block">[&nbsp;&nbsp;] ไม่ทำงาน</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ไม่ทำงาน</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
                 <tr>
@@ -1069,7 +1075,6 @@
       const avgMttr = totalFail > 0 ? (totalDown / totalFail) : 0;
       const avgAvail = (totalOp + totalDown) > 0 ? (totalOp / (totalOp + totalDown)) * 100 : 100;
 
-      // Update Read-only Display Text
       document.getElementById('card-avail-text').innerText = avgAvail.toFixed(2);
       document.getElementById('card-mtbf-text').innerText = avgMtbf.toFixed(1);
       document.getElementById('card-mttr-text').innerText = avgMttr.toFixed(1);
@@ -1176,6 +1181,45 @@
 
     function closeModal() {
       document.getElementById('modal-action').classList.add('hidden');
+    }
+
+    // ฟังก์ชัน Export ข้อมูลเป็นไฟล์ Excel (.xlsx)
+    function exportToExcel() {
+      const exportList = realtimeData.map(d => {
+        const mtbf = d.failures > 0 ? (d.operatingHrs / d.failures) : d.operatingHrs;
+        const mttr = d.failures > 0 ? (d.downTime / d.failures) : 0;
+        const avail = (d.operatingHrs + d.downTime) > 0 
+          ? (d.operatingHrs / (d.operatingHrs + d.downTime)) * 100 
+          : 100;
+
+        return {
+          "รหัสอุปกรณ์ (Tag)": d.tag,
+          "ชื่ออุปกรณ์": d.name,
+          "ประเภท": d.type === 'TX' ? 'หม้อแปลงไฟฟ้ากำลัง (Transformer)' : 'สวิตซ์เกียร์ฉนวนก๊าซ (GIS)',
+          "เวลาทำงานต่อเนื่อง (ชม.)": d.operatingHrs,
+          "จำนวนครั้งที่ขัดข้อง (ครั้ง)": d.failures,
+          "เวลาบำรุงรักษา Down Time (ชม.)": d.downTime,
+          "MTBF (ชม.)": parseFloat(mtbf.toFixed(2)),
+          "MTTR (ชม.)": parseFloat(mttr.toFixed(2)),
+          "Availability (%)": parseFloat(avail.toFixed(2)),
+          "สถานะ": avail >= AVAIL_THRESHOLD ? "ปกติ (ผ่านเกณฑ์)" : "ต่ำกว่าเกณฑ์ (<96%)"
+        };
+      });
+
+      const worksheet = XLSX.utils.json_to_sheet(exportList);
+      
+      // ปรับความกว้างคอลัมน์ Excel ให้พอดีอ่านง่าย
+      worksheet['!cols'] = [
+        { wch: 16 }, { wch: 28 }, { wch: 32 }, { wch: 24 }, 
+        { wch: 26 }, { wch: 28 }, { wch: 14 }, { wch: 14 }, 
+        { wch: 16 }, { wch: 20 }
+      ];
+
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Realtime_Equipment_RAM");
+
+      // บันทึกไฟล์ดาวน์โหลดลงเครื่อง
+      XLSX.writeFile(workbook, "RAM_Substation_Realtime_Data.xlsx");
     }
 
     function switchTab(tab) {
