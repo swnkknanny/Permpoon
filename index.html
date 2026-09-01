@@ -62,6 +62,18 @@
       vertical-align: middle !important;
     }
 
+    /* Easter Egg Tree Subtle Animation */
+    @keyframes gentle-sway {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-6deg); }
+      75% { transform: rotate(6deg); }
+    }
+
+    .easter-egg-tree:hover svg {
+      animation: gentle-sway 1.4s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+
     /* Universal A4 Print Engine */
     @media print {
       html, body {
@@ -144,10 +156,37 @@
       </nav>
     </div>
 
-    <!-- Sidebar Footer -->
-    <div class="pt-4 border-t border-brand-100 text-[11px] text-brand-700">
-      <p class="font-bold text-slate-700">Substation RAM Analytics</p>
-      <p class="text-slate-400 text-[10px] mt-0.5">Reliability, Availability & Maintenance</p>
+    <!-- Sidebar Bottom Container (Easter Egg + System Footer) -->
+    <div class="pt-4 border-t border-brand-100 relative">
+      <!-- Easter Egg: Minimalist Living Tree (24px) -->
+      <div class="mb-3 relative">
+        <button onclick="openEasterEggModal(event)" 
+                class="easter-egg-tree group flex items-center justify-center w-8 h-8 rounded-xl bg-brand-50/60 hover:bg-brand-100 text-brand-500 hover:text-brand-700 transition focus:outline-none"
+                aria-label="Growing Seedling"
+                title="System is growing.">
+          <!-- Minimal Line Illustration of Tree/Sprout -->
+          <svg class="w-5 h-5 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Stem -->
+            <path d="M12 22V10"></path>
+            <!-- Left Leaf -->
+            <path d="M12 10C12 5.5 8 4 5 6C5 9.5 8.5 10 12 10Z"></path>
+            <!-- Right Leaf -->
+            <path d="M12 14C12 9.5 16 8 19 10C19 13.5 15.5 14 12 14Z"></path>
+            <!-- Soil Baseline -->
+            <path d="M9 22H15"></path>
+          </svg>
+          
+          <!-- Tooltip on Hover -->
+          <span class="pointer-events-none absolute left-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-slate-800 text-white text-[11px] font-medium px-2.5 py-1 rounded-lg shadow-sm whitespace-nowrap z-50">
+            System is growing.
+          </span>
+        </button>
+      </div>
+
+      <div class="text-[11px] text-brand-700">
+        <p class="font-bold text-slate-700">Substation RAM Analytics</p>
+        <p class="text-slate-400 text-[10px] mt-0.5">Reliability, Availability & Maintenance</p>
+      </div>
     </div>
   </aside>
 
@@ -163,11 +202,23 @@
       </div>
     </div>
 
-    <!-- Live Toggle Button on Mobile Header -->
-    <button onclick="toggleLiveMode()" id="live-btn-mobile" class="flex items-center gap-1.5 px-3 py-1 bg-brand-100 text-brand-700 text-[11px] font-bold rounded-xl border border-brand-300 shadow-xs">
-      <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-ping"></span>
-      <span id="live-status-text-mobile">LIVE</span>
-    </button>
+    <div class="flex items-center gap-2">
+      <!-- Mobile Easter Egg -->
+      <button onclick="openEasterEggModal(event)" class="w-7 h-7 rounded-lg flex items-center justify-center text-brand-500 hover:text-brand-700 bg-brand-50 hover:bg-brand-100 transition" title="System is growing.">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22V10"></path>
+          <path d="M12 10C12 5.5 8 4 5 6C5 9.5 8.5 10 12 10Z"></path>
+          <path d="M12 14C12 9.5 16 8 19 10C19 13.5 15.5 14 12 14Z"></path>
+          <path d="M9 22H15"></path>
+        </svg>
+      </button>
+
+      <!-- Live Toggle Button on Mobile Header -->
+      <button onclick="toggleLiveMode()" id="live-btn-mobile" class="flex items-center gap-1.5 px-3 py-1 bg-brand-100 text-brand-700 text-[11px] font-bold rounded-xl border border-brand-300 shadow-xs">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-ping"></span>
+        <span id="live-status-text-mobile">LIVE</span>
+      </button>
+    </div>
   </header>
 
   <!-- ================= 3. MAIN CONTENT CONTAINER ================= -->
@@ -425,8 +476,8 @@
               <p class="text-[11px] text-slate-400 mt-0.5">Smooth longitudinal spline tracking operational compliance against the 96% critical threshold.</p>
             </div>
             <div class="flex items-center gap-2 text-[10px] font-bold">
-              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> ≥ 96% Standard
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-brand-100 text-brand-700 border border-brand-300">
+                <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> ≥ 96% Standard
               </span>
             </div>
           </div>
@@ -723,7 +774,7 @@
                 <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">ฮีตเตอร์และระบายอากาศ (Heater/Vent)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">ฮีตเตอร์ในตู้ LCC ทำงาน (ไม่อับชื้น / ไม่มีหยดน้ำเกาะ)</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ไม่ทำงาน</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ไม่ทำงาน</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
                 <tr>
@@ -774,7 +825,7 @@
 
   </main>
 
-  <!-- ================= 4. MOBILE & TABLET BOTTOM NAVIGATION BAR[cite: 9] ================= -->
+  <!-- ================= 4. MOBILE & TABLET BOTTOM NAVIGATION BAR ================= -->
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-brand-200 py-1.5 px-3 flex justify-around items-center z-40 no-print shadow-lg">
     <button onclick="switchTab('realtime')" id="m-nav-realtime" class="flex flex-col items-center justify-center flex-1 py-1 text-brand-700 font-bold transition">
       <span class="text-lg">⚡</span>
@@ -790,7 +841,26 @@
     </button>
   </nav>
 
-  <!-- Action Modal for Diagnostic Advice[cite: 9] -->
+  <!-- ================= EASTER EGG INSPIRATIONAL MODAL ================= -->
+  <div id="modal-easter-egg" class="fixed inset-0 bg-slate-900/30 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4 transition-all duration-300" onclick="closeEasterEggModal(event)">
+    <div class="bg-white rounded-2xl max-w-xs w-full p-6 shadow-xl border border-brand-200 text-center transform transition-all duration-300 scale-95" id="easter-egg-card" onclick="event.stopPropagation()">
+      <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-brand-50 flex items-center justify-center text-brand-600">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22V10"></path>
+          <path d="M12 10C12 5.5 8 4 5 6C5 9.5 8.5 10 12 10Z"></path>
+          <path d="M12 14C12 9.5 16 8 19 10C19 13.5 15.5 14 12 14Z"></path>
+          <path d="M9 22H15"></path>
+        </svg>
+      </div>
+      <p class="text-sm font-semibold text-slate-800 leading-relaxed mb-1">You’re doing great.</p>
+      <p class="text-xs text-slate-500 font-normal leading-relaxed mb-4">Keep going, one step at a time. 🌱</p>
+      <button onclick="closeEasterEggModal(null)" class="px-4 py-1.5 bg-brand-50 hover:bg-brand-100 text-brand-700 text-xs font-semibold rounded-xl border border-brand-200 transition">
+        Close
+      </button>
+    </div>
+  </div>
+
+  <!-- Action Modal for Diagnostic Advice -->
   <div id="modal-action" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-brand-200">
       <div class="flex items-center justify-between pb-3 border-b border-brand-100">
@@ -808,7 +878,7 @@
   </div>
 
   <script>
-    // ================= REALTIME TELEMETRY DATASET[cite: 9] =================
+    // ================= REALTIME TELEMETRY DATASET =================
     const realtimeData = [];
     for (let i = 1; i <= 15; i++) {
       const tag = `TX-${String(i).padStart(2, '0')}`;
@@ -847,7 +917,7 @@
       });
     }
 
-    // ================= 20-MONTH HISTORICAL LONGITUDINAL DATASET (2025 ALL 12M + 2026 8M YTD)[cite: 9] =================
+    // ================= 20-MONTH HISTORICAL LONGITUDINAL DATASET (2025 ALL 12M + 2026 8M YTD) =================
     const periodTimeline = [
       { id: '2025-01', year: '2025', label: 'Jan 2025', short: "Jan '25", avail: 97.45, mtbf: 1120.5, mttr: 14.8, txFail: 2, gisFail: 1, txDown: 32, gisDown: 14 },
       { id: '2025-02', year: '2025', label: 'Feb 2025', short: "Feb '25", avail: 98.12, mtbf: 1480.0, mttr: 12.2, txFail: 1, gisFail: 1, txDown: 14, gisDown: 12 },
@@ -872,7 +942,7 @@
     ];
 
     let activeYearFilter = 'ALL';
-    let selectedPeriodIndex = periodTimeline.length - 1; // Default to latest (Aug 2026)[cite: 9]
+    let selectedPeriodIndex = periodTimeline.length - 1; // Default to latest (Aug 2026)
     let currentFilter = 'ALL';
     const AVAIL_THRESHOLD = 96.0;
 
@@ -892,35 +962,30 @@
       }
     };
 
-    // ================= EXECUTIVE STRATEGY SIMULATOR[cite: 9] =================
-    function onSliderChange(val) {
-      document.getElementById('slider-val').innerText = parseFloat(val).toFixed(1);
-      runSimulation();
+    // ================= EASTER EGG LOGIC =================
+    function openEasterEggModal(e) {
+      if (e) e.stopPropagation();
+      const modal = document.getElementById('modal-easter-egg');
+      const card = document.getElementById('easter-egg-card');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        card.classList.remove('scale-95');
+        card.classList.add('scale-100');
+      }, 10);
     }
 
-    function applyPreset(targetAvail, targetMttr = null) {
-      document.getElementById('sim-slider').value = targetAvail;
-      document.getElementById('slider-val').innerText = targetAvail.toFixed(1);
-      if (targetMttr) {
-        document.getElementById('sim-mttr-select').value = targetMttr.toFixed(1);
-      }
-      runSimulation();
+    function closeEasterEggModal(e) {
+      if (e && e.target && e.target.id !== 'modal-easter-egg') return;
+      const modal = document.getElementById('modal-easter-egg');
+      const card = document.getElementById('easter-egg-card');
+      card.classList.remove('scale-100');
+      card.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 150);
     }
 
-    function runSimulation() {
-      let avail = parseFloat(document.getElementById('sim-slider').value);
-      if (avail >= 100) avail = 99.99;
-      const mttr = parseFloat(document.getElementById('sim-mttr-select').value);
-
-      const targetMtbf = (avail * mttr) / (100 - avail);
-      const annualDowntime = 8760 * ((100 - avail) / 100);
-      const maxFailures = mttr > 0 ? Math.floor(annualDowntime / mttr) : 0;
-
-      document.getElementById('sim-result-mtbf').innerText = `${targetMtbf.toFixed(1)} hrs`;
-      document.getElementById('sim-result-fails').innerText = `Max ~${maxFailures} Fails / Year`;
-    }
-
-    // ================= TIMELINE & YEAR FILTERING[cite: 9] =================
+    // ================= TIMELINE & YEAR FILTERING =================
     function filterTimelineYear(year) {
       activeYearFilter = year;
       ['ALL', '2025', '2026'].forEach(yr => {
@@ -968,7 +1033,7 @@
       const period = periodTimeline[selectedPeriodIndex];
       const visibleData = periodTimeline.filter(p => activeYearFilter === 'ALL' || p.year === activeYearFilter);
 
-      // Update Summary Cards[cite: 9]
+      // Update Summary Cards
       document.getElementById('selected-month-badge').innerText = period.label;
       document.getElementById('monthly-avail-val').innerText = `${period.avail.toFixed(2)}%`;
       document.getElementById('monthly-mtbf-val').innerText = `${period.mtbf.toFixed(1)}`;
@@ -1150,7 +1215,7 @@
       });
     }
 
-    // ================= LIVE STREAM & APP CONTROLS[cite: 9] =================
+    // ================= LIVE STREAM & APP CONTROLS =================
     function toggleLiveMode() {
       isLiveActive = !isLiveActive;
       const textDesktop = document.getElementById('live-status-text-desktop');
@@ -1317,7 +1382,7 @@
       document.getElementById('modal-action').classList.add('hidden');
     }
 
-    // Export dataset to formatted Excel file (.xlsx)[cite: 9]
+    // Export dataset to formatted Excel file (.xlsx)
     function exportToExcel() {
       const exportList = realtimeData.map(d => {
         const mtbf = d.failures > 0 ? (d.operatingHrs / d.failures) : d.operatingHrs;
@@ -1352,7 +1417,7 @@
       XLSX.writeFile(workbook, "RAM_Substation_Asset_Analytics.xlsx");
     }
 
-    // Switch main tabs[cite: 9]
+    // Switch main tabs
     function switchTab(tab) {
       const vRealtime = document.getElementById('view-realtime');
       const vMonthly = document.getElementById('view-monthly');
