@@ -24,14 +24,14 @@
           },
           colors: {
             brand: {
-              50: '#fff7f9',
-              100: '#ffedf2',
-              200: '#fedce6',
-              300: '#fdbecd',
-              400: '#f88da7',
-              50: '#f05b82',
-              600: '#de3866',
-              700: '#ba234e',
+              50: '#f4f9f6',
+              100: '#e5f2eb',
+              200: '#cbe4d6',
+              300: '#a3d0b8',
+              400: '#73b593',
+              500: '#4e9b74',
+              600: '#3b8268',
+              700: '#2f6853',
             }
           }
         }
@@ -122,22 +122,22 @@
       </div>
 
       <!-- Live Toggle Button Desktop -->
-      <button onclick="toggleLiveMode()" id="live-btn-desktop" class="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-2xl border border-emerald-300 hover:bg-emerald-200 transition shadow-xs">
-        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-        <span id="live-status-text-desktop">🔴 LIVE: STREAMING</span>
+      <button onclick="toggleLiveMode()" id="live-btn-desktop" class="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 bg-brand-100 text-brand-700 text-xs font-bold rounded-2xl border border-brand-300 hover:bg-brand-200 transition shadow-xs">
+        <span class="w-2.5 h-2.5 rounded-full bg-brand-500 animate-ping"></span>
+        <span id="live-status-text-desktop">🟢 LIVE: STREAMING</span>
       </button>
 
       <!-- Navigation Tabs (Sidebar Menu) -->
       <nav class="space-y-1.5 text-xs font-bold">
-        <button onclick="switchTab('realtime')" id="d-tab-realtime" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all bg-brand-500 text-white shadow-sm text-left">
+        <button onclick="switchTab('realtime')" id="d-tab-realtime" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all bg-brand-600 text-white shadow-sm text-left">
           <span class="text-base">⚡</span>
           <span>Real-Time Analytics</span>
         </button>
-        <button onclick="switchTab('monthly')" id="d-tab-monthly" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all text-slate-600 hover:bg-brand-100 hover:text-brand-600 text-left">
+        <button onclick="switchTab('monthly')" id="d-tab-monthly" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all text-slate-600 hover:bg-brand-100 hover:text-brand-700 text-left">
           <span class="text-base">📈</span>
           <span>Historical Analytics</span>
         </button>
-        <button onclick="switchTab('form')" id="d-tab-form" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all text-slate-600 hover:bg-brand-100 hover:text-brand-600 text-left">
+        <button onclick="switchTab('form')" id="d-tab-form" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all text-slate-600 hover:bg-brand-100 hover:text-brand-700 text-left">
           <span class="text-base">📝</span>
           <span>Inspection Form (A4)</span>
         </button>
@@ -145,7 +145,7 @@
     </div>
 
     <!-- Sidebar Footer -->
-    <div class="pt-4 border-t border-brand-100 text-[11px] text-brand-600">
+    <div class="pt-4 border-t border-brand-100 text-[11px] text-brand-700">
       <p class="font-bold text-slate-700">Substation RAM Analytics</p>
       <p class="text-slate-400 text-[10px] mt-0.5">Reliability, Availability & Maintenance</p>
     </div>
@@ -159,13 +159,13 @@
       </div>
       <div>
         <h1 class="text-sm font-bold text-slate-800 leading-tight">RAM Executive</h1>
-        <p class="text-[10px] text-brand-600 font-medium">Substation Reliability System</p>
+        <p class="text-[10px] text-brand-700 font-medium">Substation Reliability System</p>
       </div>
     </div>
 
     <!-- Live Toggle Button on Mobile Header -->
-    <button onclick="toggleLiveMode()" id="live-btn-mobile" class="flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-emerald-700 text-[11px] font-bold rounded-xl border border-emerald-300 shadow-xs">
-      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+    <button onclick="toggleLiveMode()" id="live-btn-mobile" class="flex items-center gap-1.5 px-3 py-1 bg-brand-100 text-brand-700 text-[11px] font-bold rounded-xl border border-brand-300 shadow-xs">
+      <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-ping"></span>
       <span id="live-status-text-mobile">LIVE</span>
     </button>
   </header>
@@ -177,18 +177,18 @@
     <div id="view-realtime" class="space-y-5 sm:space-y-6">
 
       <!-- Executive Goal Simulator Box -->
-      <div class="bg-gradient-to-br from-white via-brand-50/40 to-brand-100/50 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm">
+      <div class="bg-gradient-to-br from-white via-brand-50/50 to-brand-100/60 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm">
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 mb-4">
           <div>
-            <span class="text-[10px] sm:text-xs font-bold text-brand-600 uppercase tracking-wider">🎯 Executive Strategy Simulator</span>
+            <span class="text-[10px] sm:text-xs font-bold text-brand-700 uppercase tracking-wider">🎯 Executive Strategy Simulator</span>
             <h2 class="text-sm sm:text-base lg:text-lg font-bold text-slate-800">Dynamic Target Setting for Availability & MTBF</h2>
           </div>
           <div class="flex flex-wrap items-center gap-1.5 w-full lg:w-auto">
             <span class="text-[11px] sm:text-xs text-slate-500 font-medium mr-1">Presets:</span>
-            <button onclick="applyPreset(96.0)" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">96% Base</button>
-            <button onclick="applyPreset(98.0)" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">98% High</button>
-            <button onclick="applyPreset(99.0)" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">99% Substation Std</button>
-            <button onclick="applyPreset(99.5)" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-500 hover:text-white transition shadow-2xs">99.5% World-Class</button>
+            <button onclick="applyPreset(96.0)" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-600 hover:text-white transition shadow-2xs">96% Base</button>
+            <button onclick="applyPreset(98.0)" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-600 hover:text-white transition shadow-2xs">98% High</button>
+            <button onclick="applyPreset(99.0)" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-600 hover:text-white transition shadow-2xs">99% Substation Std</button>
+            <button onclick="applyPreset(99.5)" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-lg bg-white border border-brand-200 text-slate-700 hover:bg-brand-600 hover:text-white transition shadow-2xs">99.5% World-Class</button>
           </div>
         </div>
 
@@ -196,8 +196,8 @@
           <div class="md:col-span-4">
             <label class="block text-xs font-bold text-slate-600 mb-1">Target Availability (%):</label>
             <div class="flex items-center gap-2">
-              <input type="range" id="sim-slider" min="90" max="99.9" step="0.1" value="96.0" class="w-full accent-brand-500 cursor-pointer h-2 bg-slate-200 rounded-lg" oninput="onSliderChange(this.value)">
-              <div class="flex items-center font-extrabold text-brand-600 text-lg sm:text-xl bg-brand-50 px-2.5 py-1 rounded-xl border border-brand-200 shrink-0">
+              <input type="range" id="sim-slider" min="90" max="99.9" step="0.1" value="96.0" class="w-full accent-brand-600 cursor-pointer h-2 bg-slate-200 rounded-lg" oninput="onSliderChange(this.value)">
+              <div class="flex items-center font-extrabold text-brand-700 text-lg sm:text-xl bg-brand-50 px-2.5 py-1 rounded-xl border border-brand-200 shrink-0">
                 <span id="slider-val">96.0</span>%
               </div>
             </div>
@@ -216,7 +216,7 @@
             </div>
           </div>
 
-          <div class="md:col-span-4 bg-gradient-to-r from-brand-500 to-brand-600 p-3 rounded-xl text-white shadow-sm flex flex-col justify-between">
+          <div class="md:col-span-4 bg-gradient-to-r from-brand-600 to-brand-700 p-3 rounded-xl text-white shadow-sm flex flex-col justify-between">
             <span class="text-[10px] sm:text-[11px] font-semibold text-brand-100 uppercase">Calculated Target MTBF Benchmark</span>
             <div class="flex items-baseline justify-between mt-1">
               <span id="sim-result-mtbf" class="text-xl sm:text-2xl font-black tracking-tight">144.0 hrs</span>
@@ -234,14 +234,14 @@
           <div>
             <div class="flex justify-between items-center mb-1.5">
               <span class="text-[11px] sm:text-xs font-extrabold text-slate-500 uppercase tracking-wider">SYSTEM AVAILABILITY</span>
-              <span id="avail-status-tag" class="text-[10px] sm:text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-700">
+              <span id="avail-status-tag" class="text-[10px] sm:text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-brand-100 text-brand-700">
                 ● Normal
               </span>
             </div>
             
             <div class="my-2.5 flex items-baseline justify-between">
-              <span id="card-avail-text" class="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-600 tracking-tight">--</span>
-              <span class="text-2xl sm:text-3xl font-black text-brand-600 ml-1">%</span>
+              <span id="card-avail-text" class="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-700 tracking-tight">--</span>
+              <span class="text-2xl sm:text-3xl font-black text-brand-700 ml-1">%</span>
             </div>
           </div>
 
@@ -301,14 +301,14 @@
           
           <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 w-full sm:w-auto">
             <!-- Export to Excel Button -->
-            <button onclick="exportToExcel()" class="px-3 py-1.5 text-[11px] sm:text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-2xs flex items-center gap-1.5">
+            <button onclick="exportToExcel()" class="px-3 py-1.5 text-[11px] sm:text-xs font-bold rounded-xl bg-brand-600 hover:bg-brand-700 text-white transition shadow-2xs flex items-center gap-1.5">
               <span>📥</span>
               <span>Export Excel</span>
             </button>
-            <button onclick="syncTableToCards()" class="px-3 py-1.5 text-[11px] sm:text-xs font-bold rounded-xl bg-brand-500 hover:bg-brand-600 text-white transition shadow-2xs">
+            <button onclick="syncTableToCards()" class="px-3 py-1.5 text-[11px] sm:text-xs font-bold rounded-xl bg-brand-100 hover:bg-brand-200 text-brand-700 transition shadow-2xs">
               🔄 Refresh
             </button>
-            <button onclick="filterType('ALL')" id="filter-ALL" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-brand-500 text-white transition shadow-2xs">All (25)</button>
+            <button onclick="filterType('ALL')" id="filter-ALL" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-brand-600 text-white transition shadow-2xs">All (25)</button>
             <button onclick="filterType('TX')" id="filter-TX" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition">Transformers (15)</button>
             <button onclick="filterType('GIS')" id="filter-GIS" class="px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition">GIS (10)</button>
           </div>
@@ -338,46 +338,46 @@
       </div>
     </div>
 
-    <!-- Tab 2: Monthly Analytics View (Re-designed 2025-2026 Historical Dashboard) -->
+    <!-- Tab 2: Monthly Analytics View (Re-designed 2025-2026 Historical Dashboard)[cite: 9] -->
     <div id="view-monthly" class="hidden space-y-5 sm:space-y-6">
       
-      <!-- Time Range & Year Switcher Controls -->
+      <!-- Time Range & Year Switcher Controls[cite: 9] -->
       <div class="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm space-y-4">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div>
-            <span class="text-[10px] sm:text-xs font-bold text-brand-600 uppercase tracking-wider">📈 Multi-Year Longitudinal Performance (2025 - Present)</span>
+            <span class="text-[10px] sm:text-xs font-bold text-brand-700 uppercase tracking-wider">📈 Multi-Year Longitudinal Performance (2025 - Present)</span>
             <h2 class="text-sm sm:text-base lg:text-lg font-extrabold text-slate-800">20-Month Substation Reliability & Outage History</h2>
           </div>
           
-          <!-- Year Selector Filter -->
+          <!-- Year Selector Filter[cite: 9] -->
           <div class="inline-flex bg-brand-100/80 p-1 rounded-2xl text-xs font-bold">
-            <button onclick="filterTimelineYear('ALL')" id="yr-btn-ALL" class="px-3.5 py-1.5 rounded-xl bg-brand-500 text-white shadow-xs transition">
+            <button onclick="filterTimelineYear('ALL')" id="yr-btn-ALL" class="px-3.5 py-1.5 rounded-xl bg-brand-600 text-white shadow-xs transition">
               All 20 Months
             </button>
-            <button onclick="filterTimelineYear('2025')" id="yr-btn-2025" class="px-3.5 py-1.5 rounded-xl text-slate-600 hover:text-brand-600 transition">
+            <button onclick="filterTimelineYear('2025')" id="yr-btn-2025" class="px-3.5 py-1.5 rounded-xl text-slate-600 hover:text-brand-700 transition">
               Year 2025 (12M)
             </button>
-            <button onclick="filterTimelineYear('2026')" id="yr-btn-2026" class="px-3.5 py-1.5 rounded-xl text-slate-600 hover:text-brand-600 transition">
+            <button onclick="filterTimelineYear('2026')" id="yr-btn-2026" class="px-3.5 py-1.5 rounded-xl text-slate-600 hover:text-brand-700 transition">
               Year 2026 (YTD)
             </button>
           </div>
         </div>
 
-        <!-- Month Pills Carousel / Grid -->
+        <!-- Month Pills Carousel / Grid[cite: 9] -->
         <div id="month-pills-container" class="flex flex-wrap gap-1.5 pt-1 overflow-x-auto">
           <!-- Dynamically Rendered Months -->
         </div>
       </div>
 
-      <!-- Focused Month KPI Summary Snapshot -->
+      <!-- Focused Month KPI Summary Snapshot[cite: 9] -->
       <div class="grid grid-cols-1 sm:grid-cols-4 gap-3.5 sm:gap-4">
         <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
           <div class="flex justify-between items-center mb-1">
             <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase">Selected Period</span>
-            <span id="selected-month-badge" class="px-2 py-0.5 bg-brand-500 text-white text-[10px] font-bold rounded-lg">Aug 2026</span>
+            <span id="selected-month-badge" class="px-2 py-0.5 bg-brand-600 text-white text-[10px] font-bold rounded-lg">Aug 2026</span>
           </div>
           <div class="mt-2 flex items-baseline justify-between">
-            <span id="monthly-avail-val" class="text-2xl sm:text-3xl font-black text-brand-600">--%</span>
+            <span id="monthly-avail-val" class="text-2xl sm:text-3xl font-black text-brand-700">--%</span>
             <span id="monthly-avail-tag" class="text-[10px] px-2 py-0.5 rounded-md font-bold"></span>
           </div>
           <div class="pt-2 mt-2 border-t border-brand-100 text-[10px] text-slate-400">Target benchmark: ≥ 96.0%</div>
@@ -411,10 +411,10 @@
         </div>
       </div>
 
-      <!-- High-End Redesigned Visual Charts -->
+      <!-- High-End Redesigned Visual Charts[cite: 9] -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
         
-        <!-- Chart 1: Continuous Spline Availability Trendline with Target Range -->
+        <!-- Chart 1: Continuous Spline Availability Trendline with Target Range[cite: 9] -->
         <div class="lg:col-span-7 bg-white p-5 sm:p-6 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
             <div>
@@ -435,12 +435,12 @@
           </div>
         </div>
 
-        <!-- Chart 2: Categorical Outage & Lost Time Breakdown -->
+        <!-- Chart 2: Categorical Outage & Lost Time Breakdown[cite: 9] -->
         <div class="lg:col-span-5 bg-white p-5 sm:p-6 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
             <div>
               <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-brand-600"></span>
                 <h3 class="text-xs sm:text-sm font-extrabold text-slate-800">Outages & Lost Maintenance Hours</h3>
               </div>
               <p class="text-[11px] text-slate-400 mt-0.5">Transformer vs GIS failure count with comparative downtime severity.</p>
@@ -455,10 +455,10 @@
 
     </div>
 
-    <!-- Tab 3: Inspection Form View (Thai preserved for field technician workflow) -->
+    <!-- Tab 3: Inspection Form View (Thai preserved for field technician workflow)[cite: 9] -->
     <div id="view-form" class="hidden space-y-5 sm:space-y-6">
       
-      <!-- Sub-navigation for Forms -->
+      <!-- Sub-navigation for Forms[cite: 9] -->
       <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 no-print bg-white p-3.5 sm:p-4 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm">
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
           <span class="text-xs font-bold text-slate-700">📋 Select Form Type:</span>
@@ -466,18 +466,18 @@
             <button onclick="switchFormType('tx')" id="btn-form-tx" class="flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-white text-brand-700 shadow-sm transition text-center">
               🔌 แบบฟอร์มตรวจหม้อแปลงไฟฟ้า
             </button>
-            <button onclick="switchFormType('gis')" id="btn-form-gis" class="flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-slate-600 hover:text-brand-600 transition text-center">
+            <button onclick="switchFormType('gis')" id="btn-form-gis" class="flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-slate-600 hover:text-brand-700 transition text-center">
               ⚡ แบบฟอร์มตรวจสวิตซ์เกียร์ (GIS)
             </button>
           </div>
         </div>
 
-        <button onclick="window.print()" class="flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-bold px-4 py-2 rounded-xl sm:rounded-2xl text-xs sm:text-sm shadow-sm transition w-full sm:w-auto">
+        <button onclick="window.print()" class="flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-bold px-4 py-2 rounded-xl sm:rounded-2xl text-xs sm:text-sm shadow-sm transition w-full sm:w-auto">
           🖨️ Print Form (A4 Full Page)
         </button>
       </div>
 
-      <!-- FORM 1: Transformer Inspection Sheet (Thai Text Preserved) -->
+      <!-- FORM 1: Transformer Inspection Sheet (Thai Text Preserved)[cite: 9] -->
       <div id="form-tx-container" class="active-print-form bg-white p-6 sm:p-10 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs flex flex-col justify-between">
         
         <!-- Header Section -->
@@ -629,7 +629,7 @@
 
       </div>
 
-      <!-- FORM 2: GIS Inspection Sheet -->
+      <!-- FORM 2: GIS Inspection Sheet (Thai Text Preserved)[cite: 9] -->
       <div id="form-gis-container" class="hidden bg-white p-6 sm:p-10 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs flex flex-col justify-between">
         
         <!-- Header -->
@@ -723,19 +723,19 @@
                 <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">ฮีตเตอร์และระบายอากาศ (Heater/Vent)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">ฮีตเตอร์ในตู้ LCC ทำงาน (ไม่อับชื้น / ไม่มีหยดน้ำเกาะ)</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ไม่ทำงาน</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ไม่ทำงาน</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
                 <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">การต่อลงดินและโครงสร้าง (Grounding)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">กราวด์ Enclosure แน่นหนา, โครงสร้างไม่มีสนิมรุนแรง</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
                 <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">ความผิดปกติทางกายภาพ (Visual/Acoustic)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">ไม่มีเสียง Discharge / Partial Discharge, ไม่มีกลิ่นผิดปกติ</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
               </tbody>
@@ -774,23 +774,23 @@
 
   </main>
 
-  <!-- ================= 4. MOBILE & TABLET BOTTOM NAVIGATION BAR ================= -->
+  <!-- ================= 4. MOBILE & TABLET BOTTOM NAVIGATION BAR[cite: 9] ================= -->
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-brand-200 py-1.5 px-3 flex justify-around items-center z-40 no-print shadow-lg">
-    <button onclick="switchTab('realtime')" id="m-nav-realtime" class="flex flex-col items-center justify-center flex-1 py-1 text-brand-600 font-bold transition">
+    <button onclick="switchTab('realtime')" id="m-nav-realtime" class="flex flex-col items-center justify-center flex-1 py-1 text-brand-700 font-bold transition">
       <span class="text-lg">⚡</span>
       <span class="text-[11px] mt-0.5">Real-Time</span>
     </button>
-    <button onclick="switchTab('monthly')" id="m-nav-monthly" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-500 font-bold transition hover:text-brand-600">
+    <button onclick="switchTab('monthly')" id="m-nav-monthly" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-500 font-bold transition hover:text-brand-700">
       <span class="text-lg">📈</span>
       <span class="text-[11px] mt-0.5">Historical</span>
     </button>
-    <button onclick="switchTab('form')" id="m-nav-form" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-500 font-bold transition hover:text-brand-600">
+    <button onclick="switchTab('form')" id="m-nav-form" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-500 font-bold transition hover:text-brand-700">
       <span class="text-lg">📝</span>
       <span class="text-[11px] mt-0.5">Form (A4)</span>
     </button>
   </nav>
 
-  <!-- Action Modal for Diagnostic Advice -->
+  <!-- Action Modal for Diagnostic Advice[cite: 9] -->
   <div id="modal-action" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-brand-200">
       <div class="flex items-center justify-between pb-3 border-b border-brand-100">
@@ -800,7 +800,7 @@
       <div id="modal-body" class="py-3 text-xs text-slate-600 space-y-2.5 leading-relaxed">
       </div>
       <div class="pt-3 border-t border-brand-100 flex justify-end">
-        <button onclick="closeModal()" class="px-4 py-1.5 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-bold">
+        <button onclick="closeModal()" class="px-4 py-1.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold">
           Acknowledged / Close
         </button>
       </div>
@@ -808,7 +808,7 @@
   </div>
 
   <script>
-    // ================= REALTIME TELEMETRY DATASET =================
+    // ================= REALTIME TELEMETRY DATASET[cite: 9] =================
     const realtimeData = [];
     for (let i = 1; i <= 15; i++) {
       const tag = `TX-${String(i).padStart(2, '0')}`;
@@ -847,7 +847,7 @@
       });
     }
 
-    // ================= 20-MONTH HISTORICAL LONGITUDINAL DATASET (2025 ALL 12M + 2026 8M YTD) =================
+    // ================= 20-MONTH HISTORICAL LONGITUDINAL DATASET (2025 ALL 12M + 2026 8M YTD)[cite: 9] =================
     const periodTimeline = [
       { id: '2025-01', year: '2025', label: 'Jan 2025', short: "Jan '25", avail: 97.45, mtbf: 1120.5, mttr: 14.8, txFail: 2, gisFail: 1, txDown: 32, gisDown: 14 },
       { id: '2025-02', year: '2025', label: 'Feb 2025', short: "Feb '25", avail: 98.12, mtbf: 1480.0, mttr: 12.2, txFail: 1, gisFail: 1, txDown: 14, gisDown: 12 },
@@ -872,7 +872,7 @@
     ];
 
     let activeYearFilter = 'ALL';
-    let selectedPeriodIndex = periodTimeline.length - 1; // Default to latest (Aug 2026)
+    let selectedPeriodIndex = periodTimeline.length - 1; // Default to latest (Aug 2026)[cite: 9]
     let currentFilter = 'ALL';
     const AVAIL_THRESHOLD = 96.0;
 
@@ -892,7 +892,7 @@
       }
     };
 
-    // ================= EXECUTIVE STRATEGY SIMULATOR =================
+    // ================= EXECUTIVE STRATEGY SIMULATOR[cite: 9] =================
     function onSliderChange(val) {
       document.getElementById('slider-val').innerText = parseFloat(val).toFixed(1);
       runSimulation();
@@ -920,15 +920,15 @@
       document.getElementById('sim-result-fails').innerText = `Max ~${maxFailures} Fails / Year`;
     }
 
-    // ================= TIMELINE & YEAR FILTERING =================
+    // ================= TIMELINE & YEAR FILTERING[cite: 9] =================
     function filterTimelineYear(year) {
       activeYearFilter = year;
       ['ALL', '2025', '2026'].forEach(yr => {
         const btn = document.getElementById(`yr-btn-${yr}`);
         if (yr === year) {
-          btn.className = "px-3.5 py-1.5 rounded-xl bg-brand-500 text-white shadow-xs transition font-bold";
+          btn.className = "px-3.5 py-1.5 rounded-xl bg-brand-600 text-white shadow-xs transition font-bold";
         } else {
-          btn.className = "px-3.5 py-1.5 rounded-xl text-slate-600 hover:text-brand-600 transition font-bold";
+          btn.className = "px-3.5 py-1.5 rounded-xl text-slate-600 hover:text-brand-700 transition font-bold";
         }
       });
 
@@ -950,8 +950,8 @@
         btn.onclick = () => selectPeriod(realIdx);
         btn.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition shadow-2xs shrink-0 ${
           isSelected 
-            ? 'bg-brand-500 text-white shadow-md' 
-            : 'bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 hover:text-brand-600'
+            ? 'bg-brand-600 text-white shadow-md' 
+            : 'bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 hover:text-brand-700'
         }`;
         btn.innerHTML = `${item.short} ${item.avail < AVAIL_THRESHOLD ? '<span class="text-rose-400">▲</span>' : ''}`;
         container.appendChild(btn);
@@ -968,7 +968,7 @@
       const period = periodTimeline[selectedPeriodIndex];
       const visibleData = periodTimeline.filter(p => activeYearFilter === 'ALL' || p.year === activeYearFilter);
 
-      // Update Summary Cards
+      // Update Summary Cards[cite: 9]
       document.getElementById('selected-month-badge').innerText = period.label;
       document.getElementById('monthly-avail-val').innerText = `${period.avail.toFixed(2)}%`;
       document.getElementById('monthly-mtbf-val').innerText = `${period.mtbf.toFixed(1)}`;
@@ -981,7 +981,7 @@
 
       const tag = document.getElementById('monthly-avail-tag');
       if (period.avail >= AVAIL_THRESHOLD) {
-        tag.className = "text-[10px] px-2 py-0.5 rounded-md font-bold bg-emerald-100 text-emerald-700";
+        tag.className = "text-[10px] px-2 py-0.5 rounded-md font-bold bg-brand-100 text-brand-700";
         tag.innerText = "● Compliant";
       } else {
         tag.className = "text-[10px] px-2 py-0.5 rounded-md font-bold bg-rose-100 text-rose-700";
@@ -991,7 +991,7 @@
       renderModernCharts(visibleData);
     }
 
-    // ================= HIGH-END EXECUTIVE CHART.JS ENGINE =================
+    // ================= HIGH-END EXECUTIVE CHART.JS ENGINE (MINT / SAGE GREEN PALETTE) =================
     function renderModernCharts(dataset) {
       const labels = dataset.map(d => d.short);
       const availData = dataset.map(d => d.avail);
@@ -1003,11 +1003,10 @@
       const ctx1 = document.getElementById('availabilityTrendChart').getContext('2d');
       if (availTrendChartInstance) availTrendChartInstance.destroy();
 
-      // Create rich gradient background for line
       const gradient1 = ctx1.createLinearGradient(0, 0, 0, 300);
-      gradient1.addColorStop(0, 'rgba(240, 91, 130, 0.35)');
-      gradient1.addColorStop(0.7, 'rgba(240, 91, 130, 0.05)');
-      gradient1.addColorStop(1, 'rgba(240, 91, 130, 0.0)');
+      gradient1.addColorStop(0, 'rgba(78, 155, 116, 0.30)');
+      gradient1.addColorStop(0.7, 'rgba(78, 155, 116, 0.05)');
+      gradient1.addColorStop(1, 'rgba(78, 155, 116, 0.0)');
 
       availTrendChartInstance = new Chart(ctx1, {
         type: 'line',
@@ -1017,12 +1016,12 @@
             {
               label: 'Availability (%)',
               data: availData,
-              borderColor: '#f05b82',
+              borderColor: '#3b8268',
               borderWidth: 3,
               tension: 0.38,
               fill: true,
               backgroundColor: gradient1,
-              pointBackgroundColor: dataset.map(d => d.avail >= AVAIL_THRESHOLD ? '#10b981' : '#f43f5e'),
+              pointBackgroundColor: dataset.map(d => d.avail >= AVAIL_THRESHOLD ? '#3b8268' : '#f43f5e'),
               pointBorderColor: '#ffffff',
               pointBorderWidth: 2,
               pointRadius: 4.5,
@@ -1031,7 +1030,7 @@
             {
               label: 'Target Baseline (96.0%)',
               data: Array(dataset.length).fill(AVAIL_THRESHOLD),
-              borderColor: '#10b981',
+              borderColor: '#73b593',
               borderWidth: 2,
               borderDash: [5, 5],
               fill: false,
@@ -1088,7 +1087,7 @@
               type: 'bar',
               label: 'TX Failures',
               data: txFails,
-              backgroundColor: '#f88da7',
+              backgroundColor: '#73b593',
               borderRadius: 6,
               barThickness: dataset.length > 12 ? 8 : 14,
               stack: 'outages'
@@ -1097,7 +1096,7 @@
               type: 'bar',
               label: 'GIS Failures',
               data: gisFails,
-              backgroundColor: '#60a5fa',
+              backgroundColor: '#a3d0b8',
               borderRadius: 6,
               barThickness: dataset.length > 12 ? 8 : 14,
               stack: 'outages'
@@ -1106,8 +1105,8 @@
               type: 'line',
               label: 'Total Downtime Loss (hrs)',
               data: totalLost,
-              borderColor: '#de3866',
-              backgroundColor: '#de3866',
+              borderColor: '#2f6853',
+              backgroundColor: '#2f6853',
               borderWidth: 2.2,
               tension: 0.3,
               yAxisID: 'y1',
@@ -1151,7 +1150,7 @@
       });
     }
 
-    // ================= LIVE STREAM & APP CONTROLS =================
+    // ================= LIVE STREAM & APP CONTROLS[cite: 9] =================
     function toggleLiveMode() {
       isLiveActive = !isLiveActive;
       const textDesktop = document.getElementById('live-status-text-desktop');
@@ -1160,10 +1159,10 @@
       const btnMobile = document.getElementById('live-btn-mobile');
 
       if (isLiveActive) {
-        if (textDesktop) textDesktop.innerText = "🔴 LIVE: STREAMING";
+        if (textDesktop) textDesktop.innerText = "🟢 LIVE: STREAMING";
         if (textMobile) textMobile.innerText = "LIVE";
-        if (btnDesktop) btnDesktop.className = "w-full flex items-center justify-center gap-2 px-3.5 py-2.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-2xl border border-emerald-300 hover:bg-emerald-200 transition shadow-xs";
-        if (btnMobile) btnMobile.className = "flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-emerald-700 text-[11px] font-bold rounded-xl border border-emerald-300 shadow-xs";
+        if (btnDesktop) btnDesktop.className = "w-full flex items-center justify-center gap-2 px-3.5 py-2.5 bg-brand-100 text-brand-700 text-xs font-bold rounded-2xl border border-brand-300 hover:bg-brand-200 transition shadow-xs";
+        if (btnMobile) btnMobile.className = "flex items-center gap-1.5 px-3 py-1 bg-brand-100 text-brand-700 text-[11px] font-bold rounded-xl border border-brand-300 shadow-xs";
         startLiveStream();
       } else {
         if (textDesktop) textDesktop.innerText = "⏸️ PAUSE: FROZEN";
@@ -1190,7 +1189,7 @@
     function checkAvailStatus(avail) {
       const badge = document.getElementById('avail-status-tag');
       if (avail >= AVAIL_THRESHOLD) {
-        badge.className = "text-[10px] sm:text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-700";
+        badge.className = "text-[10px] sm:text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-brand-100 text-brand-700";
         badge.innerText = "● Compliant";
       } else {
         badge.className = "text-[10px] sm:text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-rose-100 text-rose-700";
@@ -1236,7 +1235,7 @@
         row.innerHTML = `
           <td class="p-2.5 sm:p-3 pl-3 sm:pl-4 font-bold text-slate-800">${d.tag}</td>
           <td class="p-2.5 sm:p-3">
-            <span class="px-2 py-0.5 rounded text-[10px] font-semibold ${d.type === 'TX' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">
+            <span class="px-2 py-0.5 rounded text-[10px] font-semibold ${d.type === 'TX' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">
               ${d.type === 'TX' ? 'Transformer' : 'GIS'}
             </span>
           </td>
@@ -1251,9 +1250,9 @@
           </td>
           <td class="p-2.5 sm:p-3 font-medium text-slate-700">${mtbf.toFixed(1)}</td>
           <td class="p-2.5 sm:p-3 font-medium text-slate-700">${mttr.toFixed(1)}</td>
-          <td class="p-2.5 sm:p-3 font-bold ${!isPass ? 'text-rose-600' : 'text-emerald-600'}">${avail.toFixed(2)}%</td>
+          <td class="p-2.5 sm:p-3 font-bold ${!isPass ? 'text-rose-600' : 'text-brand-700'}">${avail.toFixed(2)}%</td>
           <td class="p-2.5 sm:p-3">
-            <span class="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-full ${isPass ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700 font-bold'}">
+            <span class="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-full ${isPass ? 'bg-brand-100 text-brand-700' : 'bg-rose-100 text-rose-700 font-bold'}">
               ${isPass ? '● Normal' : '▲ Below 96%'}
             </span>
           </td>
@@ -1281,7 +1280,7 @@
       ['ALL', 'TX', 'GIS'].forEach(t => {
         const btn = document.getElementById(`filter-${t}`);
         if (t === type) {
-          btn.className = "px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-brand-500 text-white transition shadow-2xs";
+          btn.className = "px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-brand-600 text-white transition shadow-2xs";
         } else {
           btn.className = "px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 transition";
         }
@@ -1307,7 +1306,7 @@
       if (avail < AVAIL_THRESHOLD) {
         msg = `<div class="p-3 bg-rose-50 border border-rose-200 rounded-2xl text-rose-800">${solutions[dev.type].lowAvail}</div>`;
       } else {
-        msg = `<div class="p-3 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-800">${solutions[dev.type].normal}</div>`;
+        msg = `<div class="p-3 bg-brand-50 border border-brand-200 rounded-2xl text-brand-800">${solutions[dev.type].normal}</div>`;
       }
 
       body.innerHTML = msg;
@@ -1318,6 +1317,7 @@
       document.getElementById('modal-action').classList.add('hidden');
     }
 
+    // Export dataset to formatted Excel file (.xlsx)[cite: 9]
     function exportToExcel() {
       const exportList = realtimeData.map(d => {
         const mtbf = d.failures > 0 ? (d.operatingHrs / d.failures) : d.operatingHrs;
@@ -1352,6 +1352,7 @@
       XLSX.writeFile(workbook, "RAM_Substation_Asset_Analytics.xlsx");
     }
 
+    // Switch main tabs[cite: 9]
     function switchTab(tab) {
       const vRealtime = document.getElementById('view-realtime');
       const vMonthly = document.getElementById('view-monthly');
@@ -1370,27 +1371,27 @@
       vForm.classList.add('hidden');
 
       [dtRealtime, dtMonthly, dtForm].forEach(el => {
-        if(el) el.className = "w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all text-slate-600 hover:bg-brand-100 hover:text-brand-600 text-left";
+        if(el) el.className = "w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all text-slate-600 hover:bg-brand-100 hover:text-brand-700 text-left";
       });
 
       [mnRealtime, mnMonthly, mnForm].forEach(el => {
-        if(el) el.className = "flex flex-col items-center justify-center flex-1 py-1 text-slate-500 font-bold transition hover:text-brand-600";
+        if(el) el.className = "flex flex-col items-center justify-center flex-1 py-1 text-slate-500 font-bold transition hover:text-brand-700";
       });
 
       if (tab === 'realtime') {
         vRealtime.classList.remove('hidden');
-        if(dtRealtime) dtRealtime.className = "w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all bg-brand-500 text-white shadow-sm text-left font-bold";
-        if(mnRealtime) mnRealtime.className = "flex flex-col items-center justify-center flex-1 py-1 text-brand-600 font-bold transition";
+        if(dtRealtime) dtRealtime.className = "w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all bg-brand-600 text-white shadow-sm text-left font-bold";
+        if(mnRealtime) mnRealtime.className = "flex flex-col items-center justify-center flex-1 py-1 text-brand-700 font-bold transition";
       } else if (tab === 'monthly') {
         vMonthly.classList.remove('hidden');
-        if(dtMonthly) dtMonthly.className = "w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all bg-brand-500 text-white shadow-sm text-left font-bold";
-        if(mnMonthly) mnMonthly.className = "flex flex-col items-center justify-center flex-1 py-1 text-brand-600 font-bold transition";
+        if(dtMonthly) dtMonthly.className = "w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all bg-brand-600 text-white shadow-sm text-left font-bold";
+        if(mnMonthly) mnMonthly.className = "flex flex-col items-center justify-center flex-1 py-1 text-brand-700 font-bold transition";
         renderMonthPills();
         updateChartsAndCards();
       } else if (tab === 'form') {
         vForm.classList.remove('hidden');
-        if(dtForm) dtForm.className = "w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all bg-brand-500 text-white shadow-sm text-left font-bold";
-        if(mnForm) mnForm.className = "flex flex-col items-center justify-center flex-1 py-1 text-brand-600 font-bold transition";
+        if(dtForm) dtForm.className = "w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all bg-brand-600 text-white shadow-sm text-left font-bold";
+        if(mnForm) mnForm.className = "flex flex-col items-center justify-center flex-1 py-1 text-brand-700 font-bold transition";
       }
     }
 
@@ -1407,7 +1408,7 @@
         formGis.classList.remove('active-print-form');
 
         btnTx.className = "flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-white text-brand-700 shadow-sm transition font-bold text-center";
-        btnGis.className = "flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-slate-600 hover:text-brand-600 transition font-bold text-center";
+        btnGis.className = "flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-slate-600 hover:text-brand-700 transition font-bold text-center";
       } else {
         formGis.classList.remove('hidden');
         formGis.classList.add('active-print-form');
@@ -1415,7 +1416,7 @@
         formTx.classList.remove('active-print-form');
 
         btnGis.className = "flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-white text-brand-700 shadow-sm transition font-bold text-center";
-        btnTx.className = "flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-slate-600 hover:text-brand-600 transition font-bold text-center";
+        btnTx.className = "flex-1 sm:flex-initial px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-slate-600 hover:text-brand-700 transition font-bold text-center";
       }
     }
 
