@@ -29,7 +29,7 @@
               200: '#fedce6',
               300: '#fdbecd',
               400: '#f88da7',
-              500: '#f05b82',
+              50: '#f05b82',
               600: '#de3866',
               700: '#ba234e',
             }
@@ -134,8 +134,8 @@
           <span>Real-Time Analytics</span>
         </button>
         <button onclick="switchTab('monthly')" id="d-tab-monthly" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all text-slate-600 hover:bg-brand-100 hover:text-brand-600 text-left">
-          <span class="text-base">📅</span>
-          <span>Monthly Analytics</span>
+          <span class="text-base">📈</span>
+          <span>Historical Analytics</span>
         </button>
         <button onclick="switchTab('form')" id="d-tab-form" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all text-slate-600 hover:bg-brand-100 hover:text-brand-600 text-left">
           <span class="text-base">📝</span>
@@ -338,92 +338,116 @@
       </div>
     </div>
 
-    <!-- Tab 2: Monthly Analytics View -->
+    <!-- Tab 2: Monthly Analytics View (Re-designed 2025-2026 Historical Dashboard) -->
     <div id="view-monthly" class="hidden space-y-5 sm:space-y-6">
       
-      <!-- Month Selector Bar -->
-      <div class="bg-white p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-2.5 mb-3">
+      <!-- Time Range & Year Switcher Controls -->
+      <div class="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border-2 border-brand-200 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div>
-            <span class="text-[10px] sm:text-xs font-bold text-brand-600 uppercase tracking-wider">📅 Monthly Performance Filter</span>
-            <h2 class="text-sm sm:text-base lg:text-lg font-extrabold text-slate-800">Historical Operational Analytics & Reporting</h2>
+            <span class="text-[10px] sm:text-xs font-bold text-brand-600 uppercase tracking-wider">📈 Multi-Year Longitudinal Performance (2025 - Present)</span>
+            <h2 class="text-sm sm:text-base lg:text-lg font-extrabold text-slate-800">20-Month Substation Reliability & Outage History</h2>
           </div>
-          <div class="flex items-center gap-1.5">
-            <span class="text-xs text-slate-400">Displaying:</span>
-            <span id="current-month-badge" class="px-2.5 py-0.5 sm:px-3 sm:py-1 bg-brand-500 text-white font-bold text-xs rounded-xl shadow-xs">January</span>
+          
+          <!-- Year Selector Filter -->
+          <div class="inline-flex bg-brand-100/80 p-1 rounded-2xl text-xs font-bold">
+            <button onclick="filterTimelineYear('ALL')" id="yr-btn-ALL" class="px-3.5 py-1.5 rounded-xl bg-brand-500 text-white shadow-xs transition">
+              All 20 Months
+            </button>
+            <button onclick="filterTimelineYear('2025')" id="yr-btn-2025" class="px-3.5 py-1.5 rounded-xl text-slate-600 hover:text-brand-600 transition">
+              Year 2025 (12M)
+            </button>
+            <button onclick="filterTimelineYear('2026')" id="yr-btn-2026" class="px-3.5 py-1.5 rounded-xl text-slate-600 hover:text-brand-600 transition">
+              Year 2026 (YTD)
+            </button>
           </div>
         </div>
 
-        <!-- 12 Month Buttons -->
-        <div class="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-1.5 pt-1">
-          <button onclick="selectMonth(0)" id="m-btn-0" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">Jan</button>
-          <button onclick="selectMonth(1)" id="m-btn-1" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">Feb</button>
-          <button onclick="selectMonth(2)" id="m-btn-2" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">Mar</button>
-          <button onclick="selectMonth(3)" id="m-btn-3" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">Apr</button>
-          <button onclick="selectMonth(4)" id="m-btn-4" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">May</button>
-          <button onclick="selectMonth(5)" id="m-btn-5" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">Jun</button>
-          <button onclick="selectMonth(6)" id="m-btn-6" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">Jul</button>
-          <button onclick="selectMonth(7)" id="m-btn-7" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">Aug</button>
-          <button onclick="selectMonth(8)" id="m-btn-8" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">Sep</button>
-          <button onclick="selectMonth(9)" id="m-btn-9" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">Oct</button>
-          <button onclick="selectMonth(10)" id="m-btn-10" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">Nov</button>
-          <button onclick="selectMonth(11)" id="m-btn-11" class="month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl border transition shadow-2xs">Dec</button>
+        <!-- Month Pills Carousel / Grid -->
+        <div id="month-pills-container" class="flex flex-wrap gap-1.5 pt-1 overflow-x-auto">
+          <!-- Dynamically Rendered Months -->
         </div>
       </div>
 
-      <!-- Monthly Summary KPI Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
-        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm">
-          <span class="text-xs font-bold text-slate-400 uppercase">Monthly Availability</span>
+      <!-- Focused Month KPI Summary Snapshot -->
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-3.5 sm:gap-4">
+        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase">Selected Period</span>
+            <span id="selected-month-badge" class="px-2 py-0.5 bg-brand-500 text-white text-[10px] font-bold rounded-lg">Aug 2026</span>
+          </div>
           <div class="mt-2 flex items-baseline justify-between">
             <span id="monthly-avail-val" class="text-2xl sm:text-3xl font-black text-brand-600">--%</span>
-            <span id="monthly-avail-tag" class="text-xs px-2 py-0.5 rounded-lg font-bold"></span>
+            <span id="monthly-avail-tag" class="text-[10px] px-2 py-0.5 rounded-md font-bold"></span>
           </div>
+          <div class="pt-2 mt-2 border-t border-brand-100 text-[10px] text-slate-400">Target benchmark: ≥ 96.0%</div>
         </div>
-        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm">
-          <span class="text-xs font-bold text-slate-400 uppercase">Mean Time Between Failures</span>
+
+        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
+          <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase">Period Mean Time Between Failures</span>
           <div class="mt-2 flex items-baseline justify-between">
             <span id="monthly-mtbf-val" class="text-2xl sm:text-3xl font-black text-slate-800">--</span>
-            <span class="text-xs text-slate-400 font-medium">hrs uptime</span>
+            <span class="text-xs text-slate-400 font-semibold">hrs</span>
           </div>
+          <div class="pt-2 mt-2 border-t border-brand-100 text-[10px] text-slate-400">Mean operating hours per fault</div>
         </div>
-        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm">
-          <span class="text-xs font-bold text-slate-400 uppercase">Mean Time To Recovery</span>
+
+        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
+          <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase">Period Mean Time To Recovery</span>
           <div class="mt-2 flex items-baseline justify-between">
             <span id="monthly-mttr-val" class="text-2xl sm:text-3xl font-black text-slate-800">--</span>
-            <span class="text-xs text-slate-400 font-medium">hrs downtime</span>
+            <span class="text-xs text-slate-400 font-semibold">hrs</span>
           </div>
+          <div class="pt-2 mt-2 border-t border-brand-100 text-[10px] text-slate-400">Average maintenance turnaround</div>
+        </div>
+
+        <div class="bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
+          <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase">Total Outages & Downtime</span>
+          <div class="mt-2 flex items-baseline justify-between">
+            <span id="monthly-outage-val" class="text-2xl sm:text-3xl font-black text-rose-600">--</span>
+            <span id="monthly-loss-hrs" class="text-xs text-slate-500 font-bold">-- hrs lost</span>
+          </div>
+          <div class="pt-2 mt-2 border-t border-brand-100 text-[10px] text-slate-400">Combined asset downtime loss</div>
         </div>
       </div>
 
-      <!-- Interactive Monthly Bar Charts -->
+      <!-- High-End Redesigned Visual Charts -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
         
-        <!-- Chart 1: Asset Compliance Status -->
-        <div class="lg:col-span-6 bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
-          <div class="flex items-center justify-between mb-3">
+        <!-- Chart 1: Continuous Spline Availability Trendline with Target Range -->
+        <div class="lg:col-span-7 bg-white p-5 sm:p-6 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
             <div>
-              <h3 class="text-xs sm:text-sm font-extrabold text-slate-800">📊 Asset Compliance Distribution</h3>
-              <p class="text-[11px] sm:text-xs text-slate-400">Assets meeting standard (≥96%) vs Underperforming units</p>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-brand-500"></span>
+                <h3 class="text-xs sm:text-sm font-extrabold text-slate-800">Substation Availability Trendline (2025 - Present)</h3>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-0.5">Smooth longitudinal spline tracking operational compliance against the 96% critical threshold.</p>
             </div>
-            <span id="chart-month-tag-1" class="text-xs font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded-lg">Month: Jan</span>
+            <div class="flex items-center gap-2 text-[10px] font-bold">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> ≥ 96% Standard
+              </span>
+            </div>
           </div>
-          <div class="h-60 sm:h-64 w-full relative">
-            <canvas id="statusChart"></canvas>
+          <div class="h-72 sm:h-80 w-full relative">
+            <canvas id="availabilityTrendChart"></canvas>
           </div>
         </div>
 
-        <!-- Chart 2: Failure & Downtime Breakdown -->
-        <div class="lg:col-span-6 bg-white p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
-          <div class="flex items-center justify-between mb-3">
+        <!-- Chart 2: Categorical Outage & Lost Time Breakdown -->
+        <div class="lg:col-span-5 bg-white p-5 sm:p-6 rounded-2xl sm:rounded-3xl border border-brand-200 shadow-sm flex flex-col justify-between">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
             <div>
-              <h3 class="text-xs sm:text-sm font-extrabold text-slate-800">📈 Failure Frequency & Downtime Loss</h3>
-              <p class="text-[11px] sm:text-xs text-slate-400">Categorical analysis (Transformers vs GIS Units)</p>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                <h3 class="text-xs sm:text-sm font-extrabold text-slate-800">Outages & Lost Maintenance Hours</h3>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-0.5">Transformer vs GIS failure count with comparative downtime severity.</p>
             </div>
-            <span id="chart-month-tag-2" class="text-xs font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded-lg">Month: Jan</span>
           </div>
-          <div class="h-60 sm:h-64 w-full relative">
-            <canvas id="failuresChart"></canvas>
+          <div class="h-72 sm:h-80 w-full relative">
+            <canvas id="outageDistributionChart"></canvas>
           </div>
         </div>
 
@@ -453,7 +477,7 @@
         </button>
       </div>
 
-      <!-- FORM 1: Transformer Inspection Sheet (Thai Text Preserved)[cite: 8] -->
+      <!-- FORM 1: Transformer Inspection Sheet (Thai Text Preserved) -->
       <div id="form-tx-container" class="active-print-form bg-white p-6 sm:p-10 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs flex flex-col justify-between">
         
         <!-- Header Section -->
@@ -495,7 +519,7 @@
             </div>
           </div>
 
-          <!-- Checklists Table for Transformer[cite: 8] -->
+          <!-- Checklists Table for Transformer -->
           <div class="mb-4">
             <h3 class="text-xs font-bold text-slate-800 uppercase mb-1.5">รายการตรวจสอบสภาพความพร้อมใช้งาน (INSPECTION CHECKLIST)</h3>
             <table class="w-full border border-slate-300 text-[11px] table-auto">
@@ -571,7 +595,7 @@
                 <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">เสียงและกลิ่น (Noise/Smell)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">เสียงฮัมปกติ (Humming), ไม่มี Corona / กลิ่นไหม้</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label class="inline-block">[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
               </tbody>
@@ -605,7 +629,7 @@
 
       </div>
 
-      <!-- FORM 2: GIS Inspection Sheet (Thai Text Preserved)[cite: 8] -->
+      <!-- FORM 2: GIS Inspection Sheet -->
       <div id="form-gis-container" class="hidden bg-white p-6 sm:p-10 rounded-3xl border border-brand-200 shadow-sm max-w-[210mm] mx-auto text-slate-800 text-xs flex flex-col justify-between">
         
         <!-- Header -->
@@ -647,7 +671,7 @@
             </div>
           </div>
 
-          <!-- Checklists Table for GIS[cite: 8] -->
+          <!-- Checklists Table for GIS -->
           <div class="mb-4">
             <h3 class="text-xs font-bold text-slate-800 uppercase mb-1.5">รายการตรวจสอบสภาพความพร้อมใช้งาน (INSPECTION CHECKLIST)</h3>
             <table class="w-full border border-slate-300 text-[11px] table-auto">
@@ -699,19 +723,19 @@
                 <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">ฮีตเตอร์และระบายอากาศ (Heater/Vent)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">ฮีตเตอร์ในตู้ LCC ทำงาน (ไม่อับชื้น / ไม่มีหยดน้ำเกาะ)</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ไม่ทำงาน</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ไม่ทำงาน</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
                 <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">การต่อลงดินและโครงสร้าง (Grounding)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">กราวด์ Enclosure แน่นหนา, โครงสร้างไม่มีสนิมรุนแรง</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
                 <tr>
                   <td class="p-2 border-r border-slate-300 font-medium clean-cell">ความผิดปกติทางกายภาพ (Visual/Acoustic)</td>
                   <td class="p-2 border-r border-slate-300 clean-cell text-[10px]">ไม่มีเสียง Discharge / Partial Discharge, ไม่มีกลิ่นผิดปกติ</td>
-                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
+                  <td class="p-2 border-r border-slate-300 clean-cell whitespace-nowrap"><label class="mr-2 inline-block">[&nbsp;&nbsp;] ปกติ</label><label>[&nbsp;&nbsp;] ผิดปกติ</label></td>
                   <td class="p-2 border-slate-300"></td>
                 </tr>
               </tbody>
@@ -757,8 +781,8 @@
       <span class="text-[11px] mt-0.5">Real-Time</span>
     </button>
     <button onclick="switchTab('monthly')" id="m-nav-monthly" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-500 font-bold transition hover:text-brand-600">
-      <span class="text-lg">📅</span>
-      <span class="text-[11px] mt-0.5">Monthly</span>
+      <span class="text-lg">📈</span>
+      <span class="text-[11px] mt-0.5">Historical</span>
     </button>
     <button onclick="switchTab('form')" id="m-nav-form" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-500 font-bold transition hover:text-brand-600">
       <span class="text-lg">📝</span>
@@ -784,11 +808,7 @@
   </div>
 
   <script>
-    const monthsNames = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
-    ];
-
+    // ================= REALTIME TELEMETRY DATASET =================
     const realtimeData = [];
     for (let i = 1; i <= 15; i++) {
       const tag = `TX-${String(i).padStart(2, '0')}`;
@@ -827,56 +847,37 @@
       });
     }
 
-    const monthlyDatasets = [];
-    for (let m = 0; m < 12; m++) {
-      const devList = [];
-      for (let i = 1; i <= 15; i++) {
-        const tag = `TX-${String(i).padStart(2, '0')}`;
-        let failures = 0, downtime = 0;
-        
-        if (m === 0 && (i === 4 || i === 9)) { failures = 2; downtime = 35; }
-        else if (m === 3 && (i === 2 || i === 4 || i === 11 || i === 14)) { failures = 3; downtime = 45; }
-        else if (m === 6 && (i === 7 || i === 13)) { failures = 2; downtime = 34; }
-        else if (m === 8 && (i === 1 || i === 9)) { failures = 3; downtime = 42; }
-        else if (m === 10 && (i === 3)) { failures = 1; downtime = 18; }
-        else if (m % 2 === 1 && (i === 5)) { failures = 1; downtime = 12; }
+    // ================= 20-MONTH HISTORICAL LONGITUDINAL DATASET (2025 ALL 12M + 2026 8M YTD) =================
+    const periodTimeline = [
+      { id: '2025-01', year: '2025', label: 'Jan 2025', short: "Jan '25", avail: 97.45, mtbf: 1120.5, mttr: 14.8, txFail: 2, gisFail: 1, txDown: 32, gisDown: 14 },
+      { id: '2025-02', year: '2025', label: 'Feb 2025', short: "Feb '25", avail: 98.12, mtbf: 1480.0, mttr: 12.2, txFail: 1, gisFail: 1, txDown: 14, gisDown: 12 },
+      { id: '2025-03', year: '2025', label: 'Mar 2025', short: "Mar '25", avail: 96.88, mtbf: 980.2,  mttr: 18.5, txFail: 3, gisFail: 1, txDown: 45, gisDown: 18 },
+      { id: '2025-04', year: '2025', label: 'Apr 2025', short: "Apr '25", avail: 95.92, mtbf: 820.0,  mttr: 24.1, txFail: 4, gisFail: 2, txDown: 68, gisDown: 34 },
+      { id: '2025-05', year: '2025', label: 'May 2025', short: "May '25", avail: 97.60, mtbf: 1240.8, mttr: 15.0, txFail: 2, gisFail: 1, txDown: 28, gisDown: 16 },
+      { id: '2025-06', year: '2025', label: 'Jun 2025', short: "Jun '25", avail: 98.45, mtbf: 1560.4, mttr: 11.5, txFail: 1, gisFail: 0, txDown: 12, gisDown: 0 },
+      { id: '2025-07', year: '2025', label: 'Jul 2025', short: "Jul '25", avail: 96.35, mtbf: 890.5,  mttr: 21.0, txFail: 3, gisFail: 2, txDown: 48, gisDown: 35 },
+      { id: '2025-08', year: '2025', label: 'Aug 2025', short: "Aug '25", avail: 97.80, mtbf: 1350.2, mttr: 13.8, txFail: 2, gisFail: 1, txDown: 26, gisDown: 15 },
+      { id: '2025-09', year: '2025', label: 'Sep 2025', short: "Sep '25", avail: 98.60, mtbf: 1620.0, mttr: 10.4, txFail: 1, gisFail: 0, txDown: 10, gisDown: 0 },
+      { id: '2025-10', year: '2025', label: 'Oct 2025', short: "Oct '25", avail: 96.75, mtbf: 940.0,  mttr: 19.2, txFail: 3, gisFail: 1, txDown: 42, gisDown: 18 },
+      { id: '2025-11', year: '2025', label: 'Nov 2025', short: "Nov '25", avail: 98.10, mtbf: 1420.5, mttr: 12.8, txFail: 1, gisFail: 1, txDown: 16, gisDown: 12 },
+      { id: '2025-12', year: '2025', label: 'Dec 2025', short: "Dec '25", avail: 98.90, mtbf: 1780.0, mttr: 9.5,  txFail: 0, gisFail: 1, txDown: 0,  gisDown: 10 },
+      { id: '2026-01', year: '2026', label: 'Jan 2026', short: "Jan '26", avail: 97.25, mtbf: 1180.0, mttr: 16.2, txFail: 2, gisFail: 1, txDown: 35, gisDown: 16 },
+      { id: '2026-02', year: '2026', label: 'Feb 2026', short: "Feb '26", avail: 98.30, mtbf: 1520.4, mttr: 11.8, txFail: 1, gisFail: 1, txDown: 14, gisDown: 11 },
+      { id: '2026-03', year: '2026', label: 'Mar 2026', short: "Mar '26", avail: 97.10, mtbf: 1050.2, mttr: 17.5, txFail: 3, gisFail: 1, txDown: 38, gisDown: 18 },
+      { id: '2026-04', year: '2026', label: 'Apr 2026', short: "Apr '26", avail: 95.70, mtbf: 790.0,  mttr: 26.4, txFail: 4, gisFail: 2, txDown: 72, gisDown: 38 },
+      { id: '2026-05', year: '2026', label: 'May 2026', short: "May '26", avail: 97.90, mtbf: 1390.0, mttr: 14.1, txFail: 2, gisFail: 1, txDown: 24, gisDown: 16 },
+      { id: '2026-06', year: '2026', label: 'Jun 2026', short: "Jun '26", avail: 98.50, mtbf: 1600.0, mttr: 10.8, txFail: 1, gisFail: 0, txDown: 12, gisDown: 0 },
+      { id: '2026-07', year: '2026', label: 'Jul 2026', short: "Jul '26", avail: 96.95, mtbf: 1010.5, mttr: 18.0, txFail: 2, gisFail: 2, txDown: 36, gisDown: 32 },
+      { id: '2026-08', year: '2026', label: 'Aug 2026', short: "Aug '26", avail: 98.71, mtbf: 1680.0, mttr: 10.2, txFail: 1, gisFail: 0, txDown: 10, gisDown: 0 }
+    ];
 
-        devList.push({
-          tag: tag,
-          name: `Power Transformer ${tag}`,
-          type: 'TX',
-          operatingHrs: 720,
-          failures: failures,
-          downTime: downtime
-        });
-      }
-      for (let i = 1; i <= 10; i++) {
-        const tag = `GIS-${String(i).padStart(2, '0')}`;
-        let failures = 0, downtime = 0;
-
-        if (m === 0 && (i === 3 || i === 7)) { failures = 2; downtime = 38; }
-        else if (m === 4 && (i === 6 || i === 8)) { failures = 3; downtime = 46; }
-        else if (m === 7 && (i === 2 || i === 5)) { failures = 2; downtime = 36; }
-        else if (m === 11 && (i === 10)) { failures = 1; downtime = 14; }
-
-        devList.push({
-          tag: tag,
-          name: `Gas-Insulated Switchgear ${tag}`,
-          type: 'GIS',
-          operatingHrs: 720,
-          failures: failures,
-          downTime: downtime
-        });
-      }
-      monthlyDatasets.push(devList);
-    }
-
-    let selectedMonthIndex = 0;
+    let activeYearFilter = 'ALL';
+    let selectedPeriodIndex = periodTimeline.length - 1; // Default to latest (Aug 2026)
     let currentFilter = 'ALL';
     const AVAIL_THRESHOLD = 96.0;
 
-    let statusChartInstance = null;
-    let failuresChartInstance = null;
+    let availTrendChartInstance = null;
+    let outageDistChartInstance = null;
     let liveInterval = null;
     let isLiveActive = true;
 
@@ -891,6 +892,7 @@
       }
     };
 
+    // ================= EXECUTIVE STRATEGY SIMULATOR =================
     function onSliderChange(val) {
       document.getElementById('slider-val').innerText = parseFloat(val).toFixed(1);
       runSimulation();
@@ -918,145 +920,238 @@
       document.getElementById('sim-result-fails').innerText = `Max ~${maxFailures} Fails / Year`;
     }
 
-    function selectMonth(idx) {
-      selectedMonthIndex = idx;
-      const data = monthlyDatasets[selectedMonthIndex];
-
-      for (let i = 0; i < 12; i++) {
-        const btn = document.getElementById(`m-btn-${i}`);
-        if (i === idx) {
-          btn.className = "month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl bg-brand-500 text-white border-brand-500 shadow-md transition";
+    // ================= TIMELINE & YEAR FILTERING =================
+    function filterTimelineYear(year) {
+      activeYearFilter = year;
+      ['ALL', '2025', '2026'].forEach(yr => {
+        const btn = document.getElementById(`yr-btn-${yr}`);
+        if (yr === year) {
+          btn.className = "px-3.5 py-1.5 rounded-xl bg-brand-500 text-white shadow-xs transition font-bold";
         } else {
-          btn.className = "month-btn py-1.5 sm:py-2 text-xs font-bold rounded-xl bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition shadow-2xs";
+          btn.className = "px-3.5 py-1.5 rounded-xl text-slate-600 hover:text-brand-600 transition font-bold";
         }
-      }
-
-      const monthName = monthsNames[idx];
-      document.getElementById('current-month-badge').innerText = monthName;
-      document.getElementById('chart-month-tag-1').innerText = `Month: ${monthName.substring(0, 3)}`;
-      document.getElementById('chart-month-tag-2').innerText = `Month: ${monthName.substring(0, 3)}`;
-
-      updateMonthStats(data);
-    }
-
-    function updateMonthStats(data) {
-      let totalOp = 0, totalFail = 0, totalDown = 0;
-      let passCount = 0, failCount = 0;
-      let txFails = 0, gisFails = 0;
-      let txDown = 0, gisDown = 0;
-
-      data.forEach(d => {
-        totalOp += d.operatingHrs;
-        totalFail += d.failures;
-        totalDown += d.downTime;
-
-        if (d.type === 'TX') {
-          txFails += d.failures;
-          txDown += d.downTime;
-        } else {
-          gisFails += d.failures;
-          gisDown += d.downTime;
-        }
-
-        const avail = (d.operatingHrs + d.downTime) > 0 
-          ? (d.operatingHrs / (d.operatingHrs + d.downTime)) * 100 
-          : 100;
-
-        if (avail >= AVAIL_THRESHOLD) passCount++;
-        else failCount++;
       });
 
-      const avgMtbf = totalFail > 0 ? (totalOp / totalFail) : totalOp;
-      const avgMttr = totalFail > 0 ? (totalDown / totalFail) : 0;
-      const avgAvail = (totalOp + totalDown) > 0 ? (totalOp / (totalOp + totalDown)) * 100 : 100;
+      renderMonthPills();
+      updateChartsAndCards();
+    }
 
-      document.getElementById('monthly-avail-val').innerText = `${avgAvail.toFixed(2)}%`;
-      document.getElementById('monthly-mtbf-val').innerText = `${avgMtbf.toFixed(1)} hrs`;
-      document.getElementById('monthly-mttr-val').innerText = `${avgMttr.toFixed(1)} hrs`;
+    function renderMonthPills() {
+      const container = document.getElementById('month-pills-container');
+      container.innerHTML = '';
+
+      const visibleList = periodTimeline.filter(p => activeYearFilter === 'ALL' || p.year === activeYearFilter);
+
+      visibleList.forEach((item) => {
+        const realIdx = periodTimeline.findIndex(p => p.id === item.id);
+        const isSelected = (realIdx === selectedPeriodIndex);
+
+        const btn = document.createElement('button');
+        btn.onclick = () => selectPeriod(realIdx);
+        btn.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition shadow-2xs shrink-0 ${
+          isSelected 
+            ? 'bg-brand-500 text-white shadow-md' 
+            : 'bg-white border border-brand-200 text-slate-600 hover:bg-brand-50 hover:text-brand-600'
+        }`;
+        btn.innerHTML = `${item.short} ${item.avail < AVAIL_THRESHOLD ? '<span class="text-rose-400">▲</span>' : ''}`;
+        container.appendChild(btn);
+      });
+    }
+
+    function selectPeriod(idx) {
+      selectedPeriodIndex = idx;
+      renderMonthPills();
+      updateChartsAndCards();
+    }
+
+    function updateChartsAndCards() {
+      const period = periodTimeline[selectedPeriodIndex];
+      const visibleData = periodTimeline.filter(p => activeYearFilter === 'ALL' || p.year === activeYearFilter);
+
+      // Update Summary Cards
+      document.getElementById('selected-month-badge').innerText = period.label;
+      document.getElementById('monthly-avail-val').innerText = `${period.avail.toFixed(2)}%`;
+      document.getElementById('monthly-mtbf-val').innerText = `${period.mtbf.toFixed(1)}`;
+      document.getElementById('monthly-mttr-val').innerText = `${period.mttr.toFixed(1)}`;
+
+      const totalOutages = period.txFail + period.gisFail;
+      const totalLostHrs = period.txDown + period.gisDown;
+      document.getElementById('monthly-outage-val').innerText = `${totalOutages} Events`;
+      document.getElementById('monthly-loss-hrs').innerText = `${totalLostHrs} hrs lost`;
 
       const tag = document.getElementById('monthly-avail-tag');
-      if (avgAvail >= AVAIL_THRESHOLD) {
-        tag.className = "text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-lg font-bold";
-        tag.innerText = "● System Healthy";
+      if (period.avail >= AVAIL_THRESHOLD) {
+        tag.className = "text-[10px] px-2 py-0.5 rounded-md font-bold bg-emerald-100 text-emerald-700";
+        tag.innerText = "● Compliant";
       } else {
-        tag.className = "text-xs bg-rose-100 text-rose-700 px-2 py-0.5 rounded-lg font-bold";
-        tag.innerText = "▲ Sub-Threshold";
+        tag.className = "text-[10px] px-2 py-0.5 rounded-md font-bold bg-rose-100 text-rose-700";
+        tag.innerText = "▲ Under 96%";
       }
 
-      renderCharts(passCount, failCount, txFails, gisFails, txDown, gisDown);
+      renderModernCharts(visibleData);
     }
 
-    function renderCharts(passCount, failCount, txFails, gisFails, txDown, gisDown) {
-      const ctx1 = document.getElementById('statusChart').getContext('2d');
-      if (statusChartInstance) statusChartInstance.destroy();
+    // ================= HIGH-END EXECUTIVE CHART.JS ENGINE =================
+    function renderModernCharts(dataset) {
+      const labels = dataset.map(d => d.short);
+      const availData = dataset.map(d => d.avail);
+      const txFails = dataset.map(d => d.txFail);
+      const gisFails = dataset.map(d => d.gisFail);
+      const totalLost = dataset.map(d => d.txDown + d.gisDown);
 
-      statusChartInstance = new Chart(ctx1, {
-        type: 'bar',
+      // --- Chart 1: Availability Spline Line Chart ---
+      const ctx1 = document.getElementById('availabilityTrendChart').getContext('2d');
+      if (availTrendChartInstance) availTrendChartInstance.destroy();
+
+      // Create rich gradient background for line
+      const gradient1 = ctx1.createLinearGradient(0, 0, 0, 300);
+      gradient1.addColorStop(0, 'rgba(240, 91, 130, 0.35)');
+      gradient1.addColorStop(0.7, 'rgba(240, 91, 130, 0.05)');
+      gradient1.addColorStop(1, 'rgba(240, 91, 130, 0.0)');
+
+      availTrendChartInstance = new Chart(ctx1, {
+        type: 'line',
         data: {
-          labels: ['Compliant (≥96%)', 'Underperforming (<96%)'],
-          datasets: [{
-            label: 'Asset Count',
-            data: [passCount, failCount],
-            backgroundColor: ['#10b981', '#f43f5e'],
-            borderRadius: 12,
-            borderSkipped: false,
-            barThickness: 45
-          }]
-        },
-        options: {
-          animation: { duration: 600 },
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { beginAtZero: true, max: 25, ticks: { stepSize: 5 } }
-          }
-        }
-      });
-
-      const ctx2 = document.getElementById('failuresChart').getContext('2d');
-      if (failuresChartInstance) failuresChartInstance.destroy();
-
-      failuresChartInstance = new Chart(ctx2, {
-        type: 'bar',
-        data: {
-          labels: ['Transformers (15 units)', 'GIS Switchgear (10 units)'],
+          labels: labels,
           datasets: [
             {
-              label: 'Failures (Count)',
-              data: [txFails, gisFails],
-              backgroundColor: '#f05b82',
-              borderRadius: 10,
-              barThickness: 28
+              label: 'Availability (%)',
+              data: availData,
+              borderColor: '#f05b82',
+              borderWidth: 3,
+              tension: 0.38,
+              fill: true,
+              backgroundColor: gradient1,
+              pointBackgroundColor: dataset.map(d => d.avail >= AVAIL_THRESHOLD ? '#10b981' : '#f43f5e'),
+              pointBorderColor: '#ffffff',
+              pointBorderWidth: 2,
+              pointRadius: 4.5,
+              pointHoverRadius: 7
             },
             {
-              label: 'Total Downtime (hrs)',
-              data: [txDown, gisDown],
-              backgroundColor: '#fedce5',
-              borderColor: '#f05b82',
-              borderWidth: 1.5,
-              borderRadius: 10,
-              barThickness: 28
+              label: 'Target Baseline (96.0%)',
+              data: Array(dataset.length).fill(AVAIL_THRESHOLD),
+              borderColor: '#10b981',
+              borderWidth: 2,
+              borderDash: [5, 5],
+              fill: false,
+              pointRadius: 0
             }
           ]
         },
         options: {
-          animation: { duration: 600 },
           responsive: true,
           maintainAspectRatio: false,
+          animation: { duration: 750, easing: 'easeOutQuart' },
           plugins: {
             legend: {
               position: 'top',
-              labels: { boxWidth: 12, font: { family: 'Prompt', size: 11 } }
+              align: 'end',
+              labels: { boxWidth: 12, font: { family: 'Prompt', size: 11, weight: '600' } }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(15, 23, 42, 0.9)',
+              titleFont: { family: 'Prompt', size: 12 },
+              bodyFont: { family: 'Prompt', size: 11 },
+              padding: 10,
+              displayColors: true,
+              callbacks: {
+                label: (ctx) => ` ${ctx.dataset.label}: ${ctx.raw}%`
+              }
             }
           },
           scales: {
-            y: { beginAtZero: true, ticks: { stepSize: 10 } }
+            y: {
+              min: 94.0,
+              max: 100.0,
+              ticks: { stepSize: 1.0, callback: (v) => `${v}%`, font: { family: 'Prompt', size: 10 } },
+              grid: { color: 'rgba(226, 232, 240, 0.8)' }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Prompt', size: 10, weight: '500' } }
+            }
+          }
+        }
+      });
+
+      // --- Chart 2: Outages & Lost Hours (Combo Bar + Line) ---
+      const ctx2 = document.getElementById('outageDistributionChart').getContext('2d');
+      if (outageDistChartInstance) outageDistChartInstance.destroy();
+
+      outageDistChartInstance = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              type: 'bar',
+              label: 'TX Failures',
+              data: txFails,
+              backgroundColor: '#f88da7',
+              borderRadius: 6,
+              barThickness: dataset.length > 12 ? 8 : 14,
+              stack: 'outages'
+            },
+            {
+              type: 'bar',
+              label: 'GIS Failures',
+              data: gisFails,
+              backgroundColor: '#60a5fa',
+              borderRadius: 6,
+              barThickness: dataset.length > 12 ? 8 : 14,
+              stack: 'outages'
+            },
+            {
+              type: 'line',
+              label: 'Total Downtime Loss (hrs)',
+              data: totalLost,
+              borderColor: '#de3866',
+              backgroundColor: '#de3866',
+              borderWidth: 2.2,
+              tension: 0.3,
+              yAxisID: 'y1',
+              pointRadius: 3
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 750, easing: 'easeOutQuart' },
+          plugins: {
+            legend: {
+              position: 'top',
+              align: 'end',
+              labels: { boxWidth: 10, font: { family: 'Prompt', size: 10, weight: '600' } }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 8,
+              ticks: { stepSize: 2, font: { family: 'Prompt', size: 10 } },
+              grid: { color: 'rgba(226, 232, 240, 0.8)' },
+              title: { display: true, text: 'Failure Count', font: { family: 'Prompt', size: 10 } }
+            },
+            y1: {
+              position: 'right',
+              beginAtZero: true,
+              max: 120,
+              grid: { display: false },
+              ticks: { stepSize: 30, callback: (v) => `${v}h`, font: { family: 'Prompt', size: 10 } },
+              title: { display: true, text: 'Lost Hours', font: { family: 'Prompt', size: 10 } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Prompt', size: 9 } }
+            }
           }
         }
       });
     }
 
+    // ================= LIVE STREAM & APP CONTROLS =================
     function toggleLiveMode() {
       isLiveActive = !isLiveActive;
       const textDesktop = document.getElementById('live-status-text-desktop');
@@ -1115,7 +1210,6 @@
       const avgMttr = totalFail > 0 ? (totalDown / totalFail) : 0;
       const avgAvail = (totalOp + totalDown) > 0 ? (totalOp / (totalOp + totalDown)) * 100 : 100;
 
-      // Update Read-only Display Text
       document.getElementById('card-avail-text').innerText = avgAvail.toFixed(2);
       document.getElementById('card-mtbf-text').innerText = avgMtbf.toFixed(1);
       document.getElementById('card-mttr-text').innerText = avgMttr.toFixed(1);
@@ -1224,7 +1318,6 @@
       document.getElementById('modal-action').classList.add('hidden');
     }
 
-    // Export dataset to formatted Excel file (.xlsx)
     function exportToExcel() {
       const exportList = realtimeData.map(d => {
         const mtbf = d.failures > 0 ? (d.operatingHrs / d.failures) : d.operatingHrs;
@@ -1259,18 +1352,15 @@
       XLSX.writeFile(workbook, "RAM_Substation_Asset_Analytics.xlsx");
     }
 
-    // Switch main tabs
     function switchTab(tab) {
       const vRealtime = document.getElementById('view-realtime');
       const vMonthly = document.getElementById('view-monthly');
       const vForm = document.getElementById('view-form');
 
-      // Desktop sidebar elements
       const dtRealtime = document.getElementById('d-tab-realtime');
       const dtMonthly = document.getElementById('d-tab-monthly');
       const dtForm = document.getElementById('d-tab-form');
 
-      // Mobile bottom nav elements
       const mnRealtime = document.getElementById('m-nav-realtime');
       const mnMonthly = document.getElementById('m-nav-monthly');
       const mnForm = document.getElementById('m-nav-form');
@@ -1279,12 +1369,10 @@
       vMonthly.classList.add('hidden');
       vForm.classList.add('hidden');
 
-      // Reset desktop styles
       [dtRealtime, dtMonthly, dtForm].forEach(el => {
         if(el) el.className = "w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all text-slate-600 hover:bg-brand-100 hover:text-brand-600 text-left";
       });
 
-      // Reset mobile styles
       [mnRealtime, mnMonthly, mnForm].forEach(el => {
         if(el) el.className = "flex flex-col items-center justify-center flex-1 py-1 text-slate-500 font-bold transition hover:text-brand-600";
       });
@@ -1297,7 +1385,8 @@
         vMonthly.classList.remove('hidden');
         if(dtMonthly) dtMonthly.className = "w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all bg-brand-500 text-white shadow-sm text-left font-bold";
         if(mnMonthly) mnMonthly.className = "flex flex-col items-center justify-center flex-1 py-1 text-brand-600 font-bold transition";
-        selectMonth(selectedMonthIndex);
+        renderMonthPills();
+        updateChartsAndCards();
       } else if (tab === 'form') {
         vForm.classList.remove('hidden');
         if(dtForm) dtForm.className = "w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all bg-brand-500 text-white shadow-sm text-left font-bold";
